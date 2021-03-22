@@ -16,7 +16,7 @@ $ psql -U postgres
 postgres=# CREATE DATABASE ipam;  
 postgres=# \q
 
-5. Modify (if needed) 'settings.py' file from 'ipam_project' directory:  
+5. Modify (if needed) `settings.py` file from `ipam_project` directory:  
 
 ```python
 DATABASES = {

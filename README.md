@@ -42,3 +42,5 @@ $ python manage.py runserver
 8. Server is now accessible via http://127.0.0.1:8000/
 
 9. Access admin page via http://127.0.0.1:8000/admin
+
+10. Access REST api via http://127.0.0.1:8000/api

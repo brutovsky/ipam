@@ -31,5 +31,6 @@ from rest_framework import routers, serializers, viewsets
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.api.urls')),
+    path('api/dcim/', include('dcim.api.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

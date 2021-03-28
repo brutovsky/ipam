@@ -31,7 +31,7 @@ class UserList(APIView):
 class UserDetail(APIView):
     queryset = User.objects.all()
     """
-    Retrieve, update or delete a code snippet.
+    Retrieve, update or delete a user.
     """
     def get_object(seld,pk):
         try:

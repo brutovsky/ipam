@@ -2,16 +2,19 @@
 #from django.views.decorators.csrf import csrf_exempt
 #from rest_framework.parsers import JSONParser
 from django.contrib.auth.models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, MyTokenObtainPairSerializer
 
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class UserList(APIView):
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
     """
     List all users.
     """
@@ -30,6 +33,7 @@ class UserList(APIView):
 
 class UserDetail(APIView):
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
     """
     Retrieve, update or delete a user.
     """
@@ -57,3 +61,8 @@ class UserDetail(APIView):
         print(user)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+# Custome token access and refresh pair view
+class MyObtainTokenPairView(TokenObtainPairView):
+    permission_classes = (AllowAny,)
+    serializer_class = MyTokenObtainPairSerializer

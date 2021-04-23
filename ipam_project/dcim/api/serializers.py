@@ -10,7 +10,8 @@ class RegionSerializer(serializers.ModelSerializer):
     )
     parent = serializers.SlugRelatedField(
         queryset = Region.objects.all(),
-        slug_field='name'
+        slug_field='name',
+        allow_null=True
     )
     url = serializers.HyperlinkedIdentityField(
         view_name='dcim_api:region-detail',

@@ -3,7 +3,7 @@ from rest_framework import routers, serializers, viewsets
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 # Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'groups', 'user_permissions', 'email', 'is_staff', 'is_superuser', 'last_login', 'date_joined']

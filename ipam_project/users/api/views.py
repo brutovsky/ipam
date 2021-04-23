@@ -12,15 +12,21 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-class UserList(APIView):
+from django.contrib.auth.decorators import permission_required
+
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
+class UserList(PermissionRequiredMixin, APIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
+    permission_required = ('auth.user.view_user')
+    login_url = '/api/token'
     """
     List all users.
     """
     def get(self, request, format=None):
         users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        serializer = UserSerializer(users, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -37,7 +43,7 @@ class UserDetail(APIView):
     """
     Retrieve, update or delete a user.
     """
-    def get_object(seld,pk):
+    def get_object(self,pk):
         try:
             return User.objects.get(pk=pk)
         except User.DoesNotExist:
@@ -45,7 +51,7 @@ class UserDetail(APIView):
 
     def get(self, request, pk, format=None):
         user = self.get_object(pk)
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):

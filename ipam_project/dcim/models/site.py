@@ -50,7 +50,8 @@ class Site(models.Model):
         default=SiteStatusChoices.STATUS_ACTIVE
     )
     region = models.ForeignKey(
-        to='dcim.Region',
+        Region,
+        related_name='sites',
         on_delete=models.SET_NULL,
         blank=True,
         null=True

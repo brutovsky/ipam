@@ -1,8 +1,5 @@
-#from django.http import HttpResponse, JsonResponse
-#from django.views.decorators.csrf import csrf_exempt
-#from rest_framework.parsers import JSONParser
 from django.contrib.auth.models import User
-from .serializers import UserSerializer, MyTokenObtainPairSerializer
+from .serializers import CreateUserSerializer, UserSerializer, MyTokenObtainPairSerializer
 
 from django.http import Http404
 from rest_framework.views import APIView
@@ -16,10 +13,18 @@ from django.contrib.auth.decorators import permission_required
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
-class UserList(PermissionRequiredMixin, APIView):
+from users.permissions import IsAdmin
+
+from rest_framework import generics
+
+class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = [IsAuthenticated]
-    permission_required = ('auth.user.view_user')
+    serializer_class = CreateUserSerializer
+    permission_classes = (AllowAny,)
+
+class UserList(APIView):
+    queryset = User.objects.all()
+    permission_classes = (IsAdmin,)
     login_url = '/api/token'
     """
     List all users.
@@ -39,7 +44,7 @@ class UserList(PermissionRequiredMixin, APIView):
 
 class UserDetail(APIView):
     queryset = User.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdmin]
     """
     Retrieve, update or delete a user.
     """

@@ -19,7 +19,6 @@ class RegionViewSet(viewsets.ModelViewSet):
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
     lookup_field = 'name'
-    permission_classes = [permissions.IsAuthenticated]
 
 
 #
@@ -32,4 +31,3 @@ class SiteViewSet(viewsets.ModelViewSet):
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
     lookup_field = 'name'
-    permission_classes = [permissions.IsAuthenticated]

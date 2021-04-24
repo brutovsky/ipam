@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from .serializers import CreateUserSerializer, UserProfileSerializer, UserSerializer, GroupSerializer, MyTokenObtainPairSerializer
+from .serializers import CreateUserSerializer, ChangePasswordSerializer, UserProfileSerializer, UserSerializer, GroupSerializer, MyTokenObtainPairSerializer
 
 from django.http import Http404
 from rest_framework.views import APIView
@@ -14,6 +14,9 @@ from users.permissions import IsAdmin
 from rest_framework import generics
 from rest_framework import viewsets
 
+import django.contrib.auth.password_validation as validators
+from django.core import exceptions
+
 #
 # User create view
 #
@@ -24,6 +27,47 @@ class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = CreateUserSerializer
     permission_classes = (AllowAny,)
+
+
+#
+# User change password view
+#
+class ChangePassword(generics.UpdateAPIView):
+    """
+    `Update` user password.
+    """
+    model = User
+    serializer_class = ChangePasswordSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def update(self, request):
+        user = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            if not user.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+
+            try:
+                validators.validate_password(password=serializer.data.get("new_password"))
+            except exceptions.ValidationError as e:
+                return Response({"new_password": list(e.messages)}, status=status.HTTP_400_BAD_REQUEST)
+
+            user.set_password(serializer.data.get("new_password"))
+            user.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+
+            return Response(response)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 #

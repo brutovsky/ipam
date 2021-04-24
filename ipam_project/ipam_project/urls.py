@@ -31,6 +31,10 @@ def api_root(request):
         "Dcim api": f"{full_url}dcim/",
         "Users api": f"{full_url}users/",
         "Groups api": f"{full_url}groups/",
+        "Profile api": {
+            "User profile" : f"{full_url}account/profile",
+            "Change password": f"{full_url}account/change-password",
+        },
         "Token api": {
             "Obtain token" : f"{full_url}token",
             "Refresh token": f"{full_url}token/refresh",

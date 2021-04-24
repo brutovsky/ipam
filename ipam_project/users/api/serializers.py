@@ -1,12 +1,10 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import routers, serializers, viewsets
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-from django.contrib.auth import password_validation
-
 import sys
 from django.core import exceptions
 import django.contrib.auth.password_validation as validators
+
 
 class CreateUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True,style={'input_type': 'password'})
@@ -42,6 +40,18 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+# User password change serializer
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True, style={'input_type': 'password'})
+    new_password = serializers.CharField(required=True, style={'input_type': 'password'})
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password']
 
 
 # User serializer for admin view

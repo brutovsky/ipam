@@ -17,10 +17,35 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, schema, permission_classes
+from rest_framework.response import Response
+from django.contrib.sites.shortcuts import get_current_site
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated, ))
+def api_root(request):
+    full_url = ''.join(['http://', get_current_site(request).domain, request.get_full_path()])
+    content = {
+        "Dcim api": f"{full_url}dcim/",
+        "Users api": f"{full_url}users/",
+        "Token api": {
+            "Obtain token" : f"{full_url}token",
+            "Refresh token": f"{full_url}token/refresh",
+        },
+        "Auth api": {
+            "Login": f"{full_url}auth/login",
+            "Logout": f"{full_url}auth/logout",
+        },
+    }
+    return Response(content)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', api_root),
     path('api/', include('users.api.urls')),
     path('api/dcim/', include('dcim.api.urls', namespace='api_dcim')),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api/auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

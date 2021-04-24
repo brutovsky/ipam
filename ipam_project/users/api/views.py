@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .serializers import CreateUserSerializer, UserSerializer, MyTokenObtainPairSerializer
+from .serializers import CreateUserSerializer, UserProfileSerializer, UserSerializer, MyTokenObtainPairSerializer
 
 from django.http import Http404
 from rest_framework.views import APIView
@@ -9,16 +9,18 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from django.contrib.auth.decorators import permission_required
-
-from django.contrib.auth.mixins import PermissionRequiredMixin
-
 from users.permissions import IsAdmin
 
 from rest_framework import generics
 from rest_framework import viewsets
 
+#
+# User create view
+#
 class UserCreate(generics.CreateAPIView):
+    """
+    `Create` a new user.
+    """
     queryset = User.objects.all()
     serializer_class = CreateUserSerializer
     permission_classes = (AllowAny,)
@@ -52,7 +54,28 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAdmin,)
 
 
+class UserProfileDetail(APIView):
+    """
+    `Retrieve` and `update` user profile.
+    """
+    serializer_class = UserProfileSerializer
+    permission_classes = (IsAuthenticated,)
+    def get(self, request, format=None):
+        user = request.user
+        serializer = UserSerializer(user, context={'request': request})
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = UserProfileSerializer(request.user, data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+#
 # Custome token access and refresh pair view
+#
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer

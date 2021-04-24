@@ -53,6 +53,14 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['username', 'last_login', 'date_joined']
 
 
+# User serializer for admin view
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'id','groups', 'user_permissions',  'is_staff', 'is_superuser', 'last_login', 'date_joined']
+        read_only_fields = ['id', 'groups', 'user_permissions', 'is_staff', 'is_superuser', 'last_login', 'date_joined']
+
+
 # Custom token access and refresh pair serializer
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 

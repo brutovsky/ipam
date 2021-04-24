@@ -30,6 +30,7 @@ def api_root(request):
     content = {
         "Dcim api": f"{full_url}dcim/",
         "Users api": f"{full_url}users/",
+        "Groups api": f"{full_url}groups/",
         "Token api": {
             "Obtain token" : f"{full_url}token",
             "Refresh token": f"{full_url}token/refresh",

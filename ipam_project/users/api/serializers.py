@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from rest_framework import routers, serializers, viewsets
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -53,7 +53,16 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['username', 'last_login', 'date_joined']
 
 
-# User serializer for admin view
+# Group serializer for admin view
+class GroupSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(view_name='users-api:group-detail')
+    class Meta:
+        model = Group
+        fields = ['url', 'id', 'name', 'permissions']
+        read_only_fields = ['id']
+
+
+# User profile serializer
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

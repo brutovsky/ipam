@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User
-from .serializers import CreateUserSerializer, UserProfileSerializer, UserSerializer, MyTokenObtainPairSerializer
+from django.contrib.auth.models import User, Group
+from .serializers import CreateUserSerializer, UserProfileSerializer, UserSerializer, GroupSerializer, MyTokenObtainPairSerializer
 
 from django.http import Http404
 from rest_framework.views import APIView
@@ -33,7 +33,6 @@ class UserList(APIView):
     """
     `List` all users.
     """
-    queryset = User.objects.all()
     permission_classes = (IsAdmin,)
 
     def get(self, request, format=None):
@@ -51,6 +50,33 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAdmin,)
+
+
+#
+# Group list view for admin
+#
+class GroupList(APIView):
+    """
+    `List` all groups.
+    """
+    permission_classes = (IsAdmin,)
+
+    def get(self, request, format=None):
+        groups = Group.objects.all()
+        serializer = GroupSerializer(groups, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+#
+# Group detail view for admin
+#
+class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    `Retrieve`, `update` and `delete` groups.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
     permission_classes = (IsAdmin,)
 
 

@@ -7,6 +7,7 @@ media/
 settings.py
 # C extensions
 *.so
+*.cpython-38.pyc
 
 # Distribution / packaging
 .Python

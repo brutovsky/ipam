@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'users.apps.UsersConfig',
     'dcim.apps.DcimConfig',
+
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -57,10 +59,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ipam_project.urls'
 
+TEMPLATES_DIR = BASE_DIR/'templates'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,6 +74,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILES_DIRS = [
+    BASE_DIR/'static',
 ]
 
 WSGI_APPLICATION = 'ipam_project.wsgi.application'

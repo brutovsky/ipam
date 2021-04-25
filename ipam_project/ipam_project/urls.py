@@ -23,6 +23,9 @@ from rest_framework.decorators import api_view, schema, permission_classes
 from rest_framework.response import Response
 from django.contrib.sites.shortcuts import get_current_site
 
+# Front
+from django.contrib.auth import views as auth_views
+
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def api_root(request):
@@ -52,5 +55,7 @@ urlpatterns = [
     path('api/', api_root),
     path('api/', include('users.api.urls')),
     path('api/dcim/', include('dcim.api.urls', namespace='api_dcim')),
-    path('api/auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
 ]

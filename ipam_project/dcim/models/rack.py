@@ -1,15 +1,15 @@
 from django.db import models
-
 from .site import Site
 from dcim.choices import *
-
 from ipam_project.widgets import *
+
 
 __all__ = (
     'RackGroup',
     'RackRole',
     'Rack',
 )
+
 
 #
 # RackGroups
@@ -20,7 +20,6 @@ class RackGroup(models.Model):
         max_length=100,
         unique=True
     )
-
     site = models.ForeignKey(
         Site,
         related_name='rack_groups',

@@ -20,3 +20,13 @@ class RackStatusChoices(models.TextChoices):
     STATUS_RESERVED = 'reserved'
     STATUS_AVAILABLE = 'available'
     STATUS_ACTIVE = 'active'
+
+
+#
+# Devices
+#
+
+class DeviceStatusChoices(models.TextChoices):
+    STATUS_OFFLINE = 'offline'
+    STATUS_ACTIVE = 'active'
+

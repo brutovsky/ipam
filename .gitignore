@@ -8,6 +8,8 @@ settings.py
 # C extensions
 *.so
 *.cpython-38.pyc
+ipam_project\ipam_project\__pycache__\settings.cpython-38.pyc
+ipam_project\ipam_project\__pycache__\urls.cpython-38.pyc
 
 # Distribution / packaging
 .Python

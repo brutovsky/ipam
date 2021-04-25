@@ -37,8 +37,8 @@
                 <a class="nav-item nav-link">Profile</a>
                 <a class="nav-item nav-link">Logout</a>
               {% else %}
-                <a class="nav-item nav-link">Login</a>
-                <a class="nav-item nav-link">Register</a>
+                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
               {% endif %}
             </div>
           </div>

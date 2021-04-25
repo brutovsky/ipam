@@ -25,6 +25,7 @@ from django.contrib.sites.shortcuts import get_current_site
 
 # Front
 from django.contrib.auth import views as auth_views
+from users import views as user_views
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
@@ -58,4 +59,5 @@ urlpatterns = [
     path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
+    path('register/', user_views.register, name='register'),
 ]

@@ -1,13 +1,8 @@
-from .serializers import RegionSerializer, SiteSerializer
-from dcim.models.site import Region, Site
-
-from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from .serializers import *
+from dcim.models.site import *
+from dcim.models.rack import *
 from rest_framework import viewsets
 
-from rest_framework import permissions
 
 #
 # Region View
@@ -31,3 +26,27 @@ class SiteViewSet(viewsets.ModelViewSet):
     queryset = Site.objects.all()
     serializer_class = SiteSerializer
     lookup_field = 'name'
+
+
+#
+# RackGroup View
+#
+class RackGroupViewSet(viewsets.ModelViewSet):
+    queryset = RackGroup.objects.all()
+    serializer_class = RackGroupSerializer
+
+
+#
+# RackRole View
+#
+class RackRoleViewSet(viewsets.ModelViewSet):
+    queryset = RackRole.objects.all()
+    serializer_class = RackRoleSerializer
+
+
+#
+# Rack View
+#
+class RackViewSet(viewsets.ModelViewSet):
+    queryset = Rack.objects.all()
+    serializer_class = RackSerializer

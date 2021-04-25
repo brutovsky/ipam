@@ -80,6 +80,8 @@ STATICFILES_DIRS = [
     BASE_DIR/'static',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 WSGI_APPLICATION = 'ipam_project.wsgi.application'
 
 

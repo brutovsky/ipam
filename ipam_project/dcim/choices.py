@@ -10,3 +10,13 @@ class SiteStatusChoices(models.TextChoices):
     STATUS_ACTIVE = 'active'
     STATUS_DECOMMISSIONING = 'decommissioning'
     STATUS_RETIRED = 'retired'
+
+
+#
+# Racks
+#
+
+class RackStatusChoices(models.TextChoices):
+    STATUS_RESERVED = 'reserved'
+    STATUS_AVAILABLE = 'available'
+    STATUS_ACTIVE = 'active'

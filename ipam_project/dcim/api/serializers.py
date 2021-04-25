@@ -1,6 +1,7 @@
 from rest_framework import routers, serializers, viewsets
 from dcim.models.site import *
 from dcim.models.rack import *
+from dcim.models.device import *
 
 
 #
@@ -83,6 +84,7 @@ class RackRoleSerializer(serializers.ModelSerializer):
         read_only=True,
         view_name='dcim_api:rack-detail'
     )
+
     class Meta:
         model = RackRole
         fields = ['id', 'url', 'name', 'color', 'description', 'racks']
@@ -106,3 +108,112 @@ class RackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rack
         fields = ['id', 'url', 'name', 'rack_group', 'status', 'rack_role', 'serial', 'type']
+
+
+#
+# Device module
+#
+
+class ManufacturerSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='dcim_api:platform-detail',
+    )
+    platforms = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='dcim_api:platform-detail'
+    )
+    device_types = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='dcim_api:device_type-detail'
+    )
+
+    class Meta:
+        model = Manufacturer
+        fields = ['id', 'url', 'name', 'description', 'platforms', 'device_types']
+
+
+class PlatformSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='dcim_api:platform-detail',
+    )
+    manufacturer = serializers.SlugRelatedField(
+        queryset=Manufacturer.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+    devices = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='dcim_api:device-detail'
+    )
+
+    class Meta:
+        model = Platform
+        fields = ['id', 'url', 'name', 'manufacturer', 'description', 'devices']
+
+
+class DeviceTypeSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='dcim_api:device_type-detail',
+    )
+    manufacturer = serializers.SlugRelatedField(
+        queryset=Manufacturer.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+    devices = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='dcim_api:device-detail'
+    )
+
+    class Meta:
+        model = DeviceType
+        fields = ['id', 'url', 'manufacturer', 'model', 'devices']
+
+
+class DeviceRoleSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='dcim_api:device_role-detail',
+    )
+    devices = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='dcim_api:device-detail'
+    )
+
+    class Meta:
+        model = DeviceRole
+        fields = ['id', 'url', 'name', 'color', 'description', 'devices']
+
+
+class DeviceSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='dcim_api:device_role-detail',
+    )
+    type = serializers.SlugRelatedField(
+        queryset=DeviceType.objects.all(),
+        slug_field='model',
+        allow_null=True
+    )
+    role = serializers.SlugRelatedField(
+        queryset=DeviceRole.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+    platform = serializers.SlugRelatedField(
+        queryset=Platform.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+    rack = serializers.SlugRelatedField(
+        queryset=Rack.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+
+    class Meta:
+        model = Device
+        fields = ['id', 'url', 'type', 'role', 'platform', 'name', 'serial', 'rack', 'status', 'mac_address']

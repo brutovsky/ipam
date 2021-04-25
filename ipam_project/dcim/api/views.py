@@ -1,6 +1,7 @@
 from .serializers import *
 from dcim.models.site import *
 from dcim.models.rack import *
+from dcim.models.device import *
 from rest_framework import viewsets
 
 
@@ -50,3 +51,43 @@ class RackRoleViewSet(viewsets.ModelViewSet):
 class RackViewSet(viewsets.ModelViewSet):
     queryset = Rack.objects.all()
     serializer_class = RackSerializer
+
+
+#
+# Manufacturer View
+#
+class ManufacturerViewSet(viewsets.ModelViewSet):
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
+
+
+#
+# Platform View
+#
+class PlatformViewSet(viewsets.ModelViewSet):
+    queryset = Platform.objects.all()
+    serializer_class = PlatformSerializer
+
+
+#
+# DeviceType View
+#
+class DeviceTypeViewSet(viewsets.ModelViewSet):
+    queryset = DeviceType.objects.all()
+    serializer_class = DeviceTypeSerializer
+
+
+#
+# DeviceRole View
+#
+class DeviceRoleViewSet(viewsets.ModelViewSet):
+    queryset = DeviceRole.objects.all()
+    serializer_class = DeviceRoleSerializer
+
+
+#
+# Device View
+#
+class DeviceViewSet(viewsets.ModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer

@@ -32,7 +32,7 @@ class Region(models.Model):
 
     class Meta:
         ordering = ['name']
-        app_label = "dcim"
+        app_label = 'dcim'
 
 
 #
@@ -96,4 +96,4 @@ class Site(models.Model):
 
     class Meta:
         ordering = ['name']
-        app_label = "dcim"
+        app_label = 'dcim'

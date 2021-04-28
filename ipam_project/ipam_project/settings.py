@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users.apps.UsersConfig',
     'dcim.apps.DcimConfig',
+    'ipam.apps.IpamConfig',
 
     'crispy_forms',
 ]

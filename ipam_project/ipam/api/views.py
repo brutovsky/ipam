@@ -27,3 +27,27 @@ class IPAddressViewSet(viewsets.ModelViewSet):
 class IPPrefixViewSet(viewsets.ModelViewSet):
     queryset = IPPrefix.objects.all()
     serializer_class = IPPrefixSerializer
+
+
+#
+# VLANRole View
+#
+class VLANRoleViewSet(viewsets.ModelViewSet):
+    queryset = VLANRole.objects.all()
+    serializer_class = VLANRoleSerializer
+
+
+#
+# VLANGroup View
+#
+class VLANGroupViewSet(viewsets.ModelViewSet):
+    queryset = VLANGroup.objects.all()
+    serializer_class = VLANGroupSerializer
+
+
+#
+# VLAN View
+#
+class VLANViewSet(viewsets.ModelViewSet):
+    queryset = VLAN.objects.all()
+    serializer_class = VLANSerializer

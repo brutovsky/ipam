@@ -2,6 +2,7 @@ from rest_framework import routers, serializers, viewsets
 from ipam.models.ip import *
 from ipam.models.vlan import *
 from ipam.models.service import *
+from dcim.models.site import Site
 
 
 #
@@ -52,3 +53,51 @@ class IPPrefixSerializer(serializers.ModelSerializer):
         model = IPPrefix
         fields = ['id', 'url', 'prefix', 'vlan', 'status', 'role', 'is_pool', 'description']
 
+
+#
+# VLAN module
+#
+
+class VLANRoleSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='ipam_api:vlan_role-detail',
+    )
+    vlans = serializers.HyperlinkedIdentityField(
+        many=True,
+        read_only=True,
+        view_name='ipam_api:vlan-detail',
+    )
+
+    class Meta:
+        model = VLANRole
+        fields = ['id', 'url', 'name', 'description', 'vlans']
+
+
+class VLANGroupSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='ipam_api:vlan_group-detail',
+    )
+    site = serializers.SlugRelatedField(
+        queryset=Site.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+    vlans = serializers.HyperlinkedIdentityField(
+        many=True,
+        read_only=True,
+        view_name='ipam_api:vlan-detail',
+    )
+
+    class Meta:
+        model = VLANGroup
+        fields = ['id', 'url', 'name', 'description', 'site', 'vlans']
+
+
+class VLANSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='ipam_api:vlan-detail',
+    )
+
+    class Meta:
+        model = VLAN
+        fields = ['id', 'url', 'vid', 'name', 'status', 'role', 'description']

@@ -30,3 +30,12 @@ class VLANStatusChoices(models.TextChoices):
     STATUS_ACTIVE = 'active'
     STATUS_RESERVED = 'reserved'
     STATUS_AVAILABLE = 'available'
+
+
+#
+# ServiceProtocol
+#
+
+class ServiceProtocolChoices(models.TextChoices):
+    PROTOCOL_TCP = 'tcp'
+    PROTOCOL_UDP = 'udp'

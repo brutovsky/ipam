@@ -2,6 +2,7 @@ from django.db import models
 from dcim.models.site import Site
 from django.core.validators import MaxValueValidator, MinValueValidator
 from ipam.choices import VLANStatusChoices
+from ipam.constants import VLAN_VID_MIN, VLAN_VID_MAX
 
 
 __all__ = (
@@ -72,7 +73,7 @@ class VLAN(models.Model):
     )
     vid = models.PositiveSmallIntegerField(
         verbose_name='VLAN ID',
-        validators=[MinValueValidator(1), MaxValueValidator(4094)],
+        validators=[MinValueValidator(VLAN_VID_MIN), MaxValueValidator(VLAN_VID_MAX)],
         help_text='VLAN IDs need to be unique within a VLANGroup'
     )
     name = models.CharField(

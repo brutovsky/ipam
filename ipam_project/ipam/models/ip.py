@@ -1,5 +1,5 @@
 from django.db import models
-from ipam.choices import IPAddressChoices, IPPrefixChoices
+from ipam.choices import IPAddressStatusChoices, IPPrefixStatusChoices
 from ipam.fields import IPAddressField, IPNetworkField
 from ipam import validators
 
@@ -43,8 +43,8 @@ class IPAddress(models.Model):
     )
     status = models.CharField(
         max_length=50,
-        choices=IPAddressChoices.choices,
-        default=IPAddressChoices.STATUS_ACTIVE
+        choices=IPAddressStatusChoices.choices,
+        default=IPAddressStatusChoices.STATUS_ACTIVE
     )
     role = models.ForeignKey(
         IPRole,
@@ -84,8 +84,8 @@ class IPPrefix(models.Model):
     )
     status = models.CharField(
         max_length=50,
-        choices=IPPrefixChoices.choices,
-        default=IPPrefixChoices.STATUS_ACTIVE
+        choices=IPPrefixStatusChoices.choices,
+        default=IPPrefixStatusChoices.STATUS_ACTIVE
     )
     role = models.ForeignKey(
         IPRole,

@@ -5,7 +5,7 @@ from django.db import models
 # IPAddress
 #
 
-class IPAddressChoices(models.TextChoices):
+class IPAddressStatusChoices(models.TextChoices):
     STATUS_ACTIVE = 'active'
     STATUS_RESERVED = 'reserved'
     STATUS_DEPRECATED = 'deprecated'
@@ -16,7 +16,17 @@ class IPAddressChoices(models.TextChoices):
 # IPPrefix
 #
 
-class IPPrefixChoices(models.TextChoices):
+class IPPrefixStatusChoices(models.TextChoices):
     STATUS_ACTIVE = 'active'
     STATUS_RESERVED = 'reserved'
     STATUS_DEPRECATED = 'deprecated'
+
+
+#
+# VLAN
+#
+
+class VLANStatusChoices(models.TextChoices):
+    STATUS_ACTIVE = 'active'
+    STATUS_RESERVED = 'reserved'
+    STATUS_AVAILABLE = 'available'

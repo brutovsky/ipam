@@ -2,6 +2,7 @@ from django.db import models
 from ipam.choices import IPAddressStatusChoices, IPPrefixStatusChoices
 from ipam.fields import IPAddressField, IPNetworkField
 from ipam import validators
+from ipam.models.vlan import VLAN
 
 
 __all__ = (
@@ -81,6 +82,12 @@ class IPAddress(models.Model):
 class IPPrefix(models.Model):
     prefix = IPNetworkField(
         help_text='IPv4 or IPv6 network with mask'
+    )
+    vlan = models.ForeignKey(
+        VLAN,
+        related_name='ip_prefixes',
+        on_delete=models.PROTECT,
+        null=True,
     )
     status = models.CharField(
         max_length=50,

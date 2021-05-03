@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from ipam.choices import IPAddressStatusChoices, IPPrefixStatusChoices
 from ipam.fields import IPAddressField, IPNetworkField
@@ -16,6 +17,8 @@ __all__ = (
 #
 # IPRole
 #
+from netaddr import IPNetwork
+
 
 class IPRole(models.Model):
     name = models.CharField(
@@ -125,9 +128,15 @@ class IPAddress(models.Model):
         blank=True
     )
 
+    def clean(self):
+        if self.address and hasattr(self, 'prefix'):
+            if IPNetwork(self.address) != self.prefix.prefix:
+                raise ValidationError('IP Address network and prefix does not match')
+
     def __str__(self):
-        return str(self.address)
+        return str(f'{f"{self.dns_name}:" if self.dns_name else ""}{self.address}')
 
     class Meta:
         ordering = ['address']
         app_label = 'ipam'
+        unique_together = [['address', 'prefix'], ['dns_name', 'prefix']]

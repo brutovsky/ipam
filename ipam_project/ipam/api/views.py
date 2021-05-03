@@ -59,3 +59,11 @@ class VLANViewSet(viewsets.ModelViewSet):
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
+
+
+#
+# Interface View
+#
+class InterfaceViewSet(viewsets.ModelViewSet):
+    queryset = Interface.objects.all()
+    serializer_class = InterfaceSerializer

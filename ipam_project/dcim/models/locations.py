@@ -52,9 +52,7 @@ class Location(models.Model):
     region = models.ForeignKey(
         Region,
         related_name='locations',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
+        on_delete=models.PROTECT
     )
     description = models.CharField(
         max_length=200,

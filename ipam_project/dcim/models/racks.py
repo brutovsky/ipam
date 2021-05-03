@@ -23,9 +23,7 @@ class RackGroup(models.Model):
     location = models.ForeignKey(
         Location,
         related_name='rack_groups',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
+        on_delete=models.PROTECT,
     )
     parent = models.ForeignKey(
         to='self',
@@ -80,21 +78,16 @@ class Rack(models.Model):
         max_length=100,
         unique=True
     )
-
     rack_group = models.ForeignKey(
         RackGroup,
         related_name='racks',
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True,
+        on_delete=models.PROTECT
     )
-
     status = models.CharField(
         max_length=50,
         choices=RackStatusChoices.choices,
         default=RackStatusChoices.STATUS_AVAILABLE
     )
-
     role = models.ForeignKey(
         RackRole,
         related_name='racks',
@@ -103,13 +96,11 @@ class Rack(models.Model):
         null=True,
         help_text='Functional role'
     )
-
     serial = models.CharField(
         max_length=50,
         blank=True,
         verbose_name='Serial number'
     )
-
     type = models.CharField(
         max_length=200,
         blank=True

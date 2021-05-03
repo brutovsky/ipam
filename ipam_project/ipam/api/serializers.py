@@ -3,6 +3,8 @@ from ipam.models.ip import *
 from ipam.models.vlan import *
 from ipam.models.services import *
 from dcim.models.locations import Location
+from dcim.models.devices import Device
+from ipam.models.device_components import *
 
 
 #
@@ -43,6 +45,11 @@ class IPPrefixSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:ip_prefix-detail',
     )
+    location = serializers.SlugRelatedField(
+        queryset=Location.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
     vlan = serializers.SlugRelatedField(
         queryset=VLAN.objects.all(),
         slug_field='name',
@@ -51,7 +58,7 @@ class IPPrefixSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IPPrefix
-        fields = ['id', 'url', 'prefix', 'vlan', 'status', 'role', 'is_pool', 'description']
+        fields = ['id', 'url', 'prefix', 'location', 'vlan', 'status', 'role', 'is_pool', 'description', 'ip_addresses']
 
 
 #
@@ -116,3 +123,30 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = ['id', 'url', 'name', 'protocol', 'ports', 'ip_addresses', 'description']
 
+
+#
+# DeviceComponent module
+#
+
+class InterfaceSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='ipam_api:interface-detail',
+    )
+    device = serializers.SlugRelatedField(
+        queryset=Device.objects.all(),
+        slug_field='name'
+    )
+    untagged_vlan = serializers.SlugRelatedField(
+        queryset=VLAN.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+    tagged_vlan = serializers.SlugRelatedField(
+        queryset=VLAN.objects.all(),
+        slug_field='name',
+        allow_null=True
+    )
+
+    class Meta:
+        model = Interface
+        fields = ['id', 'url', 'enabled', 'device', 'description', 'type', 'untagged_vlan', 'tagged_vlan', 'ip_addresses']

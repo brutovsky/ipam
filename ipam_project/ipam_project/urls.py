@@ -32,7 +32,8 @@ from users import views as user_views
 def api_root(request):
     full_url = ''.join(['http://', get_current_site(request).domain, request.get_full_path()])
     content = {
-        "Dcim api": f"{full_url}dcim/",
+        "DCIM api": f"{full_url}dcim/",
+        "IPAM api": f"{full_url}ipam/",
         "Users api": f"{full_url}users/",
         "Groups api": f"{full_url}groups/",
         "Profile api": {
@@ -56,6 +57,7 @@ urlpatterns = [
     path('api/', api_root),
     path('api/', include('users.api.urls')),
     path('api/dcim/', include('dcim.api.urls', namespace='api_dcim')),
+    path('api/ipam/', include('ipam.api.urls', namespace='api_ipam')),
     path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),

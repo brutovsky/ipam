@@ -1,18 +1,18 @@
 from rest_framework import routers, serializers, viewsets
-from dcim.models.site import *
-from dcim.models.rack import *
-from dcim.models.device import *
+from dcim.models.locations import *
+from dcim.models.racks import *
+from dcim.models.devices import *
 
 
 #
-# Site module
+# Location module
 #
 
 class RegionSerializer(serializers.ModelSerializer):
-    sites = serializers.HyperlinkedRelatedField(
+    locations = serializers.HyperlinkedRelatedField(
         many=True,
         read_only=True,
-        view_name='dcim_api:site-detail',
+        view_name='dcim_api:location-detail',
         lookup_field='name'
     )
     parent = serializers.SlugRelatedField(
@@ -27,22 +27,22 @@ class RegionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Region
-        fields = ['id', 'url', 'name', 'description', 'parent', 'sites']
+        fields = ['id', 'url', 'name', 'description', 'parent', 'locations']
 
 
-class SiteSerializer(serializers.ModelSerializer):
+class LocationSerializer(serializers.ModelSerializer):
     region = serializers.HyperlinkedRelatedField(
         read_only=True,
         view_name='dcim_api:region-detail',
         lookup_field='name'
     )
     url = serializers.HyperlinkedIdentityField(
-        view_name='dcim_api:site-detail',
+        view_name='dcim_api:location-detail',
         lookup_field='name'
     )
 
     class Meta:
-        model = Site
+        model = Location
         fields = ['id', 'url', 'name', 'status', 'description', 'physical_address', 'latitude', 'longitude', 'contact_name', 'contact_phone', 'contact_email', 'region']
 
 
@@ -59,8 +59,8 @@ class RackGroupSerializer(serializers.ModelSerializer):
         slug_field='name',
         allow_null=True
     )
-    site = serializers.SlugRelatedField(
-        queryset=Site.objects.all(),
+    location = serializers.SlugRelatedField(
+        queryset=Location.objects.all(),
         slug_field='name',
         allow_null=True
     )
@@ -72,7 +72,7 @@ class RackGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RackGroup
-        fields = ['id', 'url', 'name', 'site', 'parent', 'description', 'racks']
+        fields = ['id', 'url', 'name', 'location', 'parent', 'description', 'racks']
 
 
 class RackRoleSerializer(serializers.ModelSerializer):

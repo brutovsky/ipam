@@ -1,5 +1,5 @@
 from django.db import models
-from dcim.models.site import Site
+from dcim.models.locations import Location
 from django.core.validators import MaxValueValidator, MinValueValidator
 from ipam.choices import VLANStatusChoices
 from ipam.constants import VLAN_VID_MIN, VLAN_VID_MAX
@@ -47,8 +47,8 @@ class VLANGroup(models.Model):
         max_length=200,
         blank=True
     )
-    site = models.ForeignKey(
-        Site,
+    location = models.ForeignKey(
+        Location,
         related_name='vlan_groups',
         on_delete=models.PROTECT,
     )

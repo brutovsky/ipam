@@ -1,6 +1,6 @@
-from .site import Region, Site
+from .locations import Region, Location
 
 __all__ = (
     'Region',
-    'Site',
+    'Location',
 )

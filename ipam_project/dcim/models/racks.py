@@ -1,5 +1,5 @@
 from django.db import models
-from .site import Site
+from .locations import Location
 from dcim.choices import *
 from ipam_project.widgets import *
 
@@ -20,8 +20,8 @@ class RackGroup(models.Model):
         max_length=100,
         unique=True
     )
-    site = models.ForeignKey(
-        Site,
+    location = models.ForeignKey(
+        Location,
         related_name='rack_groups',
         on_delete=models.SET_NULL,
         blank=True,

@@ -1,7 +1,7 @@
 from .serializers import *
 from ipam.models.ip import *
 from ipam.models.vlan import *
-from ipam.models.service import *
+from ipam.models.services import *
 from rest_framework import viewsets
 
 
@@ -51,3 +51,11 @@ class VLANGroupViewSet(viewsets.ModelViewSet):
 class VLANViewSet(viewsets.ModelViewSet):
     queryset = VLAN.objects.all()
     serializer_class = VLANSerializer
+
+
+#
+# Service View
+#
+class ServiceViewSet(viewsets.ModelViewSet):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer

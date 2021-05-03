@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models.ip import *
 from .models.vlan import *
-from .models.service import *
+from .models.services import *
 
 # Register your models here.
 

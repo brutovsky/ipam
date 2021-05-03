@@ -1,8 +1,8 @@
 from rest_framework import routers, serializers, viewsets
 from ipam.models.ip import *
 from ipam.models.vlan import *
-from ipam.models.service import *
-from dcim.models.site import Site
+from ipam.models.services import *
+from dcim.models.locations import Location
 
 
 #
@@ -77,8 +77,8 @@ class VLANGroupSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:vlan_group-detail',
     )
-    site = serializers.SlugRelatedField(
-        queryset=Site.objects.all(),
+    location = serializers.SlugRelatedField(
+        queryset=Location.objects.all(),
         slug_field='name',
         allow_null=True
     )
@@ -90,7 +90,7 @@ class VLANGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = VLANGroup
-        fields = ['id', 'url', 'name', 'description', 'site', 'vlans']
+        fields = ['id', 'url', 'name', 'description', 'location', 'vlans']
 
 
 class VLANSerializer(serializers.ModelSerializer):
@@ -101,3 +101,18 @@ class VLANSerializer(serializers.ModelSerializer):
     class Meta:
         model = VLAN
         fields = ['id', 'url', 'vid', 'name', 'status', 'role', 'description']
+
+
+#
+# Service module
+#
+
+class ServiceSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='ipam_api:service-detail',
+    )
+
+    class Meta:
+        model = Service
+        fields = ['id', 'url', 'name', 'protocol', 'ports', 'ip_addresses', 'description']
+

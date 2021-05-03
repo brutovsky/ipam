@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models.site import *
-from .models.rack import *
-from .models.device import *
+from .models.locations import *
+from .models.racks import *
+from .models.devices import *
 
 # Register your models here.
 
 admin.site.register(Region)
-admin.site.register(Site)
+admin.site.register(Location)
 
 admin.site.register(RackGroup)
 admin.site.register(RackRole)

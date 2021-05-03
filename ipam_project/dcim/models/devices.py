@@ -2,7 +2,7 @@ from django.db import models
 from dcim.fields import MACAddressField
 from ipam_project.widgets import ColorField
 from dcim.choices import DeviceStatusChoices
-from dcim.models.rack import Rack
+from dcim.models.racks import Rack
 
 
 __all__ = (

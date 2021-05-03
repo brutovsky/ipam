@@ -1,7 +1,7 @@
 from .serializers import *
-from dcim.models.site import *
-from dcim.models.rack import *
-from dcim.models.device import *
+from dcim.models.locations import *
+from dcim.models.racks import *
+from dcim.models.devices import *
 from rest_framework import viewsets
 
 
@@ -18,14 +18,14 @@ class RegionViewSet(viewsets.ModelViewSet):
 
 
 #
-# Site View
+# Location View
 #
-class SiteViewSet(viewsets.ModelViewSet):
+class LocationViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list` and `retrieve` actions.
     """
-    queryset = Site.objects.all()
-    serializer_class = SiteSerializer
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
     lookup_field = 'name'
 
 

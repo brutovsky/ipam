@@ -16,7 +16,7 @@ class DocumentedRouter(routers.DefaultRouter):
 router = DocumentedRouter()
 
 router.register('regions', views.RegionViewSet)
-router.register('sites', views.SiteViewSet)
+router.register('locations', views.LocationViewSet)
 
 router.register('rack_groups', views.RackGroupViewSet, basename='rack_group')
 router.register('rack_roles', views.RackRoleViewSet, basename='rack_role')

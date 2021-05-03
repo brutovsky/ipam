@@ -4,7 +4,7 @@ from dcim.choices import *
 
 __all__ = (
     'Region',
-    'Site',
+    'Location',
 )
 
 #
@@ -36,10 +36,10 @@ class Region(models.Model):
 
 
 #
-# Sites
+# Locations
 #
 
-class Site(models.Model):
+class Location(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True
@@ -51,7 +51,7 @@ class Site(models.Model):
     )
     region = models.ForeignKey(
         Region,
-        related_name='sites',
+        related_name='locations',
         on_delete=models.SET_NULL,
         blank=True,
         null=True

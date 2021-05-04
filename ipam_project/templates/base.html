@@ -10,7 +10,39 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://unpkg.com/terminal.css@0.7.2/dist/terminal.min.css" />
+
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+
+     <style>
+        :root {
+        --global-font-size: 15px;
+        --global-line-height: 1.4em;
+        --font-stack: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica,
+          Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+        --background-color: #222225;
+        --page-width: 60em;
+        --font-color: #e8e9ed;
+        --invert-font-color: #222225;
+        --secondary-color: #a3abba;
+        --tertiary-color: #a3abba;
+        --primary-color: #62c4ff;
+        --error-color: #ff3c74;
+        --progress-bar-background: #3f3f44;
+        --progress-bar-fill: #62c4ff;
+        --code-bg-color: #3f3f44;
+        --input-style: solid;
+        --display-h1-decoration: none;
+      }
+        .form-control{
+            color: var(--font-color);
+            background-color: var(--background-color);
+        }
+        .form-control:focus{
+            color: var(--font-color);
+            background-color: var(--background-color);
+        }
+    </style>
 
     {% if title %}
         <title>{{ title }}</title>
@@ -47,7 +79,10 @@
     </header>
     <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
+          <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6">
           {% if messages %}
             {% for message in messages %}
               <div class='alert alert-{{ message.tags }}'>
@@ -57,19 +92,19 @@
           {% endif %}
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-4">
-          <div class="content-section">
-            <h3>Sidebar</h3>
-            <p class='text-muted'>Useful info about IPAM.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest News</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
-              </ul>
-            </p>
-          </div>
-        </div>
+<!--        <div class="col-md-4">-->
+<!--          <div class="content-section">-->
+<!--            <h3>Sidebar</h3>-->
+<!--            <p class='text-muted'>Useful info about IPAM.-->
+<!--              <ul class="list-group">-->
+<!--                <li class="list-group-item list-group-item-dark">Latest News</li>-->
+<!--                <li class="list-group-item list-group-item-dark">Announcements</li>-->
+<!--                <li class="list-group-item list-group-item-dark">Calendars</li>-->
+<!--                <li class="list-group-item list-group-item-dark">etc</li>-->
+<!--              </ul>-->
+<!--            </p>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </main>
 

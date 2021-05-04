@@ -1,6 +1,5 @@
 from django.db import models
 from dcim.models.devices import Device
-from ipam.models.ip import IPAddress
 from ipam.models.vlan import VLAN
 from dcim.choices import DeviceComponentStatusChoices
 
@@ -49,12 +48,6 @@ class Interface(models.Model):
         related_name='interfaces_tagged',
         blank=True,
         verbose_name='Tagged VLANs'
-    )
-    ip_addresses = models.ManyToManyField(
-        IPAddress,
-        related_name='interfaces',
-        blank=True,
-        verbose_name='IP addresses'
     )
 
     def __str__(self):

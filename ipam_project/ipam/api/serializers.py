@@ -87,14 +87,9 @@ class VLANRoleSerializer(serializers.ModelSerializer):
         fields = ['id', 'url', 'name', 'description', 'vlans']
 
 
-class VLANGroupSerializer(serializers.ModelSerializer):
+class VLANGroupSerializer(ValidatedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:vlan_group-detail',
-    )
-    location = serializers.SlugRelatedField(
-        queryset=Location.objects.all(),
-        slug_field='name',
-        allow_null=True
     )
     vlans = serializers.HyperlinkedIdentityField(
         many=True,
@@ -107,7 +102,7 @@ class VLANGroupSerializer(serializers.ModelSerializer):
         fields = ['id', 'url', 'name', 'description', 'location', 'vlans']
 
 
-class VLANSerializer(serializers.ModelSerializer):
+class VLANSerializer(ValidatedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:vlan-detail',
     )
@@ -121,7 +116,7 @@ class VLANSerializer(serializers.ModelSerializer):
 # Service module
 #
 
-class ServiceSerializer(serializers.ModelSerializer):
+class ServiceSerializer(ValidatedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:service-detail',
     )
@@ -135,7 +130,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 # DeviceComponent module
 #
 
-class InterfaceSerializer(serializers.ModelSerializer):
+class InterfaceSerializer(ValidatedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:interface-detail',
     )

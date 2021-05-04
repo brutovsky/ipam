@@ -117,6 +117,9 @@ class IPPrefix(models.Model, AttributeGenerator):
             if not self.location:
                 raise ValidationError(
                     f'{"Pool" if self.is_pool else "Default"} {self.prefix} prefix MUST be assigned to location')
+            # Validate VLANGroup location
+            if self.vlan and self.vlan.vlan_group.location != self.location:
+                raise ValidationError(f'VLAN Group "{self.vlan.vlan_group}" location mismatch with prefix {self.prefix} location -> {self.vlan.vlan_group.location}|{self.location}')
 
         subnet = IPSet([self.prefix])
 

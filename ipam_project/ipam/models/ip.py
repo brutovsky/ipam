@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
+from django.db.models.query import EmptyQuerySet
 from ipam.choices import IPAddressStatusChoices, IPPrefixStatusChoices
 from ipam.fields import IPAddressField, IPNetworkField
 from ipam import validators
@@ -52,7 +53,7 @@ class IPPrefix(models.Model):
     is_container = models.BooleanField(
         verbose_name='Is a container',
         default=False,
-        help_text='Other IP prefixes can be nested inside this prefix '
+        help_text='Other IP prefixes can be nested inside this prefix'
     )
     prefix_container = models.ForeignKey(
         to='self',
@@ -61,6 +62,7 @@ class IPPrefix(models.Model):
         null=True,
         limit_choices_to={'is_container': True},
         help_text='Choose prefix container if this prefix is nested',
+        related_name='subnets'
     )
     location = models.ForeignKey(
         Location,
@@ -101,24 +103,50 @@ class IPPrefix(models.Model):
 
     def clean(self):
         super().clean()
-
+        # Container constraints and validation
         if self.is_container:
             self.vlan = None
             self.is_pool = False
+            self.location = None
+
+        # Prefix constraints and validation
+        else:
+            # Check if this prefix has any subnets
+            subnets_quantity = len(self.subnets.all())
+            if subnets_quantity > 0:
+                raise ValidationError(
+                    f'{self.prefix} MUST be container, {subnets_quantity} subnets found')
+            # Check if this prefix has location
+            if not self.location:
+                raise ValidationError(
+                    f'{"Pool" if self.is_pool else "Default"} {self.prefix} prefix MUST be assigned to location')
 
         subnet = IPSet([self.prefix])
 
+        # Validation of subnet prefix
         if self.prefix and self.prefix_container:
+            print(self.prefix_container.location)
+            # Check if the prefix is subnet of container
             container = IPSet([self.prefix_container.prefix])
             if not container > subnet:
                 raise ValidationError(f'{subnet} is not subnet of {container}')
-            container_children = map(toset, IPPrefix.objects.filter(prefix_container=self.prefix_container))
+            # Check if the prefix doesn`t overlap with other subnets
+            container_children = map(toset, IPPrefix.objects.filter(prefix_container=self.prefix_container).exclude(pk=self.pk))
             for child in container_children:
                 if len(child & subnet) != 0:
                     raise ValidationError(f'{subnet} overlaps with {child}')
+            #
+            if self.location and self.prefix_container.location and self.location != self.prefix_container.location:
+                raise ValidationError(f'{self.prefix} prefix`s location doesn`t match with its container`s')
 
+        # Validation of root prefix
         else:
-            all_ip_sets = map(toset, IPPrefix.objects.all().exclude(pk=self.pk))
+            if self.is_container:
+                root_prefixes = IPPrefix.objects.filter(prefix_container=None).exclude(pk=self.pk)
+                all_ip_sets = map(toset, root_prefixes)
+            else:
+                all_ip_sets = map(toset, IPPrefix.objects.all().exclude(pk=self.pk))
+            # Check if the prefix overlaps with other prefixes
             for ip_set in all_ip_sets:
                 if len(ip_set & subnet) != 0:
                     raise ValidationError(f'{subnet} overlaps with {ip_set}')
@@ -143,7 +171,7 @@ class IPAddress(models.Model):
     prefix = models.ForeignKey(
         IPPrefix,
         related_name='ip_addresses',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         limit_choices_to={'is_container': False},
         verbose_name='Network prefix'
     )

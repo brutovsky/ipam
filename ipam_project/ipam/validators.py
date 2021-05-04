@@ -3,7 +3,7 @@ from django.core.validators import BaseValidator, RegexValidator
 
 
 def prefix_validator(prefix):
-    if prefix.ip != prefix.cidr.ip:
+    if prefix and prefix.ip != prefix.cidr.ip:
         raise ValidationError("{} is not a valid prefix. Did you mean {}?".format(prefix, prefix.cidr))
 
 

@@ -5,11 +5,13 @@ from ipam.models.services import *
 from dcim.models.locations import Location
 from dcim.models.devices import Device
 from ipam.models.device_components import *
+from ipam.utils import ValidatedModelSerializer
 
 
 #
 # IP module
 #
+
 
 class IPRoleSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
@@ -31,17 +33,17 @@ class IPRoleSerializer(serializers.ModelSerializer):
         fields = ['id', 'url', 'name', 'description', 'ip_addresses', 'ip_prefixes']
 
 
-class IPAddressSerializer(serializers.ModelSerializer):
+class IPAddressSerializer(ValidatedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:ip_address-detail',
     )
 
     class Meta:
         model = IPAddress
-        fields = ['id', 'url', 'address', 'status', 'role', 'dns_name', 'description']
+        fields = ['id', 'url', 'address', 'prefix', 'status', 'role', 'dns_name', 'description', 'assigned_interface', 'assigned_service']
 
 
-class IPPrefixSerializer(serializers.ModelSerializer):
+class IPPrefixSerializer(ValidatedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='ipam_api:ip_prefix-detail',
     )
@@ -55,10 +57,15 @@ class IPPrefixSerializer(serializers.ModelSerializer):
         slug_field='name',
         allow_null=True
     )
+    ip_addresses = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name='ipam_api:ip_address-detail',
+    )
 
     class Meta:
         model = IPPrefix
-        fields = ['id', 'url', 'prefix', 'location', 'vlan', 'status', 'role', 'is_pool', 'description', 'ip_addresses']
+        fields = ['id', 'url', 'prefix', 'is_container', 'prefix_container', 'location', 'vlan', 'status', 'role', 'is_pool', 'description', 'ip_addresses']
 
 
 #

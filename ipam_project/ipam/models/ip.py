@@ -1,16 +1,13 @@
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import Q
-from django.db.models.query import EmptyQuerySet
 from ipam.choices import IPAddressStatusChoices, IPPrefixStatusChoices
 from ipam.fields import IPAddressField, IPNetworkField
 from ipam import validators
 from ipam.models.vlan import VLAN
 from dcim.models.locations import Location
 from netaddr import IPNetwork, IPSet
-from dcim.utils import toset
+from ipam.utils import toset, AttributeGenerator
+
 
 __all__ = (
     'IPRole',
@@ -22,7 +19,6 @@ __all__ = (
 #
 # IPRole
 #
-
 
 class IPRole(models.Model):
     name = models.CharField(
@@ -46,7 +42,7 @@ class IPRole(models.Model):
 # IPPrefixes
 #
 
-class IPPrefix(models.Model):
+class IPPrefix(models.Model, AttributeGenerator):
     prefix = IPNetworkField(
         help_text='IPv4 or IPv6 network with mask'
     )
@@ -57,7 +53,7 @@ class IPPrefix(models.Model):
     )
     prefix_container = models.ForeignKey(
         to='self',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         blank=True,
         null=True,
         limit_choices_to={'is_container': True},
@@ -103,6 +99,7 @@ class IPPrefix(models.Model):
 
     def clean(self):
         super().clean()
+        print(self.pk)
         # Container constraints and validation
         if self.is_container:
             self.vlan = None
@@ -164,7 +161,7 @@ class IPPrefix(models.Model):
 # IPAddress
 #
 
-class IPAddress(models.Model):
+class IPAddress(models.Model, AttributeGenerator):
     address = IPAddressField(
         help_text='IPv4 or IPv6 address (with mask)'
     )

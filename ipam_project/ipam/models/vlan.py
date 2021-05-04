@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from dcim.models.locations import Location
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -50,8 +51,18 @@ class VLANGroup(models.Model):
     location = models.ForeignKey(
         Location,
         related_name='vlan_groups',
-        on_delete=models.PROTECT,
+        on_delete=models.PROTECT
     )
+
+    def clean(self):
+        super().clean()
+
+        if not hasattr(self, 'location'):
+            raise ValidationError('Location is required')
+
+        if self.vlans:
+            for vlan in self.vlans.all():
+                vlan.full_clean()
 
     def __str__(self):
         return self.name
@@ -97,6 +108,13 @@ class VLAN(models.Model):
         max_length=200,
         blank=True
     )
+
+    def clean(self):
+        super().clean()
+
+        if self.ip_prefixes:
+            for ip_prefix in self.ip_prefixes.all():
+                ip_prefix.full_clean()
 
     def __str__(self):
         return self.name

@@ -213,12 +213,14 @@ class IPAddress(models.Model, AttributeGenerator):
     )
 
     def save(self, *args, **kwargs):
+        # dns-name to lower case
         if hasattr(self, 'dns_name') and self.dns_name:
             self.dns_name = self.dns_name.lower()
         super().save(*args, **kwargs)
 
     def clean(self):
         super().clean()
+        # IP address prefix validation
         if self.address and hasattr(self, 'prefix'):
             if self.address.prefixlen == 0:
                 raise ValidationError({
@@ -226,12 +228,12 @@ class IPAddress(models.Model, AttributeGenerator):
                 })
             if IPNetwork(self.address) != self.prefix.prefix:
                 raise ValidationError('IP Address network and prefix does not match')
-
+        # Verify that dns name is unique
         all_ip_addresses = IPAddress.objects.all().exclude(pk=self.pk)
         for ip_address in all_ip_addresses:
             if self.dns_name and self.dns_name == ip_address.dns_name:
                 raise ValidationError(f'{self.address} dns name already exist')
-
+        # Validate service assignment
         if self.assigned_service and self.assigned_interface and self.assigned_service.device != self.assigned_interface.device:
             raise ValidationError(f'{self.assigned_interface} doesn`t belong to {self.assigned_service} service`s device interfaces(try to change {self.address} interface assignment)')
 

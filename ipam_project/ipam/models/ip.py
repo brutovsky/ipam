@@ -179,6 +179,13 @@ class IPAddress(models.Model):
         blank=True,
         null=True,
     )
+    assigned_service = models.ForeignKey(
+        to='ipam.service',
+        related_name='ip_addresses',
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+    )
 
     def save(self, *args, **kwargs):
         if hasattr(self, 'dns_name') and self.dns_name:
@@ -199,6 +206,9 @@ class IPAddress(models.Model):
         for ip_address in all_ip_addresses:
             if self.dns_name and self.dns_name == ip_address.dns_name:
                 raise ValidationError(f'{self.address} dns name already exist')
+
+        if self.assigned_service and self.assigned_interface and self.assigned_service.device != self.assigned_interface.device:
+            raise ValidationError(f'{self.assigned_interface} doesn`t belong to {self.assigned_service} service`s device interfaces(try to change {self.address} interface assignment)')
 
     def __str__(self):
         return str(f'{f"{self.dns_name}:" if self.dns_name else ""}{self.address}')

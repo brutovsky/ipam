@@ -50,6 +50,13 @@ class Interface(models.Model):
         verbose_name='Tagged VLANs'
     )
 
+    def clean(self):
+        super().clean()
+
+        if self.ip_addresses:
+            for ip_addr in self.ip_addresses.all():
+                ip_addr.full_clean()
+
     def __str__(self):
         return self.name
 

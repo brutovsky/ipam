@@ -9,8 +9,9 @@ def navigation_middleware(get_response):
             navigation = []
             for path in paths:
                 navigation.append(pages[path])
-            request.navigation = navigation
+            request.navigation = navigation[:-1]
 
+            request.last_link = navigation[-1]
             request.title = navigation[-1][2]
 
         response = get_response(request)

@@ -13,7 +13,21 @@ ul {
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  background-color: #384955;
+}
+
+div.breadcrumbs {
+    background: var(--breadcrumbs-bg);
+    border: none;
+    color: var(--breadcrumbs-fg);
+    text-align: left;
+}
+
+@media (max-width: 1024px)
+#header {
+    flex-direction: column;
+    padding: 15px 30px;
+    justify-content: flex-start;
 }
 
 /* .site-header .navbar-nav .nav-link {

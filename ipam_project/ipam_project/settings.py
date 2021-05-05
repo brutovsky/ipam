@@ -56,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ipam_project.middleware.navigation_middleware'
 ]
 
 ROOT_URLCONF = 'ipam_project.urls'

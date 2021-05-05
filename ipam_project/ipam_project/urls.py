@@ -52,18 +52,30 @@ def api_root(request):
     return Response(content)
 
 
+pages = {
+    '': ('', 'home', 'Home'),
+    'profile': ('profile/', 'profile', 'Profile'),
+    'login': ('login/', 'login', 'Login'),
+    'register': ('register/', 'register', 'Registration'),
+    'change-password': ('change-password/', 'change-password', 'Change Password'),
+    'logout': ('logout/', 'logout', 'Logout'),
+}
+
+
 urlpatterns = [
+    # Admin page
     path('admin/', admin.site.urls),
+    # Api
     path('api/', api_root),
     path('api/', include('users.api.urls')),
     path('api/dcim/', include('dcim.api.urls', namespace='api_dcim')),
     path('api/ipam/', include('ipam.api.urls', namespace='api_ipam')),
     path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
-
-    path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    path('register/', user_views.register, name='register'),
-
-    path('profile/', user_views.profile, name='profile'),
-    path('change-password/', user_views.change_password, name='change-password'),
+    # Pages
+    path(pages['login'][0], auth_views.LoginView.as_view(template_name='users/login.html'), name=pages['login'][1]),
+    path(pages['logout'][0], auth_views.LogoutView.as_view(template_name='users/logout.html'), name=pages['logout'][1]),
+    path(pages['register'][0], user_views.register, name=pages['register'][1]),
+    path(pages['profile'][0], user_views.profile, name=pages['profile'][1]),
+    path(pages['change-password'][0], user_views.change_password, name=pages['change-password'][1]),
+    path(pages[''][0], user_views.profile, name=pages[''][1]),
 ]

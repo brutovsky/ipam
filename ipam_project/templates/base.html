@@ -47,6 +47,8 @@
             color: var(--font-color);
             background-color: var(--background-color);
         }
+
+
     </style>
 
     {% if request.title %}
@@ -93,15 +95,16 @@
     </nav>
 </header>
 <main role="main" class="container-fluid">
-    <div class="mb-4">
+    <div class="breadcrumbs">
         {% if request.navigation %}
         {% for nav in request.navigation %}
         <a href="{% url nav.1 %}">
             {{ nav.2 }}
         </a>
-        >
+        ›
         {% endfor %}
         {% endif %}
+         current
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -110,13 +113,13 @@
                 <nav>
                     <ul>
                         <li><a href="#GridSystem">Users table</a></li>
-<!--                        <li>-->
-<!--                            <a href="#SpecialElements">Special Elements</a>-->
-<!--                            <ul>-->
-<!--                                <li><a href="#Blockquote">Blockquote</a></li>-->
-<!--                                <li><a href="#Misc">Misc</a></li>-->
-<!--                            </ul>-->
-<!--                        </li>-->
+                        <!--                        <li>-->
+                        <!--                            <a href="#SpecialElements">Special Elements</a>-->
+                        <!--                            <ul>-->
+                        <!--                                <li><a href="#Blockquote">Blockquote</a></li>-->
+                        <!--                                <li><a href="#Misc">Misc</a></li>-->
+                        <!--                            </ul>-->
+                        <!--                        </li>-->
                     </ul>
                 </nav>
 

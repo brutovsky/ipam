@@ -65,4 +65,5 @@ urlpatterns = [
     path('register/', user_views.register, name='register'),
 
     path('profile/', user_views.profile, name='profile'),
+    path('change-password/', user_views.change_password, name='change-password'),
 ]

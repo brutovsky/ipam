@@ -1,7 +1,12 @@
+from braces.views import StaffuserRequiredMixin, SuperuserRequiredMixin
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
+
 from .forms import UserRegisterForm, UserProfileForm, ChangePasswordForm
 import django.contrib.auth.password_validation as validators
 
@@ -64,3 +69,10 @@ def change_password(request):
         form = ChangePasswordForm()
 
     return render(request, 'users/change-password.html', {'form': form})
+
+
+class UserListView(StaffuserRequiredMixin, SuperuserRequiredMixin, ListView):
+    model = User
+    template_name = 'users/users-list.html'
+    context_object_name = 'users'
+

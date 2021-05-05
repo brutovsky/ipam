@@ -59,6 +59,8 @@ pages = {
     'register': ('register/', 'register', 'Registration'),
     'change-password': ('change-password/', 'change-password', 'Change Password'),
     'logout': ('logout/', 'logout', 'Logout'),
+
+    'users': ('users/', 'users', 'Users'),
 }
 
 
@@ -78,4 +80,6 @@ urlpatterns = [
     path(pages['profile'][0], user_views.profile, name=pages['profile'][1]),
     path(pages['change-password'][0], user_views.change_password, name=pages['change-password'][1]),
     path(pages[''][0], user_views.profile, name=pages[''][1]),
+
+    path(pages['users'][0], user_views.UserListView.as_view(), name=pages['users'][1]),
 ]

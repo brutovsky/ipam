@@ -87,17 +87,17 @@
                 </div>
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
-<!--                    {% if user.is_staff and user.is_superuser %}-->
-<!--                    <a class="nav-item nav-link" href="{% url 'users' %}">Users</a>-->
-<!--                    <a class="nav-item nav-link">IPAM</a>-->
-<!--                    <a class="nav-item nav-link">DCIM</a>-->
-<!--                    {% elif user.is_authenticated %}-->
-<!--                    <a class="nav-item nav-link">IPAM</a>-->
-<!--                    <a class="nav-item nav-link">DCIM</a>-->
-<!--                    {% else %}-->
-<!--                    <a class="nav-item nav-link">Home</a>-->
-<!--                    <a class="nav-item nav-link">About</a>-->
-<!--                    {% endif %}-->
+                    <!--                    {% if user.is_staff and user.is_superuser %}-->
+                    <!--                    <a class="nav-item nav-link" href="{% url 'users' %}">Users</a>-->
+                    <!--                    <a class="nav-item nav-link">IPAM</a>-->
+                    <!--                    <a class="nav-item nav-link">DCIM</a>-->
+                    <!--                    {% elif user.is_authenticated %}-->
+                    <!--                    <a class="nav-item nav-link">IPAM</a>-->
+                    <!--                    <a class="nav-item nav-link">DCIM</a>-->
+                    <!--                    {% else %}-->
+                    <!--                    <a class="nav-item nav-link">Home</a>-->
+                    <!--                    <a class="nav-item nav-link">About</a>-->
+                    <!--                    {% endif %}-->
                     {% if user.is_authenticated %}
                     <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
@@ -114,20 +114,18 @@
     <div class="row">
         <div class="col-md-3">
             <aside>
-                <h2>Users</h2>
-                <nav>
+                <h2>Content</h2>
+                {% if request.sidebar_navigation %}
+                {% for key, val in request.sidebar_navigation.items %}
+                <li><a href="{% url val.0.1 %}">{{key}}</a>
                     <ul>
-                        <li><a href="#GridSystem">Users table</a></li>
-                        <!--                        <li>-->
-                        <!--                            <a href="#SpecialElements">Special Elements</a>-->
-                        <!--                            <ul>-->
-                        <!--                                <li><a href="#Blockquote">Blockquote</a></li>-->
-                        <!--                                <li><a href="#Misc">Misc</a></li>-->
-                        <!--                            </ul>-->
-                        <!--                        </li>-->
+                        {% for k, v in val.1.items %}
+                        <li><a href="{% url v.1 %}">{{k}}</a></li>
+                        {% endfor %}
                     </ul>
-                </nav>
-
+                </li>
+                {% endfor %}
+                {% endif %}
             </aside>
         </div>
         <div class="col-md-6">

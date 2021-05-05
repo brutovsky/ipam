@@ -8,6 +8,10 @@ body {
   color: #444444;
 } */
 
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--secondary-color);
+}
+
 ul {
   margin: 0;
 }

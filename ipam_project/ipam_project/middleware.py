@@ -1,4 +1,4 @@
-from .urls import pages
+from .urls import pages, sidebar_navigation
 
 
 def navigation_middleware(get_response):
@@ -13,6 +13,8 @@ def navigation_middleware(get_response):
 
             request.last_link = navigation[-1]
             request.title = navigation[-1][2]
+
+        request.sidebar_navigation = sidebar_navigation
 
         response = get_response(request)
 

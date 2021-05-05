@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views.generic import *
 
 from .forms import UserRegisterForm, UserProfileForm, ChangePasswordForm
 import django.contrib.auth.password_validation as validators
@@ -75,4 +75,8 @@ class UserListView(StaffuserRequiredMixin, SuperuserRequiredMixin, ListView):
     model = User
     template_name = 'users/users-list.html'
     context_object_name = 'users'
+
+
+class UserComponentView(TemplateView):
+    template_name = 'base.html'
 

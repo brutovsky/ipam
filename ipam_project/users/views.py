@@ -87,15 +87,30 @@ class GroupListView(StaffuserRequiredMixin, PermissionRequiredMixin,  ListView):
     permission_required = "auth.view_group"
 
 
-class UserComponentView(TemplateView):
-    template_name = 'base.html'
-
-
 def user_component(request):
-    user_model = ContentType.objects.get(app_label="auth", model="user")
-    logs = LogEntry.objects.filter(content_type=user_model).order_by('-action_time')[:10]
+    response = redirect('/users/users-logs')
+    return response
 
-    return render(request, 'users/user-component.html', {'logs': logs})
+
+def users_logs(request):
+    if request.method == 'GET' and 'model' in request.GET:
+        model = request.GET['model']
+    else:
+        model = 'user'
+
+    select_options = ContentType.objects.filter(app_label="auth")
+    selected_option = model
+    auth_model = ContentType.objects.get(app_label="auth", model=model)
+    model_pk = auth_model.pk
+    logs = LogEntry.objects.filter(content_type=auth_model).order_by('-action_time')[:10]
+
+    return render(request, 'users/user-component.html', {
+        'logs': logs,
+        'select_options': select_options,
+        'selected_option':selected_option,
+        'model_pk': model_pk
+    })
+
 
 
 

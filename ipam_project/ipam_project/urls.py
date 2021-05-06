@@ -28,8 +28,9 @@ from django.contrib.auth import views as auth_views
 from users import views as user_views
 from ipam import views as ipam_views
 
+
 @api_view(['GET'])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((IsAuthenticated,))
 def api_root(request):
     full_url = ''.join(['http://', get_current_site(request).domain, request.get_full_path()])
     content = {
@@ -38,11 +39,11 @@ def api_root(request):
         "Users api": f"{full_url}users/",
         "Groups api": f"{full_url}groups/",
         "Profile api": {
-            "User profile" : f"{full_url}account/profile",
+            "User profile": f"{full_url}account/profile",
             "Change password": f"{full_url}account/change-password",
         },
         "Token api": {
-            "Obtain token" : f"{full_url}token",
+            "Obtain token": f"{full_url}token",
             "Refresh token": f"{full_url}token/refresh",
         },
         "Auth api": {
@@ -61,28 +62,42 @@ pages = {
     'change-password': ('change-password/', 'change-password', 'Change Password'),
     'logout': ('logout/', 'logout', 'Logout'),
 
-    'users': ('users/', 'users', 'Users component'),
+    'users': ('users/', 'users', 'Users Component'),
+    'users-logs': ('users/users-logs/', 'users-logs', 'Logs'),
     'user-list': ('users/user-list/', 'user-list', 'Users'),
     'group-list': ('users/group-list/', 'group-list', 'Groups'),
 
-    'ipam': ('ipam/', 'ipam', 'IPAM Component')
+    'ipam': ('ipam/', 'ipam', 'IPAM Component'),
+    'ipam-logs': ('ipam/ipam-logs/', 'ipam-logs', 'Logs'),
 }
 
 sidebar_navigation = {
-    'Users Component': (
-        pages['users'],
-        {
-            'user-list': pages['user-list'],
-            'group-list': pages['group-list']
-        }
-    ),
-    'IPAM Component': [
-        pages['ipam'],
-        {
-        }
-    ]
-}
+    'Users Component': {
+        'Logs': (
+            pages['users-logs'],
+            {
+            }
+        ),
+        'Users': (
+            pages['user-list'],
+            {
+            }
+        ),
+        'Groups': (
+            pages['group-list'],
+            {
+            }
+        )
+    },
 
+    'IPAM Component': {
+        'Logs': (
+            pages['ipam-logs'],
+            {
+            }
+        )
+    }
+}
 
 urlpatterns = [
     # Admin page
@@ -102,8 +117,10 @@ urlpatterns = [
     path(pages[''][0], user_views.profile, name=pages[''][1]),
 
     path(pages['users'][0], user_views.user_component, name=pages['users'][1]),
+    path(pages['users-logs'][0], user_views.users_logs, name=pages['users-logs'][1]),
     path(pages['user-list'][0], user_views.UserListView.as_view(), name=pages['user-list'][1]),
     path(pages['group-list'][0], user_views.GroupListView.as_view(), name=pages['group-list'][1]),
 
     path(pages['ipam'][0], ipam_views.ipam_component, name=pages['ipam'][1]),
+    path(pages['ipam-logs'][0], ipam_views.ipam_logs, name=pages['ipam-logs'][1]),
 ]

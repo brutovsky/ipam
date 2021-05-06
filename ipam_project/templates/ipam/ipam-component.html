@@ -9,14 +9,15 @@
         </caption>
         <thead>
         <tr>
-            <th>User</th>
-            <th>Date</th>
+            <th>Time</th>
+            <th>User name</th>
             <th>Action</th>
-            <th>Edited object</th>
+            <th>Details</th>
+            <th>Object</th>
         </tr>
         </thead>
         <tfoot>
-        <form id='form_model' action="/ipam" method="get">
+        <form id='form_model' action="/ipam/ipam-logs" method="get">
             <select name="model" id="select_model">
                 {% for option in select_options %}
                 {% if selected_option == option.model %}
@@ -35,8 +36,17 @@
         <tbody>
         {% for log in logs %}
         <tr>
-            <th>{{log.user}}</th>
             <th>{{log.action_time}}</th>
+            <th>{{log.user}}</th>
+            <th>
+                {% if log.is_addition %}
+                <span class="label text-success">Added</span>
+                {% elif log.is_deletion %}
+                <span class="label text-danger">Deleted</span>
+                {% elif log.is_change %}
+                <span class="label text-primary">Updated</span>
+                {% endif %}
+            </th>
             <th>{{log}}</th>
             <th><a href="{{log.get_admin_url}}">{{log.object_repr}}</a></th>
         </tr>

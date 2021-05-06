@@ -1,12 +1,17 @@
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 # Create your views here.
 
 
 def ipam_component(request):
+    response = redirect('/ipam/ipam-logs')
+    return response
+
+
+def ipam_logs(request):
 
     if request.method == 'GET' and 'model' in request.GET:
         model = request.GET['model']

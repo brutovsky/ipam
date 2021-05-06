@@ -11,11 +11,11 @@ def navigation_middleware(get_response):
                 navigation.append(pages[path])
             request.navigation = navigation[:-1]
 
-            if paths[1] == 'users':
-                request.current_component = 'Users Component'
+            if paths[1] in pages:
+                request.current_component = pages[paths[1]][2]
 
-            if paths[1] == 'ipam':
-                request.current_component = 'IPAM Component'
+            if (len(paths)) > 2 and paths[2] in pages:
+                request.current_module = pages[paths[2]][2]
 
             request.last_link = navigation[-1]
             request.title = navigation[-1][2]

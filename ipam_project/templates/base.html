@@ -82,7 +82,6 @@
                                 {{ request.last_link.2 }}
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <!-- Navbar Right Side -->
@@ -120,10 +119,22 @@
                 <h2>Content</h2>
                 {% if request.sidebar_navigation %}
                 {% for key, val in request.sidebar_navigation.items %}
+                {% if request.current_component %}
+                {% if request.current_component == key %}
+                <li><a href="{% url val.0.1 %}" class="text-muted">{{key}}</a>
+                    {% else %}
                 <li><a href="{% url val.0.1 %}">{{key}}</a>
+                    {% endif %}
+                    {% else %}
+                <li><a href="{% url val.0.1 %}">{{key}}</a>
+                    {% endif %}
                     <ul>
                         {% for k, v in val.1.items %}
+                        {% if request.last_link.2 == v.2 %}
+                        <li><a href="{% url v.1 %}" class="text-muted">{{k}}</a></li>
+                        {% else %}
                         <li><a href="{% url v.1 %}">{{k}}</a></li>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </li>
@@ -131,7 +142,11 @@
                 {% endif %}
             </aside>
         </div>
+
         <div class="col-md-6">
+            <div class="col-md-6 d-md-none">
+                <hr/>
+            </div>
             {% block content %}{% endblock %}
         </div>
     </div>

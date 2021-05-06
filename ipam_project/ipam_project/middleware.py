@@ -11,6 +11,9 @@ def navigation_middleware(get_response):
                 navigation.append(pages[path])
             request.navigation = navigation[:-1]
 
+            if paths[1] == 'users':
+                request.current_component = 'Users Component'
+
             request.last_link = navigation[-1]
             request.title = navigation[-1][2]
 

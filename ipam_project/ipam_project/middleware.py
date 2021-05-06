@@ -14,6 +14,9 @@ def navigation_middleware(get_response):
             if paths[1] == 'users':
                 request.current_component = 'Users Component'
 
+            if paths[1] == 'ipam':
+                request.current_component = 'IPAM Component'
+
             request.last_link = navigation[-1]
             request.title = navigation[-1][2]
 

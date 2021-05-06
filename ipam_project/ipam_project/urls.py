@@ -26,6 +26,7 @@ from django.contrib.sites.shortcuts import get_current_site
 # Front
 from django.contrib.auth import views as auth_views
 from users import views as user_views
+from ipam import views as ipam_views
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
@@ -63,22 +64,23 @@ pages = {
     'users': ('users/', 'users', 'Users component'),
     'user-list': ('users/user-list/', 'user-list', 'Users'),
     'group-list': ('users/group-list/', 'group-list', 'Groups'),
+
+    'ipam': ('ipam/', 'ipam', 'IPAM Component')
 }
 
 sidebar_navigation = {
     'Users Component': (
-        ('users/', 'users', 'Users'),
+        pages['users'],
         {
             'user-list': pages['user-list'],
             'group-list': pages['group-list']
         }
-    )
-# ,
-#     'IPAM': [
-#         ('users/', 'users', 'Users'),
-#         {
-#         }
-#     ]
+    ),
+    'IPAM Component': [
+        pages['ipam'],
+        {
+        }
+    ]
 }
 
 
@@ -102,4 +104,6 @@ urlpatterns = [
     path(pages['users'][0], user_views.user_component, name=pages['users'][1]),
     path(pages['user-list'][0], user_views.UserListView.as_view(), name=pages['user-list'][1]),
     path(pages['group-list'][0], user_views.GroupListView.as_view(), name=pages['group-list'][1]),
+
+    path(pages['ipam'][0], ipam_views.ipam_component, name=pages['ipam'][1]),
 ]

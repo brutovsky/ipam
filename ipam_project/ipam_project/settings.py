@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'ipam.apps.IpamConfig',
 
     'crispy_forms',
+
+    'django_admin_logs',
 ]
 
 MIDDLEWARE = [

@@ -1,6 +1,6 @@
 from braces.views import StaffuserRequiredMixin, SuperuserRequiredMixin, PermissionRequiredMixin
 from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -73,11 +73,20 @@ def change_password(request):
 
 class UserListView(StaffuserRequiredMixin, PermissionRequiredMixin,  ListView):
     model = User
-    template_name = 'users/users-list.html'
+    template_name = 'users/user-list.html'
     context_object_name = 'users'
     permission_required = "auth.view_user"
 
 
+class GroupListView(StaffuserRequiredMixin, PermissionRequiredMixin,  ListView):
+    model = Group
+    template_name = 'users/group-list.html'
+    context_object_name = 'groups'
+    permission_required = "auth.view_group"
+
+
 class UserComponentView(TemplateView):
     template_name = 'base.html'
+
+
 

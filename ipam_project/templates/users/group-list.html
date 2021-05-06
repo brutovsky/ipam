@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <a class="text-success" href="/admin/auth/group/add/"><i class="fa fa-plus"></i> Add new group</a>
+    <table>
+        <caption>
+            All groups
+        </caption>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Members</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th colspan="6">...</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {% for group in groups %}
+        <tr>
+            <th>{{group.pk}}</th>
+            <td>{{group.name}}</td>
+            <td>
+                {% for user in group.user_set.all%}
+         <li>
+            <a href="/admin/auth/user/{{user.pk}}/change/">{{user}}</a>
+        </li>
+        {% endfor %}
+            </td>
+            <td><a class="text-warning" href="/admin/auth/group/{{group.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

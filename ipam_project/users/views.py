@@ -1,4 +1,4 @@
-from braces.views import StaffuserRequiredMixin, SuperuserRequiredMixin
+from braces.views import StaffuserRequiredMixin, SuperuserRequiredMixin, PermissionRequiredMixin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -71,10 +71,11 @@ def change_password(request):
     return render(request, 'users/change-password.html', {'form': form})
 
 
-class UserListView(StaffuserRequiredMixin, SuperuserRequiredMixin, ListView):
+class UserListView(StaffuserRequiredMixin, PermissionRequiredMixin,  ListView):
     model = User
     template_name = 'users/users-list.html'
     context_object_name = 'users'
+    permission_required = "auth.view_user"
 
 
 class UserComponentView(TemplateView):

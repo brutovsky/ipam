@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Recent logs</h2>
+    <table>
+        <caption>
+            {{logs|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Date</th>
+            <th>Action</th>
+            <th>Edited object</th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for log in logs %}
+        <tr>
+            <th>{{log.user}}</th>
+            <th>{{log.action_time}}</th>
+            <th>{{log}}</th>
+            <th><a href="{{log.get_admin_url}}">{{log.object_repr}}</a></th>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

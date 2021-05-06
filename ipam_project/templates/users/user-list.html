@@ -2,10 +2,11 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <div>
+    <h2>User list</h2>
     <a class="text-success" href="/admin/auth/user/add/"><i class="fa fa-user-plus"></i> Add new user</a>
     <table>
         <caption>
-            All users
+            {{users|length}} entries
         </caption>
         <thead>
         <tr>
@@ -19,9 +20,6 @@
         </tr>
         </thead>
         <tfoot>
-        <tr>
-            <th colspan="6">...</th>
-        </tr>
         </tfoot>
         <tbody>
         {% for user in users %}

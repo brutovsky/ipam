@@ -1,6 +1,8 @@
 from braces.views import StaffuserRequiredMixin, SuperuserRequiredMixin, PermissionRequiredMixin
+from django.contrib.admin.models import LogEntry
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User, Group
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -87,6 +89,14 @@ class GroupListView(StaffuserRequiredMixin, PermissionRequiredMixin,  ListView):
 
 class UserComponentView(TemplateView):
     template_name = 'base.html'
+
+
+def user_component(request):
+    user_model = ContentType.objects.get(app_label="auth", model="user")
+    logs = LogEntry.objects.filter(content_type=user_model).order_by('-action_time')[:10]
+
+    return render(request, 'users/user-component.html', {'logs': logs})
+
 
 
 

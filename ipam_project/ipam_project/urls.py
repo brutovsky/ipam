@@ -99,7 +99,7 @@ urlpatterns = [
     path(pages['change-password'][0], user_views.change_password, name=pages['change-password'][1]),
     path(pages[''][0], user_views.profile, name=pages[''][1]),
 
-    path(pages['users'][0], user_views.UserComponentView.as_view(), name=pages['users'][1]),
+    path(pages['users'][0], user_views.user_component, name=pages['users'][1]),
     path(pages['user-list'][0], user_views.UserListView.as_view(), name=pages['user-list'][1]),
     path(pages['group-list'][0], user_views.GroupListView.as_view(), name=pages['group-list'][1]),
 ]

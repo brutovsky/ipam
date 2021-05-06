@@ -25,9 +25,9 @@
         <tbody>
         {% for prefix in prefixes %}
         <tr>
-            <th>
+            <th class="text-center">
                 {% if prefix.is_container %}
-                <i class="fa fa-folder-o"></i>
+                <i class="fa fa-folder-open-o"></i>
                 {% elif prefix.is_pool %}
 
                 {% else %}
@@ -35,7 +35,7 @@
                 {% endif%}
             </th>
             <td>{{prefix.prefix}}</td>
-            <td>
+            <td class="text-center">
                 {% if prefix.status == 'active' %}
                 <span class="badge badge-success">
                     {{prefix.status}}
@@ -50,12 +50,15 @@
                 </span>
                 {% endif%}
             </td>
-            <td>
-                {% if prefix.utilization %}
-
-                {% endif %}
+            <td class="text-center">
+                <span class="text-center">
+                    {{prefix.get_utilization}}%
+                </span>
+                <div class="progress-bar progress-bar-no-arrow">
+                    <div class="progress-bar-filled" style="width: {{prefix.get_utilization}}%"></div>
+                </div>
             </td>
-            <td>
+            <td class="text-center">
                 {% if prefix.location %}
                 <a href="/admin/dcim/location/{{prefix.location.pk}}/change/">
                     {{prefix.location}}
@@ -64,14 +67,14 @@
                 —
                 {% endif %}
             </td>
-            <td>
+            <td class="text-center">
                 {% if prefix.vlan %}
                 {{prefix.vlan}}
                 {% else %}
                 —
                 {% endif %}
             </td>
-            <td>
+            <td class="text-center">
                 {% if prefix.role %}
                 {{prefix.role}}
                 {% else %}

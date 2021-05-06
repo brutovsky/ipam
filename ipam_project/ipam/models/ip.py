@@ -7,6 +7,7 @@ from ipam.models.vlan import VLAN
 from dcim.models.locations import Location
 from netaddr import IPNetwork, IPSet
 from ipam.utils import toset, AttributeGenerator
+from ipam.utils import calc_ipaddress_children
 
 
 __all__ = (
@@ -19,6 +20,7 @@ __all__ = (
 #
 # IPRole
 #
+
 
 class IPRole(models.Model):
     name = models.CharField(
@@ -97,6 +99,23 @@ class IPPrefix(models.Model, AttributeGenerator):
         blank=True
     )
 
+    def get_utilization(self):
+        """
+        Determine the utilization of the prefix and return it as a percentage.
+        For container, calculate utilization based on subnet prefixes.
+        For all others, count child IP addresses.
+        """
+        if self.is_container:
+            child_count = calc_ipaddress_children(self.subnets.all())
+            print(child_count)
+            return round(float(child_count) / self.prefix.size * 100, 2)
+        else:
+            child_count = IPSet([ip.address.ip for ip in self.ip_addresses.all()]).size
+            prefix_size = self.prefix.size
+            # if self.prefix.prefixlen < 31 and not self.is_pool:
+            #     prefix_size -= 2
+            return round(float(child_count) / prefix_size * 100, 2)
+
     def clean(self):
         super().clean()
         print(self.pk)
@@ -105,6 +124,11 @@ class IPPrefix(models.Model, AttributeGenerator):
             self.vlan = None
             self.is_pool = False
             self.location = None
+
+            ipaddresses_quantity = len(self.ip_addresses.all())
+            if ipaddresses_quantity > 0:
+                raise ValidationError(
+                    f'{self.prefix} can not be container, {ipaddresses_quantity} bound ip addresses found')
 
         # Prefix constraints and validation
         else:

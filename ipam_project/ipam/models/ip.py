@@ -99,6 +99,12 @@ class IPPrefix(models.Model, AttributeGenerator):
         blank=True
     )
 
+    @property
+    def family(self):
+        if self.prefix:
+            return self.prefix.version
+        return None
+
     def get_utilization(self):
         """
         Determine the utilization of the prefix and return it as a percentage.
@@ -107,13 +113,12 @@ class IPPrefix(models.Model, AttributeGenerator):
         """
         if self.is_container:
             child_count = calc_ipaddress_children(self.subnets.all())
-            print(child_count)
             return round(float(child_count) / self.prefix.size * 100, 2)
         else:
             child_count = IPSet([ip.address.ip for ip in self.ip_addresses.all()]).size
             prefix_size = self.prefix.size
-            # if self.prefix.prefixlen < 31 and not self.is_pool:
-            #     prefix_size -= 2
+            if self.prefix.version == 4 and self.prefix.prefixlen < 31 and not self.is_pool:
+                prefix_size -= 2
             return round(float(child_count) / prefix_size * 100, 2)
 
     def clean(self):
@@ -150,6 +155,9 @@ class IPPrefix(models.Model, AttributeGenerator):
         # Validation of subnet prefix
         if self.prefix and self.prefix_container:
             print(self.prefix_container.location)
+            # Check if the prefix family matches with container`s
+            if self.prefix_container.family != self.family:
+                raise ValidationError(f'Prefix {self.prefix} protocol mismatch with prefix {self.prefix_container} protocol -> IPv{self.family}|IPv{self.prefix_container.family}')
             # Check if the prefix is subnet of container
             container = IPSet([self.prefix_container.prefix])
             if not container > subnet:

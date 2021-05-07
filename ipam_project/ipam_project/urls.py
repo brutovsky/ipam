@@ -182,6 +182,6 @@ urlpatterns = [
 
     path(pages['interface-list'][0], ipam_views.InterfaceListView.as_view(), name=pages['interface-list'][1]),
     path(pages['interface-detail'][0], ipam_views.InterfaceDetailView.as_view(), name=pages['interface-detail'][1]),
-    # path(pages['interface-logs'][0], ipam_views.ServiceLogsView.as_view(), name=pages['interface-logs'][1]),
+    path(pages['interface-logs'][0], ipam_views.InterfaceLogsView.as_view(), name=pages['interface-logs'][1]),
 # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

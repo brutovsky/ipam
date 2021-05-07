@@ -175,3 +175,20 @@ class InterfaceDetailView(PermissionRequiredMixin, DetailView):
     model = Interface
     template_name = 'ipam/interface/interface-detail.html'
     permission_required = "ipam.view_interface"
+
+
+class InterfaceLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        interface = get_object_or_404(Interface, pk=kwargs['pk'])
+        interface_model = ContentType.objects.get(app_label="ipam", model="interface")
+        model_pk = interface_model.pk
+        logs = LogEntry.objects.filter(content_type=interface_model, object_id=interface.pk).order_by('-action_time')[
+               :10]
+
+        return render(request, 'ipam/interface/interface-logs.html', {
+            'object': interface,
+            'logs': logs,
+            'model_pk': model_pk
+        })

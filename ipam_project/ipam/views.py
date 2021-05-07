@@ -240,12 +240,6 @@ class IPRoleListView(PermissionRequiredMixin, ListView):
     permission_required = "ipam.view_iprole"
 
 
-class IPRoleDetailView(PermissionRequiredMixin, DetailView):
-    model = IPRole
-    template_name = 'ipam/iprole/iprole-detail.html'
-    permission_required = "ipam.view_iprole"
-
-
 #
 # VLAN views
 #
@@ -264,7 +258,7 @@ class VLANListView(PermissionRequiredMixin, ListView):
         queryset = VLAN.objects
 
         if role_filter:
-            role = IPRole.objects.get(name=role_filter)
+            role = VLANRole.objects.get(name=role_filter)
             queryset = queryset.filter(role=role.id)
 
         if group_filter:
@@ -277,7 +271,7 @@ class VLANListView(PermissionRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['role_options'] = IPRole.objects.all()
+        context['role_options'] = VLANRole.objects.all()
         context['group_options'] = VLANGroup.objects.all()
         context['selected_role'] = self.request.GET.get('role', '')
         context['selected_group'] = self.request.GET.get('group', '')
@@ -329,3 +323,14 @@ class VLANGroupListView(PermissionRequiredMixin, ListView):
     template_name = 'ipam/vlangroup/vlangroup-list.html'
     context_object_name = 'vlangroups'
     permission_required = "ipam.view_vlangroup"
+
+
+#
+# VLANRole views
+#
+
+class VLANRoleListView(PermissionRequiredMixin, ListView):
+    model = VLANRole
+    template_name = 'ipam/vlanrole/vlanrole-list.html'
+    context_object_name = 'vlanroles'
+    permission_required = "ipam.view_vlanrole"

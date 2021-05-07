@@ -97,6 +97,8 @@ pages = {
     'vlan-prefixes': ('ipam/vlan-list/vlan-prefixes/<int:pk>', 'vlan-prefixes', 'VLAN Prefixes'),
 
     'vlangroup-list': ('ipam/vlangroup-list/', 'vlangroup-list', 'VLAN Groups'),
+
+    'vlanrole-list': ('ipam/vlanrole-list/', 'vlanrole-list', 'VLAN Roles'),
 }
 
 sidebar_navigation = {
@@ -154,14 +156,20 @@ sidebar_navigation = {
 
             }
         ),
-        'VLANs': (
-            pages['vlan-list'],
+        'VLAN Roles': (
+            pages['vlanrole-list'],
             {
 
             }
         ),
         'VLAN Groups': (
             pages['vlangroup-list'],
+            {
+
+            }
+        ),
+        'VLANs': (
+            pages['vlan-list'],
             {
 
             }
@@ -221,5 +229,6 @@ urlpatterns = [
     path(pages['vlan-prefixes'][0], ipam_views.VLANPrefixesView.as_view(), name=pages['vlan-prefixes'][1]),
 
     path(pages['vlangroup-list'][0], ipam_views.VLANGroupListView.as_view(), name=pages['vlangroup-list'][1]),
-    # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
+
+    path(pages['vlanrole-list'][0], ipam_views.VLANRoleListView.as_view(), name=pages['vlanrole-list'][1]),
 ]

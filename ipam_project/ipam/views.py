@@ -72,3 +72,19 @@ class PrefixIpAddressesView(PermissionRequiredMixin, View):
             'ipaddresses': prefix_ips,
             'available_iprange': list(prefix_available_ips.iter_ipranges())
         })
+
+
+class PrefixLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        prefix = get_object_or_404(IPPrefix, pk=kwargs['pk'])
+        prefix_model = ContentType.objects.get(app_label="ipam", model="ipprefix")
+        model_pk = prefix_model.pk
+        logs = LogEntry.objects.filter(content_type=prefix_model, object_id=prefix.pk).order_by('-action_time')[:10]
+
+        return render(request, 'ipam/prefix-logs.html', {
+            'object': prefix,
+            'logs': logs,
+            'model_pk': model_pk
+        })

@@ -11,7 +11,7 @@
             <a class="nav-link active" aria-current="page" href="">Prefix</a>
             <a class="nav-link" href="{% url 'prefix-children' object.pk %}">Child Prefixes</a>
             <a class="nav-link" href="{% url 'prefix-ip-addresses' object.pk %}">IP Addresses</a>
-            <a class="nav-link disabled" href="#" tabindex="-1">ChangeLog</a>
+            <a class="nav-link" href="{% url 'prefix-logs' object.pk %}">ChangeLog</a>
         </ul>
         <table class="table table-hover panel-body attr-table">
             <tbody>

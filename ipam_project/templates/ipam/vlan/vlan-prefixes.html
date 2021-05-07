@@ -7,8 +7,7 @@
         <ul class="nav nav-tabs">
             <a class="nav-link" aria-current="page" href="{% url 'vlan-detail' object.pk %}">VLAN</a>
             <a class="nav-link active" href="">Prefixes</a>
-<!--            <a class="nav-link" href="{% url 'prefix-ip-addresses' object.pk %}">IP Addresses</a>-->
-<!--            <a class="nav-link" href="{% url 'prefix-logs' object.pk %}">ChangeLog</a>-->
+            <a class="nav-link" href="{% url 'vlan-logs' object.pk %}">ChangeLog</a>
         </ul>
         {% if prefixes|length == 0%}
         <br/>

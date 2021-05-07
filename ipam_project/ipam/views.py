@@ -274,3 +274,20 @@ class VLANPrefixesView(PermissionRequiredMixin, View):
             'object': vlan,
             'prefixes': prefixes
         })
+
+
+class VLANLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        vlan = get_object_or_404(VLAN, pk=kwargs['pk'])
+        vlan_model = ContentType.objects.get(app_label="ipam", model="vlan")
+        model_pk = vlan_model.pk
+        logs = LogEntry.objects.filter(content_type=vlan_model, object_id=vlan.pk).order_by('-action_time')[
+               :10]
+
+        return render(request, 'ipam/vlan/vlan-logs.html', {
+            'object': vlan,
+            'logs': logs,
+            'model_pk': model_pk
+        })

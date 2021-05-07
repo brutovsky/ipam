@@ -209,7 +209,7 @@ urlpatterns = [
 
     path(pages['vlan-list'][0], ipam_views.VLANListView.as_view(), name=pages['vlan-list'][1]),
     path(pages['vlan-detail'][0], ipam_views.VLANDetailView.as_view(), name=pages['vlan-detail'][1]),
-    # path(pages['vlan-logs'][0], ipam_views.InterfaceLogsView.as_view(), name=pages['vlan-logs'][1]),
+    path(pages['vlan-logs'][0], ipam_views.VLANLogsView.as_view(), name=pages['vlan-logs'][1]),
     path(pages['vlan-prefixes'][0], ipam_views.VLANPrefixesView.as_view(), name=pages['vlan-prefixes'][1]),
     # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

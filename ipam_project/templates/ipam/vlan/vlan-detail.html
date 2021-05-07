@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>VLAN {{object.name}}</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link active" aria-current="page" href="">VLAN</a>
+            <!--            <a class="nav-link" href="{% url 'ipaddress-logs' object.pk %}">ChangeLog</a>-->
+        </ul>
+        <table class="table table-hover panel-body attr-table">
+            <tbody>
+            <tr>
+                <td>VLAN Group</td>
+                <td>{{object.vlan_group}}</td>
+            </tr>
+            <tr>
+                <td>VID</td>
+                <td>{{object.vid}}</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    {% if vlan.status == 'active' %}
+                    <span class="badge badge-success">
+                    {{vlan.status}}
+                </span>
+                    {% elif vlan.status == 'reserved' %}
+                    <span class="badge badge-secondary">
+                    {{vlan.status}}
+                </span>
+                    {% elif vlan.status == 'deprecated' %}
+                    <span class="badge badge-danger">
+                    {{vlan.status}}
+                </span>
+                    {% endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>
+                    {% if vlan.role %}
+                    {{vlan.role}}
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><span>{{object.description}}</span></td>
+            </tr>
+            <tr>
+                <td>Actions</td>
+                <td><a class="text-warning" href="/admin/ipam/vlan/{{object.pk}}/change/"><i class="fa fa-cog"></i>
+                    Edit</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

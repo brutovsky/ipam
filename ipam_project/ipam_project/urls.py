@@ -89,6 +89,10 @@ pages = {
     'interface-logs': ('ipam/interface-list/interface-logs/<int:pk>', 'interface-logs', 'Interface Logs'),
 
     'iprole-list': ('ipam/iprole-list/', 'iprole-list', 'IP Roles'),
+
+    'vlan-list': ('ipam/vlan-list/', 'vlan-list', 'VLAN'),
+    'vlan-detail': ('ipam/vlan-list/vlan-detail/<int:pk>', 'vlan-detail', 'VLAN Detail'),
+    'vlan-logs': ('ipam/vlan-list/vlan-logs/<int:pk>', 'vlan-logs', 'VLAN Logs'),
 }
 
 sidebar_navigation = {
@@ -145,6 +149,12 @@ sidebar_navigation = {
             {
 
             }
+        ),
+        'VLAN': (
+            pages['vlan-list'],
+            {
+
+            }
         )
     }
 }
@@ -193,5 +203,9 @@ urlpatterns = [
     path(pages['interface-list'][0], ipam_views.InterfaceListView.as_view(), name=pages['interface-list'][1]),
     path(pages['interface-detail'][0], ipam_views.InterfaceDetailView.as_view(), name=pages['interface-detail'][1]),
     path(pages['interface-logs'][0], ipam_views.InterfaceLogsView.as_view(), name=pages['interface-logs'][1]),
+
+    path(pages['vlan-list'][0], ipam_views.VLANListView.as_view(), name=pages['vlan-list'][1]),
+    path(pages['vlan-detail'][0], ipam_views.VLANDetailView.as_view(), name=pages['vlan-detail'][1]),
+    # path(pages['vlan-logs'][0], ipam_views.InterfaceLogsView.as_view(), name=pages['vlan-logs'][1]),
 # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView
 from ipam.models.ip import IPPrefix, IPAddress, IPRole
 from ipam.models.services import Service
 from ipam.models.device_components import Interface
+from ipam.models.vlan import VLAN, VLANGroup, VLANRole
 
 
 # Create your views here.
@@ -243,3 +244,21 @@ class IPRoleDetailView(PermissionRequiredMixin, DetailView):
     model = IPRole
     template_name = 'ipam/iprole/iprole-detail.html'
     permission_required = "ipam.view_iprole"
+
+
+#
+# VLAN views
+#
+
+
+class VLANListView(PermissionRequiredMixin, ListView):
+    model = VLAN
+    template_name = 'ipam/vlan/vlan-list.html'
+    context_object_name = 'vlans'
+    permission_required = "ipam.view_vlan"
+
+
+class VLANDetailView(PermissionRequiredMixin, DetailView):
+    model = VLAN
+    template_name = 'ipam/vlan/vlan-detail.html'
+    permission_required = "ipam.view_vlan"

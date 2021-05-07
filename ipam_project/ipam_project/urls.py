@@ -83,6 +83,10 @@ pages = {
     'service-list': ('ipam/service-list/', 'service-list', 'Services'),
     'service-detail': ('ipam/service-list/service-detail/<int:pk>', 'service-detail', 'Service Detail'),
     'service-logs': ('ipam/service-list/service-logs/<int:pk>', 'service-logs', 'Service Logs'),
+
+    'interface-list': ('ipam/interface-list/', 'interface-list', 'Interfaces'),
+    'interface-detail': ('ipam/interface-list/interface-detail/<int:pk>', 'interface-detail', 'Interface Detail'),
+    'interface-logs': ('ipam/interface-list/interface-logs/<int:pk>', 'interface-logs', 'Interface Logs'),
 }
 
 sidebar_navigation = {
@@ -124,6 +128,12 @@ sidebar_navigation = {
         ),
         'Services': (
             pages['service-list'],
+            {
+
+            }
+        ),
+        'Interfaces': (
+            pages['interface-list'],
             {
 
             }
@@ -169,5 +179,9 @@ urlpatterns = [
     path(pages['service-list'][0], ipam_views.ServiceListView.as_view(), name=pages['service-list'][1]),
     path(pages['service-detail'][0], ipam_views.ServiceDetailView.as_view(), name=pages['service-detail'][1]),
     path(pages['service-logs'][0], ipam_views.ServiceLogsView.as_view(), name=pages['service-logs'][1]),
+
+    path(pages['interface-list'][0], ipam_views.InterfaceListView.as_view(), name=pages['interface-list'][1]),
+    path(pages['interface-detail'][0], ipam_views.InterfaceDetailView.as_view(), name=pages['interface-detail'][1]),
+    # path(pages['interface-logs'][0], ipam_views.ServiceLogsView.as_view(), name=pages['interface-logs'][1]),
 # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

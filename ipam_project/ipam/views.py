@@ -6,6 +6,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from ipam.models.ip import IPPrefix, IPAddress
 from ipam.models.services import Service
+from ipam.models.device_components import Interface
 
 
 # Create your views here.
@@ -157,3 +158,20 @@ class ServiceLogsView(PermissionRequiredMixin, View):
             'logs': logs,
             'model_pk': model_pk
         })
+
+
+#
+# Interface views
+#
+
+class InterfaceListView(PermissionRequiredMixin, ListView):
+    model = Interface
+    template_name = 'ipam/interface/interface-list.html'
+    context_object_name = 'interfaces'
+    permission_required = "ipam.view_interface"
+
+
+class InterfaceDetailView(PermissionRequiredMixin, DetailView):
+    model = Interface
+    template_name = 'ipam/interface/interface-detail.html'
+    permission_required = "ipam.view_interface"

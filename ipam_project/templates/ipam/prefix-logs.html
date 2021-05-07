@@ -24,13 +24,9 @@
                 <th>User name</th>
                 <th>Action</th>
                 <th>Details</th>
-                <th>Object</th>
             </tr>
             </thead>
             <tfoot>
-            {% if model_pk %}
-            <a href="/admin/admin/logentry/?content_type__id__exact={{model_pk}}">Go to admin site page</a>
-            {% endif %}
             </tfoot>
             <tbody>
             {% for log in logs %}
@@ -47,7 +43,6 @@
                     {% endif %}
                 </th>
                 <th>{{log}}</th>
-                <th><a href="{{log.get_admin_url}}">{{log.object_repr}}</a></th>
             </tr>
             {% endfor %}
             </tbody>

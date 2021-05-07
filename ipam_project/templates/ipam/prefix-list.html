@@ -34,7 +34,11 @@
 
                 {% endif%}
             </th>
-            <td>{{prefix.prefix}}</td>
+            <td>
+                <a href="{% url 'prefix-detail' prefix.id %}">
+                    {{prefix.prefix}}
+                </a>
+            </td>
             <td class="text-center">
                 {% if prefix.status == 'active' %}
                 <span class="badge badge-success">

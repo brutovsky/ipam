@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Prefix {{object.prefix}}</h2>
+    <div class="panel panel-default">
+        <!--        <div class="panel-heading">-->
+        <!--            <strong>Prefix</strong>-->
+        <!--        </div>-->
+        <ul class="nav nav-tabs">
+            <a class="nav-link active" aria-current="page" href="#">Prefix</a>
+            <a class="nav-link" href="#">Child Prefixes</a>
+            <a class="nav-link" href="#">IP Addresses</a>
+            <a class="nav-link disabled" href="#" tabindex="-1">ChangeLog</a>
+        </ul>
+        <table class="table table-hover panel-body attr-table">
+            <tbody>
+            <tr>
+                <td>Family</td>
+                <td>IPv{{object.family}}</td>
+            </tr>
+            <tr>
+                <td>Location</td>
+                <td>
+                    {% if object.location %}
+                    <span>{{object.location}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.location}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>VLAN</td>
+                <td>
+                    {% if object.vlan %}
+                    <span>{{object.vlan}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.vlan}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Parent container</td>
+                <td>
+                    {% if object.prefix_container %}
+                    <a href="/ipam/prefixes/?role=loopback">{{object.prefix_container}}</a>
+                    {% else %}
+                    <span class="text-muted">{{object.prefix_container}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    {% if object.status == 'active' %}
+                    <span class="badge badge-success">
+                    {{object.status}}
+                </span>
+                    {% elif object.status == 'reserved' %}
+                    <span class="badge badge-secondary">
+                    {{object.status}}
+                </span>
+                    {% elif object.status == 'deprecated' %}
+                    <span class="badge badge-danger">
+                    {{object.status}}
+                </span>
+                    {% endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>
+                    {% if object.role %}
+                    <a href="/ipam/prefixes/?role=loopback">{{object.role}}</a>
+                    {% else %}
+                    <span class="text-muted">{{object.role}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><span>{{object.description}}</span></td>
+            </tr>
+            <tr>
+                <td>Is a container</td>
+                <td>
+                    {% if object.is_container %}
+                    <i class="fa fa-check-circle-o text-success"></i>
+                    {% else %}
+                    <i class="fa fa-times text-danger"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Is a pool</td>
+                <td>
+                    {% if object.is_pool %}
+                    <i class="fa fa-check-circle-o text-success"></i>
+                    {% else %}
+                    <i class="fa fa-times text-danger"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Utilization</td>
+                <td>
+                    <div class="progress-bar progress-bar-show-percent">
+                        <div class="progress-bar-filled" style="width: {{object.get_utilization}}%"
+                             data-filled="{{object.get_utilization}}%"></div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

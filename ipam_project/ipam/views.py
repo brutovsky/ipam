@@ -2,7 +2,7 @@ from braces.views import PermissionRequiredMixin
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from ipam.models.ip import IPPrefix
 
 # Create your views here.
@@ -38,4 +38,10 @@ class PrefixListView(PermissionRequiredMixin,  ListView):
     model = IPPrefix
     template_name = 'ipam/prefix-list.html'
     context_object_name = 'prefixes'
+    permission_required = "ipam.view_ipprefix"
+
+
+class PrefixDetailView(PermissionRequiredMixin,  DetailView):
+    model = IPPrefix
+    template_name = 'ipam/prefix-detail.html'
     permission_required = "ipam.view_ipprefix"

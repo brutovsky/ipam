@@ -71,6 +71,8 @@ pages = {
     'ipam-logs': ('ipam/ipam-logs/', 'ipam-logs', 'Logs'),
 
     'prefix-list': ('ipam/prefix-list/', 'prefix-list', 'Prefixes'),
+    'prefix-detail': ('ipam/prefix-list/prefix-detail/<int:pk>', 'prefix-detail', 'Prefix Detail'),
+
 }
 
 sidebar_navigation = {
@@ -131,6 +133,8 @@ urlpatterns = [
 
     path(pages['ipam'][0], ipam_views.ipam_component, name=pages['ipam'][1]),
     path(pages['ipam-logs'][0], ipam_views.ipam_logs, name=pages['ipam-logs'][1]),
-    path(pages['prefix-list'][0], ipam_views.PrefixListView.as_view(), name=pages['prefix-list'][1])
+    path(pages['prefix-list'][0], ipam_views.PrefixListView.as_view(), name=pages['prefix-list'][1]),
+    path(pages['prefix-detail'][0], ipam_views.PrefixDetailView.as_view(), name=pages['prefix-detail'][1]),
 
+# 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

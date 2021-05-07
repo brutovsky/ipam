@@ -43,6 +43,23 @@ class PrefixListView(PermissionRequiredMixin, ListView):
     context_object_name = 'prefixes'
     permission_required = "ipam.view_ipprefix"
 
+    def get_queryset(self):
+        filter_val = self.request.GET.get('role', '')
+        if filter_val:
+            role = IPRole.objects.get(name=filter_val)
+            new_context = IPPrefix.objects.filter(
+                role=role.id,
+            )
+            return new_context
+        else:
+            return IPPrefix.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['role_options'] = IPRole.objects.all()
+        context['selected_role'] = self.request.GET.get('role', '')
+        return context
+
 
 class PrefixDetailView(PermissionRequiredMixin, DetailView):
     model = IPPrefix
@@ -101,6 +118,23 @@ class IPAddressListView(PermissionRequiredMixin, ListView):
     template_name = 'ipam/ipaddress/ipaddress-list.html'
     context_object_name = 'ipaddresses'
     permission_required = "ipam.view_ipaddress"
+
+    def get_queryset(self):
+        filter_val = self.request.GET.get('role', '')
+        if filter_val:
+            role = IPRole.objects.get(name=filter_val)
+            new_context = IPAddress.objects.filter(
+                role=role.id,
+            )
+            return new_context
+        else:
+            return IPAddress.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['role_options'] = IPRole.objects.all()
+        context['selected_role'] = self.request.GET.get('role', '')
+        return context
 
 
 class IPAddressDetailView(PermissionRequiredMixin, DetailView):

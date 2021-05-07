@@ -21,6 +21,23 @@
         </tr>
         </thead>
         <tfoot>
+        | Role:
+        <form id='form_filter' action="{% url 'prefix-list' %}" method="get">
+            <select name="role" id="select_role">
+                <option value=""
+                        {% if selected_role %}{% else %} selected="selected" {% endif %}>
+                    —</option>
+                {% for option in role_options %}
+                {% if selected_role == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
         </tfoot>
         <tbody>
         {% for prefix in prefixes %}
@@ -91,5 +108,13 @@
         {% endfor %}
         </tbody>
     </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
 </div>
 {% endblock content %}

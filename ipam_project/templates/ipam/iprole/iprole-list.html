@@ -26,10 +26,14 @@
                 {{role.name}}
             </td>
             <td class="text-center">
-                {{role.ip_prefixes.all|length}}
+                <a href="{% url 'prefix-list' %}?role={{role.name}}">
+                    {{role.ip_prefixes.all|length}}
+                </a>
             </td>
             <td class="text-center">
-                {{role.ip_addresses.all|length}}
+                <a href="{% url 'ipaddress-list' %}?role={{role.name}}">
+                    {{role.ip_addresses.all|length}}
+                </a>
             </td>
             <td class="text-center">
                 {{role.description}}

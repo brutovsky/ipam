@@ -87,6 +87,8 @@ pages = {
     'interface-list': ('ipam/interface-list/', 'interface-list', 'Interfaces'),
     'interface-detail': ('ipam/interface-list/interface-detail/<int:pk>', 'interface-detail', 'Interface Detail'),
     'interface-logs': ('ipam/interface-list/interface-logs/<int:pk>', 'interface-logs', 'Interface Logs'),
+
+    'iprole-list': ('ipam/iprole-list/', 'iprole-list', 'IP Roles'),
 }
 
 sidebar_navigation = {
@@ -112,6 +114,12 @@ sidebar_navigation = {
         'Logs': (
             pages['ipam-logs'],
             {
+            }
+        ),
+        'IP Roles': (
+            pages['iprole-list'],
+            {
+
             }
         ),
         'Prefixes': (
@@ -165,6 +173,8 @@ urlpatterns = [
 
     path(pages['ipam'][0], ipam_views.ipam_component, name=pages['ipam'][1]),
     path(pages['ipam-logs'][0], ipam_views.ipam_logs, name=pages['ipam-logs'][1]),
+
+    path(pages['iprole-list'][0], ipam_views.IPRoleListView.as_view(), name=pages['iprole-list'][1]),
 
     path(pages['prefix-list'][0], ipam_views.PrefixListView.as_view(), name=pages['prefix-list'][1]),
     path(pages['prefix-detail'][0], ipam_views.PrefixDetailView.as_view(), name=pages['prefix-detail'][1]),

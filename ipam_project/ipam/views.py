@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, DetailView
-from ipam.models.ip import IPPrefix, IPAddress
+from ipam.models.ip import IPPrefix, IPAddress, IPRole
 from ipam.models.services import Service
 from ipam.models.device_components import Interface
 
@@ -192,3 +192,20 @@ class InterfaceLogsView(PermissionRequiredMixin, View):
             'logs': logs,
             'model_pk': model_pk
         })
+
+
+#
+# IP Role views
+#
+
+class IPRoleListView(PermissionRequiredMixin, ListView):
+    model = IPRole
+    template_name = 'ipam/iprole/iprole-list.html'
+    context_object_name = 'iproles'
+    permission_required = "ipam.view_iprole"
+
+
+class IPRoleDetailView(PermissionRequiredMixin, DetailView):
+    model = IPRole
+    template_name = 'ipam/iprole/iprole-detail.html'
+    permission_required = "ipam.view_iprole"

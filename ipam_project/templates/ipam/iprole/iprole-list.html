@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>IP roles</h2>
+    <a class="text-success" href="/admin/ipam/iprole/add/"><i class="fa fa-plus"></i> Add new ip role</a>
+    <table>
+        <caption>
+            {{iproles|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Prefixes</th>
+            <th>IP Addresses</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for role in iproles %}
+        <tr>
+            <td class="text-center">
+                {{role.name}}
+            </td>
+            <td class="text-center">
+                {{role.ip_prefixes.all|length}}
+            </td>
+            <td class="text-center">
+                {{role.ip_addresses.all|length}}
+            </td>
+            <td class="text-center">
+                {{role.description}}
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/iprole/{{role.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

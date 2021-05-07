@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, DetailView
 from ipam.models.ip import IPPrefix, IPAddress
-
+from ipam.models.services import Service
 
 # Create your views here.
 
@@ -122,3 +122,20 @@ class IPAddressLogsView(PermissionRequiredMixin, View):
             'logs': logs,
             'model_pk': model_pk
         })
+
+
+#
+# Service views
+#
+
+class ServiceListView(PermissionRequiredMixin, ListView):
+    model = Service
+    template_name = 'ipam/service/service-list.html'
+    context_object_name = 'services'
+    permission_required = "ipam.view_service"
+
+
+class ServiceDetailView(PermissionRequiredMixin, DetailView):
+    model = Service
+    template_name = 'ipam/service/service-detail.html'
+    permission_required = "ipam.view_service"

@@ -78,6 +78,7 @@ pages = {
 
     'ipaddress-list': ('ipam/ipaddress-list/', 'ipaddress-list', 'IP Addresses'),
     'ipaddress-detail': ('ipam/ipaddress-list/ipaddress-detail/<int:pk>', 'ipaddress-detail', 'IP Address Detail'),
+    'ipaddress-logs': ('ipam/ipaddress-list/ipaddress-logs/<int:pk>', 'ipaddress-logs', 'IP Address Logs'),
 }
 
 sidebar_navigation = {
@@ -153,6 +154,7 @@ urlpatterns = [
 
     path(pages['ipaddress-list'][0], ipam_views.IPAddressListView.as_view(), name=pages['ipaddress-list'][1]),
     path(pages['ipaddress-detail'][0], ipam_views.IPAddressDetailView.as_view(), name=pages['ipaddress-detail'][1]),
+    path(pages['ipaddress-logs'][0], ipam_views.IPAddressLogsView.as_view(), name=pages['ipaddress-logs'][1]),
 
 # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

@@ -105,3 +105,20 @@ class IPAddressDetailView(PermissionRequiredMixin, DetailView):
     model = IPAddress
     template_name = 'ipam/ipaddress/ipaddress-detail.html'
     permission_required = "ipam.view_ipaddress"
+
+
+class IPAddressLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        ipaddress = get_object_or_404(IPAddress, pk=kwargs['pk'])
+        ipaddress_model = ContentType.objects.get(app_label="ipam", model="ipaddress")
+        model_pk = ipaddress_model.pk
+        logs = LogEntry.objects.filter(content_type=ipaddress_model, object_id=ipaddress.pk).order_by('-action_time')[
+               :10]
+
+        return render(request, 'ipam/ipaddress/ipaddress-logs.html', {
+            'object': ipaddress,
+            'logs': logs,
+            'model_pk': model_pk
+        })

@@ -7,6 +7,7 @@ from django.views.generic import ListView, DetailView
 from ipam.models.ip import IPPrefix, IPAddress
 from ipam.models.services import Service
 
+
 # Create your views here.
 
 
@@ -139,3 +140,20 @@ class ServiceDetailView(PermissionRequiredMixin, DetailView):
     model = Service
     template_name = 'ipam/service/service-detail.html'
     permission_required = "ipam.view_service"
+
+
+class ServiceLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        service = get_object_or_404(Service, pk=kwargs['pk'])
+        service_model = ContentType.objects.get(app_label="ipam", model="service")
+        model_pk = service_model.pk
+        logs = LogEntry.objects.filter(content_type=service_model, object_id=service.pk).order_by('-action_time')[
+               :10]
+
+        return render(request, 'ipam/service/service-logs.html', {
+            'object': service,
+            'logs': logs,
+            'model_pk': model_pk
+        })

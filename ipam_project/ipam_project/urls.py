@@ -82,6 +82,7 @@ pages = {
 
     'service-list': ('ipam/service-list/', 'service-list', 'Services'),
     'service-detail': ('ipam/service-list/service-detail/<int:pk>', 'service-detail', 'Service Detail'),
+    'service-logs': ('ipam/service-list/service-logs/<int:pk>', 'service-logs', 'Service Logs'),
 }
 
 sidebar_navigation = {
@@ -167,5 +168,6 @@ urlpatterns = [
 
     path(pages['service-list'][0], ipam_views.ServiceListView.as_view(), name=pages['service-list'][1]),
     path(pages['service-detail'][0], ipam_views.ServiceDetailView.as_view(), name=pages['service-detail'][1]),
+    path(pages['service-logs'][0], ipam_views.ServiceLogsView.as_view(), name=pages['service-logs'][1]),
 # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

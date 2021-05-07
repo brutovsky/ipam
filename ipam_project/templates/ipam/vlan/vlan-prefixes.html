@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>VLAN {{object.name}} prefixes</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link" aria-current="page" href="{% url 'vlan-detail' object.pk %}">VLAN</a>
+            <a class="nav-link active" href="">Prefixes</a>
+<!--            <a class="nav-link" href="{% url 'prefix-ip-addresses' object.pk %}">IP Addresses</a>-->
+<!--            <a class="nav-link" href="{% url 'prefix-logs' object.pk %}">ChangeLog</a>-->
+        </ul>
+        {% if prefixes|length == 0%}
+        <br/>
+        <span class="text-muted">None</span>
+        {% else %}
+        <table>
+            <caption>
+                {{prefixes|length}} entries
+            </caption>
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>Prefix</th>
+                <th>Status</th>
+                <th>Utilization</th>
+                <th>Location</th>
+                <th>Role</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+            {% for prefix in prefixes %}
+            <tr>
+                <th class="text-center">
+                    {% if prefix.is_container %}
+                    <i class="fa fa-folder-open-o"></i>
+                    {% elif prefix.is_pool %}
+
+                    {% else %}
+
+                    {% endif%}
+                </th>
+                <td>
+                    <a href="{% url 'prefix-detail' prefix.id %}">
+                        {{prefix.prefix}}
+                    </a>
+                </td>
+                <td class="text-center">
+                    {% if prefix.status == 'active' %}
+                    <span class="badge badge-success">
+                    {{prefix.status}}
+                </span>
+                    {% elif prefix.status == 'reserved' %}
+                    <span class="badge badge-secondary">
+                    {{prefix.status}}
+                </span>
+                    {% elif prefix.status == 'deprecated' %}
+                    <span class="badge badge-danger">
+                    {{prefix.status}}
+                </span>
+                    {% endif%}
+                </td>
+                <td class="text-center">
+                <span class="text-center">
+                    {{prefix.get_utilization}}%
+                </span>
+                    <div class="progress-bar progress-bar-no-arrow">
+                        <div class="progress-bar-filled" style="width: {{prefix.get_utilization}}%"></div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    {% if prefix.location %}
+                    <a href="/admin/dcim/location/{{prefix.location.pk}}/change/">
+                        {{prefix.location}}
+                    </a>
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if prefix.role %}
+                    {{prefix.role}}
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td><a class="text-warning" href="/admin/ipam/ipprefix/{{prefix.pk}}/change/"><i class="fa fa-cog"></i>
+                    Change</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

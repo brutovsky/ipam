@@ -262,3 +262,15 @@ class VLANDetailView(PermissionRequiredMixin, DetailView):
     model = VLAN
     template_name = 'ipam/vlan/vlan-detail.html'
     permission_required = "ipam.view_vlan"
+
+
+class VLANPrefixesView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_ipprefix'
+
+    def get(self, request, *args, **kwargs):
+        vlan = get_object_or_404(VLAN, pk=kwargs['pk'])
+        prefixes = vlan.ip_prefixes.all()
+        return render(request, 'ipam/vlan/vlan-prefixes.html', {
+            'object': vlan,
+            'prefixes': prefixes
+        })

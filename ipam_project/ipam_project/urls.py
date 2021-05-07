@@ -73,7 +73,8 @@ pages = {
     'prefix-list': ('ipam/prefix-list/', 'prefix-list', 'Prefixes'),
     'prefix-detail': ('ipam/prefix-list/prefix-detail/<int:pk>', 'prefix-detail', 'Prefix Detail'),
     'prefix-children': ('ipam/prefix-list/prefix-children/<int:pk>', 'prefix-children', 'Prefix Children'),
-    'prefix-ip-addresses': ('ipam/prefix-list/prefix-ip-addresses/<int:pk>', 'prefix-ip-addresses', 'Prefix IP Addresses'),
+    'prefix-ip-addresses': (
+        'ipam/prefix-list/prefix-ip-addresses/<int:pk>', 'prefix-ip-addresses', 'Prefix IP Addresses'),
     'prefix-logs': ('ipam/prefix-list/prefix-logs/<int:pk>', 'prefix-logs', 'Prefix Logs'),
 
     'ipaddress-list': ('ipam/ipaddress-list/', 'ipaddress-list', 'IP Addresses'),
@@ -93,6 +94,7 @@ pages = {
     'vlan-list': ('ipam/vlan-list/', 'vlan-list', 'VLAN'),
     'vlan-detail': ('ipam/vlan-list/vlan-detail/<int:pk>', 'vlan-detail', 'VLAN Detail'),
     'vlan-logs': ('ipam/vlan-list/vlan-logs/<int:pk>', 'vlan-logs', 'VLAN Logs'),
+    'vlan-prefixes': ('ipam/vlan-list/vlan-prefixes/<int:pk>', 'vlan-prefixes', 'VLAN Prefixes'),
 }
 
 sidebar_navigation = {
@@ -189,7 +191,8 @@ urlpatterns = [
     path(pages['prefix-list'][0], ipam_views.PrefixListView.as_view(), name=pages['prefix-list'][1]),
     path(pages['prefix-detail'][0], ipam_views.PrefixDetailView.as_view(), name=pages['prefix-detail'][1]),
     path(pages['prefix-children'][0], ipam_views.PrefixChildrenView.as_view(), name=pages['prefix-children'][1]),
-    path(pages['prefix-ip-addresses'][0], ipam_views.PrefixIpAddressesView.as_view(), name=pages['prefix-ip-addresses'][1]),
+    path(pages['prefix-ip-addresses'][0], ipam_views.PrefixIpAddressesView.as_view(),
+         name=pages['prefix-ip-addresses'][1]),
     path(pages['prefix-logs'][0], ipam_views.PrefixLogsView.as_view(), name=pages['prefix-logs'][1]),
 
     path(pages['ipaddress-list'][0], ipam_views.IPAddressListView.as_view(), name=pages['ipaddress-list'][1]),
@@ -207,5 +210,6 @@ urlpatterns = [
     path(pages['vlan-list'][0], ipam_views.VLANListView.as_view(), name=pages['vlan-list'][1]),
     path(pages['vlan-detail'][0], ipam_views.VLANDetailView.as_view(), name=pages['vlan-detail'][1]),
     # path(pages['vlan-logs'][0], ipam_views.InterfaceLogsView.as_view(), name=pages['vlan-logs'][1]),
-# 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
+    path(pages['vlan-prefixes'][0], ipam_views.VLANPrefixesView.as_view(), name=pages['vlan-prefixes'][1]),
+    # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

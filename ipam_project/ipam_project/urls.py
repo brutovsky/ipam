@@ -75,6 +75,9 @@ pages = {
     'prefix-children': ('ipam/prefix-list/prefix-children/<int:pk>', 'prefix-children', 'Prefix Children'),
     'prefix-ip-addresses': ('ipam/prefix-list/prefix-ip-addresses/<int:pk>', 'prefix-ip-addresses', 'Prefix IP Addresses'),
     'prefix-logs': ('ipam/prefix-list/prefix-logs/<int:pk>', 'prefix-logs', 'Prefix Logs'),
+
+    'ipaddress-list': ('ipam/ipaddress-list/', 'ipaddress-list', 'IP Addresses'),
+    'ipaddress-detail': ('ipam/ipaddress-list/ipaddress-detail/<int:pk>', 'ipaddress-detail', 'IP Address Detail'),
 }
 
 sidebar_navigation = {
@@ -104,6 +107,12 @@ sidebar_navigation = {
         ),
         'Prefixes': (
             pages['prefix-list'],
+            {
+
+            }
+        ),
+        'IP Addresses': (
+            pages['ipaddress-list'],
             {
 
             }
@@ -141,6 +150,9 @@ urlpatterns = [
     path(pages['prefix-children'][0], ipam_views.PrefixChildrenView.as_view(), name=pages['prefix-children'][1]),
     path(pages['prefix-ip-addresses'][0], ipam_views.PrefixIpAddressesView.as_view(), name=pages['prefix-ip-addresses'][1]),
     path(pages['prefix-logs'][0], ipam_views.PrefixLogsView.as_view(), name=pages['prefix-logs'][1]),
+
+    path(pages['ipaddress-list'][0], ipam_views.IPAddressListView.as_view(), name=pages['ipaddress-list'][1]),
+    path(pages['ipaddress-detail'][0], ipam_views.IPAddressDetailView.as_view(), name=pages['ipaddress-detail'][1]),
 
 # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

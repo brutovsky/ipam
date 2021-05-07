@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>IP Addresses</h2>
+    <a class="text-success" href="/admin/ipam/ipaddress/add/"><i class="fa fa-plus"></i> Add new ip address</a>
+    <table>
+        <caption>
+            {{ipaddresses|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>IP Address</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Device</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for ipaddress in ipaddresses %}
+        <tr>
+            <td>
+                <a href="{% url 'ipaddress-detail' ipaddress.id %}">
+                    {{ipaddress.address}}
+                </a>
+            </td>
+            <td class="text-center">
+                {% if ipaddress.status == 'active' %}
+                <span class="badge badge-success">
+                    {{ipaddress.status}}
+                </span>
+                {% elif ipaddress.status == 'reserved' %}
+                <span class="badge badge-secondary">
+                    {{ipaddress.status}}
+                </span>
+                {% elif ipaddress.status == 'deprecated' %}
+                <span class="badge badge-danger">
+                    {{ipaddress.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td class="text-center">
+                {% if ipaddress.role %}
+                {{ipaddress.role}}
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td>
+                {% if ipaddress.assigned_interface %}
+                {{ipaddress.assigned_interface.device}}
+                {% else %}
+                <span class="text-muted">{{ipaddress.assigned_interface}}</span>
+                {% endif %}
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/ipaddress/{{ipaddress.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

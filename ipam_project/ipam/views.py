@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import ListView, DetailView
-from ipam.models.ip import IPPrefix
+from ipam.models.ip import IPPrefix, IPAddress
 
 
 # Create your views here.
@@ -88,3 +88,20 @@ class PrefixLogsView(PermissionRequiredMixin, View):
             'logs': logs,
             'model_pk': model_pk
         })
+
+
+#
+# IPAddress views
+#
+
+class IPAddressListView(PermissionRequiredMixin, ListView):
+    model = IPAddress
+    template_name = 'ipam/ipaddress/ipaddress-list.html'
+    context_object_name = 'ipaddresses'
+    permission_required = "ipam.view_ipaddress"
+
+
+class IPAddressDetailView(PermissionRequiredMixin, DetailView):
+    model = IPAddress
+    template_name = 'ipam/ipaddress/ipaddress-detail.html'
+    permission_required = "ipam.view_ipaddress"

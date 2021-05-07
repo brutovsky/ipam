@@ -291,3 +291,15 @@ class VLANLogsView(PermissionRequiredMixin, View):
             'logs': logs,
             'model_pk': model_pk
         })
+
+
+#
+# VLANGroup views
+#
+
+
+class VLANGroupListView(PermissionRequiredMixin, ListView):
+    model = VLANGroup
+    template_name = 'ipam/vlangroup/vlangroup-list.html'
+    context_object_name = 'vlangroups'
+    permission_required = "ipam.view_vlangroup"

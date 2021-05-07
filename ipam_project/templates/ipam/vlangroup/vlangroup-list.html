@@ -47,7 +47,7 @@
                 {{group.location}}
             </td>
             <td class="text-center">
-                <a>
+                <a href="{% url 'vlan-list' %}?group={{group.name}}">
                     {{group.vlans.all|length}}
                 </a>
             </td>

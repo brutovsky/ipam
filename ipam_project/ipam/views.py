@@ -257,6 +257,32 @@ class VLANListView(PermissionRequiredMixin, ListView):
     context_object_name = 'vlans'
     permission_required = "ipam.view_vlan"
 
+    def get_queryset(self):
+        role_filter = self.request.GET.get('role', '')
+        group_filter = self.request.GET.get('group', '')
+
+        queryset = VLAN.objects
+
+        if role_filter:
+            role = IPRole.objects.get(name=role_filter)
+            queryset = queryset.filter(role=role.id)
+
+        if group_filter:
+            group = VLANGroup.objects.get(name=group_filter)
+            queryset = queryset.filter(vlan_group=group.id)
+
+        return queryset.all()
+        # else:
+        #     return IPPrefix.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['role_options'] = IPRole.objects.all()
+        context['group_options'] = VLANGroup.objects.all()
+        context['selected_role'] = self.request.GET.get('role', '')
+        context['selected_group'] = self.request.GET.get('group', '')
+        return context
+
 
 class VLANDetailView(PermissionRequiredMixin, DetailView):
     model = VLAN

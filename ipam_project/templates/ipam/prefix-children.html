@@ -7,7 +7,7 @@
         <ul class="nav nav-tabs">
             <a class="nav-link" aria-current="page" href="{% url 'prefix-detail' object.pk %}">Prefix</a>
             <a class="nav-link active" href="">Child Prefixes</a>
-            <a class="nav-link" href="#">IP Addresses</a>
+            <a class="nav-link" href="{% url 'prefix-ip-addresses' object.pk %}">IP Addresses</a>
             <a class="nav-link disabled" href="#">ChangeLog</a>
         </ul>
         {% if children|length == 0%}

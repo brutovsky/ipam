@@ -58,3 +58,17 @@ class PrefixChildrenView(PermissionRequiredMixin, View):
             'object': prefix,
             'children': prefix_children
         })
+
+
+class PrefixIpAddressesView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_ipaddress'
+
+    def get(self, request, *args, **kwargs):
+        prefix = get_object_or_404(IPPrefix, pk=kwargs['pk'])
+        prefix_ips = prefix.ip_addresses.all()
+        prefix_available_ips = prefix.get_available_ips()
+        return render(request, 'ipam/prefix-ip-addresses.html', {
+            'object': prefix,
+            'ipaddresses': prefix_ips,
+            'available_iprange': list(prefix_available_ips.iter_ipranges())
+        })

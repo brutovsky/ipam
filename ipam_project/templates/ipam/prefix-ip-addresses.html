@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Prefix {{object.prefix}} children</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link" aria-current="page" href="{% url 'prefix-detail' object.pk %}">Prefix</a>
+            <a class="nav-link" href="{% url 'prefix-children' object.pk %}">Child Prefixes</a>
+            <a class="nav-link active" href="">IP Addresses</a>
+            <a class="nav-link" href="">ChangeLog</a>
+        </ul>
+        {% if ipaddresses|length == 0%}
+        <br/>
+        <span class="text-muted">None</span>
+        {% else %}
+        <table>
+            <caption>
+                {{ipaddresses|length}} entries
+            </caption>
+            <thead>
+            <tr>
+                <th>IP Address</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Interface</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+            {% for ipaddress in ipaddresses %}
+            <tr>
+                <th class="text-center">
+                    <a href="">
+                        {{ipaddress.address}}
+                    </a>
+                </th>
+                <td class="text-center">
+                    {% if ipaddress.status == 'active' %}
+                    <span class="badge badge-success">
+                    {{ipaddress.status}}
+                </span>
+                    {% elif ipaddress.status == 'reserved' %}
+                    <span class="badge badge-secondary">
+                    {{ipaddress.status}}
+                </span>
+                    {% elif ipaddress.status == 'deprecated' %}
+                    <span class="badge badge-danger">
+                    {{ipaddress.status}}
+                </span>
+                    {% endif%}
+                </td>
+                <td class="text-center">
+                    {% if ipaddress.role %}
+                    {{ipaddress.role}}
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if ipaddress.assigned_interface %}
+                    {{ipaddress.assigned_interface}}
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+                <td><a class="text-warning" href="/admin/ipam/ipaddress/{{ipaddress.pk}}/change/"><i
+                        class="fa fa-cog"></i>
+                    Change</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        <hr/>
+        <h2>Available IP Addresses</h2>
+        {% if available_iprange|length == 0%}
+        <br/>
+        <span class="text-muted">None</span>
+        {% else %}
+        <table>
+            <caption>
+                {{available_iprange|length}} entries
+            </caption>
+            <thead>
+            <tr>
+                <th>IP Address Range</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Interface</th>
+            </tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+            {% for ipaddress in available_iprange %}
+            <tr>
+                <th class="text-center">
+                    {{ipaddress}}
+                </th>
+                <td class="text-center">
+                    <span class="badge badge-success">
+                    Available
+                </span>
+                </td>
+                <td class="text-center">
+                    —
+                </td>
+                <td class="text-center">
+                    —
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

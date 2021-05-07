@@ -10,7 +10,7 @@
         <ul class="nav nav-tabs">
             <a class="nav-link active" aria-current="page" href="">Prefix</a>
             <a class="nav-link" href="{% url 'prefix-children' object.pk %}">Child Prefixes</a>
-            <a class="nav-link" href="#">IP Addresses</a>
+            <a class="nav-link" href="{% url 'prefix-ip-addresses' object.pk %}">IP Addresses</a>
             <a class="nav-link disabled" href="#" tabindex="-1">ChangeLog</a>
         </ul>
         <table class="table table-hover panel-body attr-table">
@@ -43,7 +43,7 @@
                 <td>Parent container</td>
                 <td>
                     {% if object.prefix_container %}
-                    <a href="/ipam/prefixes/?role=loopback">{{object.prefix_container}}</a>
+                    <a href="{% url 'prefix-detail' object.prefix_container.pk%}">{{object.prefix_container}}</a>
                     {% else %}
                     <span class="text-muted">{{object.prefix_container}}</span>
                     {% endif %}

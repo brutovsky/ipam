@@ -1,3 +1,4 @@
+import netaddr
 from django.core.exceptions import ValidationError
 from django.db import models
 from ipam.choices import IPAddressStatusChoices, IPPrefixStatusChoices
@@ -8,7 +9,6 @@ from dcim.models.locations import Location
 from netaddr import IPNetwork, IPSet
 from ipam.utils import toset, AttributeGenerator
 from ipam.utils import calc_ipaddress_children
-
 
 __all__ = (
     'IPRole',
@@ -121,6 +121,38 @@ class IPPrefix(models.Model, AttributeGenerator):
                 prefix_size -= 2
             return round(float(child_count) / prefix_size * 100, 2)
 
+    def get_available_ips(self):
+        """
+        Return all available IPs within this prefix as an IPSet.
+        """
+        prefix = IPSet(self.prefix)
+
+        if self.is_container and self.subnets:
+            available_ips = IPSet([])
+            for subnet in self.subnets.all():
+                available_ips.update(subnet.get_available_ips())
+            return available_ips
+
+        prefix_ips = IPSet([ip.address.ip for ip in self.ip_addresses.all()])
+        available_ips = prefix - prefix_ips
+
+        # IPv6, pool, or IPv4 /31 sets are fully usable
+        if self.family == 6 or self.is_pool or self.prefix.prefixlen == 31:
+            return available_ips
+
+        # For "normal" IPv4 prefixes, omit first and last addresses
+        available_ips -= IPSet([
+            netaddr.IPAddress(self.prefix.first),
+            netaddr.IPAddress(self.prefix.last),
+        ])
+
+        return available_ips
+
+    # def get_ip_addresses_with_available(self):
+    #     all_addresses = IPSet([self.prefix])
+    #     ip_addresses = IPSet([ip.address.ip for ip in self.ip_addresses.all()])
+    #     all_addresses -
+
     def clean(self):
         super().clean()
         print(self.pk)
@@ -148,7 +180,8 @@ class IPPrefix(models.Model, AttributeGenerator):
                     f'{"Pool" if self.is_pool else "Default"} {self.prefix} prefix MUST be assigned to location')
             # Validate VLANGroup location
             if self.vlan and self.vlan.vlan_group.location != self.location:
-                raise ValidationError(f'VLAN Group "{self.vlan.vlan_group}" location mismatch with prefix {self.prefix} location -> {self.vlan.vlan_group.location}|{self.location}')
+                raise ValidationError(
+                    f'VLAN Group "{self.vlan.vlan_group}" location mismatch with prefix {self.prefix} location -> {self.vlan.vlan_group.location}|{self.location}')
 
         subnet = IPSet([self.prefix])
 
@@ -157,13 +190,15 @@ class IPPrefix(models.Model, AttributeGenerator):
             print(self.prefix_container.location)
             # Check if the prefix family matches with container`s
             if self.prefix_container.family != self.family:
-                raise ValidationError(f'Prefix {self.prefix} protocol mismatch with prefix {self.prefix_container} protocol -> IPv{self.family}|IPv{self.prefix_container.family}')
+                raise ValidationError(
+                    f'Prefix {self.prefix} protocol mismatch with prefix {self.prefix_container} protocol -> IPv{self.family}|IPv{self.prefix_container.family}')
             # Check if the prefix is subnet of container
             container = IPSet([self.prefix_container.prefix])
             if not container > subnet:
                 raise ValidationError(f'{subnet} is not subnet of {container}')
             # Check if the prefix doesn`t overlap with other subnets
-            container_children = map(toset, IPPrefix.objects.filter(prefix_container=self.prefix_container).exclude(pk=self.pk))
+            container_children = map(toset, IPPrefix.objects.filter(prefix_container=self.prefix_container).exclude(
+                pk=self.pk))
             for child in container_children:
                 if len(child & subnet) != 0:
                     raise ValidationError(f'{subnet} overlaps with {child}')
@@ -270,7 +305,8 @@ class IPAddress(models.Model, AttributeGenerator):
                 raise ValidationError(f'{self.address} dns name already exist')
         # Validate service assignment
         if self.assigned_service and self.assigned_interface and self.assigned_service.device != self.assigned_interface.device:
-            raise ValidationError(f'{self.assigned_interface} doesn`t belong to {self.assigned_service} service`s device interfaces(try to change {self.address} interface assignment)')
+            raise ValidationError(
+                f'{self.assigned_interface} doesn`t belong to {self.assigned_service} service`s device interfaces(try to change {self.address} interface assignment)')
 
     def __str__(self):
         return str(f'{f"{self.dns_name}:" if self.dns_name else ""}{self.address}')

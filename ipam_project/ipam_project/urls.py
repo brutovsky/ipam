@@ -73,6 +73,7 @@ pages = {
     'prefix-list': ('ipam/prefix-list/', 'prefix-list', 'Prefixes'),
     'prefix-detail': ('ipam/prefix-list/prefix-detail/<int:pk>', 'prefix-detail', 'Prefix Detail'),
     'prefix-children': ('ipam/prefix-list/prefix-children/<int:pk>', 'prefix-children', 'Prefix Children'),
+    'prefix-ip-addresses': ('ipam/prefix-list/prefix-ip-addresses/<int:pk>', 'prefix-ip-addresses', 'Prefix IP Addresses'),
 }
 
 sidebar_navigation = {
@@ -136,5 +137,6 @@ urlpatterns = [
     path(pages['prefix-list'][0], ipam_views.PrefixListView.as_view(), name=pages['prefix-list'][1]),
     path(pages['prefix-detail'][0], ipam_views.PrefixDetailView.as_view(), name=pages['prefix-detail'][1]),
     path(pages['prefix-children'][0], ipam_views.PrefixChildrenView.as_view(), name=pages['prefix-children'][1]),
+    path(pages['prefix-ip-addresses'][0], ipam_views.PrefixIpAddressesView.as_view(), name=pages['prefix-ip-addresses'][1]),
 # 'post/<int:pk>/', PostDetailView.as_view(), name='post-detail'
 ]

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<section>
+    <header><h2>Statistics</h2></header>
+    <div class="terminal-timeline">
+        {% for title, components in statistics.items %}
+        <div class="terminal-card">
+            <header>{{title}}</header>
+            <div class="container-fluid" style="padding-top:5px">
+                <table class="table table-condensed table-hover statistics">
+                    <tbody>
+                    {% for module_name, module_count in components.items %}
+                    <tr>
+                        <td class="title">{{module_name}}</td>
+                        <td class="stats-badge"><span class="badge badge1 badge5">{{module_count}}</span></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <br>
+</section>
+
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 widget-dash" id="w-statistics">
+    <div class="inner"><h4>Statistics</h4>
+        {% for title, components in statistics.items %}
+        <div><span>{{title}}</span>
+            <div class="container-fluid" style="padding-top:5px">
+                <table class="table table-condensed table-hover statistics">
+                    <tbody>
+                    {% for module_name, module_count in components.items %}
+                    <tr>
+                        <td class="title">{{module_name}}</td>
+                        <td class="stats-badge"><span class="badge badge1 badge5">{{module_count}}</span></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<hr/>
+
+<div>
+    <h4>Last 10 logs</h4>
+    <table>
+        <caption>
+            {{logs|length}} entries
+            <a href="/admin/admin/logentry/">See more</a>
+        </caption>
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>User name</th>
+            <th>Action</th>
+            <th>Details</th>
+            <th>Object</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+        <tr>
+            <th>{{log.action_time}}</th>
+            <th>{{log.user}}</th>
+            <th>
+                {% if log.is_addition %}
+                <span class="label text-success">Added</span>
+                {% elif log.is_deletion %}
+                <span class="label text-danger">Deleted</span>
+                {% elif log.is_change %}
+                <span class="label text-primary">Updated</span>
+                {% endif %}
+            </th>
+            <th>{{log}}</th>
+            <th><a href="{{log.get_admin_url}}">{{log.object_repr}}</a></th>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

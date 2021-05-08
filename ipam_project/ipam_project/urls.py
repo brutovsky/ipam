@@ -1,19 +1,6 @@
-"""ipam_project URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/dev/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry
+from django.shortcuts import render
 from django.urls import path, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
@@ -27,6 +14,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import views as auth_views
 from users import views as user_views
 from ipam import views as ipam_views
+
+from dcim.models.devices import Device
+from ipam.models.ip import IPPrefix
 
 
 @api_view(['GET'])
@@ -177,6 +167,26 @@ sidebar_navigation = {
     }
 }
 
+
+def home(request):
+    logs = LogEntry.objects.order_by('-action_time')[:10]
+
+    statistics = {
+        'IPAM': {},
+        'DCIM': {},
+        'Users': {},
+    }
+
+    statistics['IPAM']['Number of prefixes'] = IPPrefix.objects.all().count()
+    statistics['DCIM']['Number of devices'] = Device.objects.all().count()
+    statistics['Users']['Number of users'] = User.objects.all().count()
+
+    return render(request, 'home.html', {
+        'logs': logs,
+        'statistics': statistics
+    })
+
+
 urlpatterns = [
     # Admin page
     path('admin/', admin.site.urls),
@@ -192,7 +202,7 @@ urlpatterns = [
     path(pages['register'][0], user_views.register, name=pages['register'][1]),
     path(pages['profile'][0], user_views.profile, name=pages['profile'][1]),
     path(pages['change-password'][0], user_views.change_password, name=pages['change-password'][1]),
-    path(pages[''][0], user_views.profile, name=pages[''][1]),
+    path(pages[''][0], home, name=pages[''][1]),
 
     path(pages['users'][0], user_views.user_component, name=pages['users'][1]),
     path(pages['users-logs'][0], user_views.users_logs, name=pages['users-logs'][1]),

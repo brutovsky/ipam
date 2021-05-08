@@ -99,6 +99,22 @@ pages = {
     'region-list': ('dcim/region-list/', 'region-list', 'Regions'),
 
     'location-list': ('dcim/location-list/', 'location-list', 'Locations'),
+
+    'rackgroup-list': ('dcim/rackgroup-list/', 'rackgroup-list', 'Rack Groups'),
+
+    'rackrole-list': ('dcim/rackrole-list/', 'rackrole-list', 'Rack Roles'),
+
+    'rack-list': ('dcim/rack-list/', 'rack-list', 'Racks'),
+
+    'manufacturer-list': ('dcim/manufacturer-list/', 'manufacturer-list', 'Manufacturers'),
+
+    'platform-list': ('dcim/platform-list/', 'platform-list', 'Platforms'),
+
+    'devicetype-list': ('dcim/devicetype-list/', 'devicetype-list', 'Device Types'),
+
+    'devicerole-list': ('dcim/devicerole-list/', 'devicerole-list', 'Device Roles'),
+
+    'device-list': ('dcim/device-list/', 'device-list', 'Devices'),
 }
 
 sidebar_navigation = {
@@ -192,6 +208,46 @@ sidebar_navigation = {
             {
             }
         ),
+        'Rack Group': (
+            pages['rackgroup-list'],
+            {
+            }
+        ),
+        'Rack Roles': (
+            pages['rackrole-list'],
+            {
+            }
+        ),
+        'Racks': (
+            pages['rack-list'],
+            {
+            }
+        ),
+        'Manufacturers': (
+            pages['manufacturer-list'],
+            {
+            }
+        ),
+        'Platforms': (
+            pages['platform-list'],
+            {
+            }
+        ),
+        'Device Types': (
+            pages['devicetype-list'],
+            {
+            }
+        ),
+        'Device Roles': (
+            pages['devicerole-list'],
+            {
+            }
+        ),
+        'Devices': (
+            pages['device-list'],
+            {
+            }
+        ),
     }
 }
 
@@ -206,7 +262,7 @@ def home(request):
     }
 
     statistics['IPAM']['Number of prefixes'] = IPPrefix.objects.all().count()
-    statistics['DCIM']['Number of devices'] = Device.objects.all().count()
+    statistics['DCIM']['Number of device'] = Device.objects.all().count()
     statistics['Users']['Number of users'] = User.objects.all().count()
 
     return render(request, 'home.html', {
@@ -277,4 +333,20 @@ urlpatterns = [
     path(pages['region-list'][0], dcim_views.RegionListView.as_view(), name=pages['region-list'][1]),
 
     path(pages['location-list'][0], dcim_views.LocationListView.as_view(), name=pages['location-list'][1]),
+
+    path(pages['rackgroup-list'][0], dcim_views.RackGroupListView.as_view(), name=pages['rackgroup-list'][1]),
+
+    path(pages['rackrole-list'][0], dcim_views.RackRoleListView.as_view(), name=pages['rackrole-list'][1]),
+
+    path(pages['rack-list'][0], dcim_views.RackListView.as_view(), name=pages['rack-list'][1]),
+
+    path(pages['manufacturer-list'][0], dcim_views.ManufacturerListView.as_view(), name=pages['manufacturer-list'][1]),
+
+    path(pages['platform-list'][0], dcim_views.PlatformListView.as_view(), name=pages['platform-list'][1]),
+
+    path(pages['devicetype-list'][0], dcim_views.DeviceTypeListView.as_view(), name=pages['devicetype-list'][1]),
+
+    path(pages['devicerole-list'][0], dcim_views.DeviceRoleListView.as_view(), name=pages['devicerole-list'][1]),
+
+    path(pages['device-list'][0], dcim_views.DeviceListView.as_view(), name=pages['device-list'][1]),
 ]

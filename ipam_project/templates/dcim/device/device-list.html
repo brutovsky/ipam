@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Devices</h2>
+    <a class="text-success" href="/admin/dcim/device/add/"><i class="fa fa-plus"></i> Add new Device</a>
+    <table>
+        <caption>
+            {{devices|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Rack</th>
+            <th>Role</th>
+            <th>Location</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for device in devices %}
+        <tr>
+            <td class="text-center">
+                {{device.name}}
+            </td>
+            <td>
+                {{device.type}}
+            </td>
+            <td class="text-center">
+                {% if device.status == 'active' %}
+                <span class="badge badge-success">
+                    {{device.status}}
+                </span>
+                {% elif device.status == 'offline' %}
+                <span class="badge badge-danger">
+                    {{device.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td>
+                {{device.rack}}
+            </td>
+            <td>
+                {% if device.role %}
+                <label class="label" style="color: #ffffff; background-color: {{device.role.color}}">{{device.role.name}}</label>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td>
+                {{device.rack.rack_group.location}}
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/device/{{device.pk}}/change/"><i class="fa fa-cog"></i> Change</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

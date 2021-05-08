@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Device Types</h2>
+    <a class="text-success" href="/admin/dcim/devicetype/add/"><i class="fa fa-plus"></i> Add new Device type</a>
+    <table>
+        <caption>
+            {{devicetypes|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Model</th>
+            <th>Manufacturer</th>
+            <th>Devices</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for devicetype in devicetypes %}
+        <tr>
+            <td class="text-center">
+                {{devicetype.model}}
+            </td>
+            <td class="text-center">
+                {{devicetype.manufacturer}}
+            </td>
+            <td class="text-center">
+                {{devicetype.devices.all|length}}
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/devicetype/{{devicetype.pk}}/change/"><i
+                    class="fa fa-cog"></i> Change</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

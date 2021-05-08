@@ -121,12 +121,12 @@ class DeviceRole(models.Model):
 class Device(models.Model):
     type = models.ForeignKey(
         DeviceType,
-        related_name='devices',
+        related_name='device',
         on_delete=models.PROTECT,
     )
     role = models.ForeignKey(
         DeviceRole,
-        related_name='devices',
+        related_name='device',
         on_delete=models.PROTECT,
         blank=True,
         null=True,
@@ -134,7 +134,7 @@ class Device(models.Model):
     )
     platform = models.ForeignKey(
         Platform,
-        related_name='devices',
+        related_name='device',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -150,7 +150,7 @@ class Device(models.Model):
     )
     rack = models.ForeignKey(
         Rack,
-        related_name='devices',
+        related_name='device',
         on_delete=models.PROTECT,
     )
     status = models.CharField(

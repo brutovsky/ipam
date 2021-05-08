@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Racks</h2>
+    <a class="text-success" href="/admin/dcim/rack/add/"><i class="fa fa-plus"></i> Add new rack</a>
+    <table>
+        <caption>
+            {{racks|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Group</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Devices</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for rack in racks %}
+        <tr>
+            <td class="text-center">
+                {{rack.name}}
+            </td>
+            <td class="text-center">
+                {{rack.rack_group.location}}
+            </td>
+            <td class="text-center">
+                {{rack.rack_group}}
+            </td>
+            <td class="text-center">
+                {% if rack.status == 'available' or rack.status == 'active' %}
+                <span class="badge badge-success">
+                    {{rack.status}}
+                </span>
+                {% elif rack.status == 'reserved'%}
+                <span class="badge badge-secondary">
+                    {{rack.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td class="text-center">
+                {% if rack.role %}
+                <label class="label"
+                       style="color: #ffffff; background-color: {{rack.role.color}}">{{rack.role.name}}</label>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td class="text-center">
+                {{rack.devices.all|length}}
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/rack/{{rack.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

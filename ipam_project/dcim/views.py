@@ -3,7 +3,9 @@ from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
-from dcim.models import Region, Location
+from dcim.models.locations import Region, Location
+from dcim.models.racks import RackGroup, RackRole, Rack
+from dcim.models.devices import *
 
 
 def dcim_component(request):
@@ -52,3 +54,91 @@ class LocationListView(PermissionRequiredMixin, ListView):
     template_name = 'dcim/location/location-list.html'
     context_object_name = 'locations'
     permission_required = "dcim.view_location"
+
+
+#
+# RackGroup views
+#
+
+class RackGroupListView(PermissionRequiredMixin, ListView):
+    model = RackGroup
+    template_name = 'dcim/rackgroup/rackgroup-list.html'
+    context_object_name = 'rackgroups'
+    permission_required = "dcim.view_rackgroup"
+
+
+#
+# RackRole views
+#
+
+class RackRoleListView(PermissionRequiredMixin, ListView):
+    model = RackRole
+    template_name = 'dcim/rackrole/rackrole-list.html'
+    context_object_name = 'rackroles'
+    permission_required = "dcim.view_rackrole"
+
+
+#
+# Rack views
+#
+
+class RackListView(PermissionRequiredMixin, ListView):
+    model = Rack
+    template_name = 'dcim/rack/rack-list.html'
+    context_object_name = 'racks'
+    permission_required = "dcim.view_rack"
+
+
+#
+# Manufacturer views
+#
+
+class ManufacturerListView(PermissionRequiredMixin, ListView):
+    model = Manufacturer
+    template_name = 'dcim/manufacturer/manufacturer-list.html'
+    context_object_name = 'manufacturers'
+    permission_required = "dcim.view_manufacturer"
+
+
+#
+# Platform views
+#
+
+class PlatformListView(PermissionRequiredMixin, ListView):
+    model = Platform
+    template_name = 'dcim/platform/platform-list.html'
+    context_object_name = 'platforms'
+    permission_required = "dcim.view_platform"
+
+
+#
+# DeviceType views
+#
+
+class DeviceTypeListView(PermissionRequiredMixin, ListView):
+    model = DeviceType
+    template_name = 'dcim/devicetype/devicetype-list.html'
+    context_object_name = 'devicetypes'
+    permission_required = "dcim.view_devicetype"
+
+
+#
+# DeviceRole views
+#
+
+class DeviceRoleListView(PermissionRequiredMixin, ListView):
+    model = DeviceRole
+    template_name = 'dcim/devicerole/devicerole-list.html'
+    context_object_name = 'deviceroles'
+    permission_required = "dcim.view_devicerole"
+
+
+#
+# Device views
+#
+
+class DeviceListView(PermissionRequiredMixin, ListView):
+    model = Device
+    template_name = 'dcim/device/device-list.html'
+    context_object_name = 'devices'
+    permission_required = "dcim.view_device"

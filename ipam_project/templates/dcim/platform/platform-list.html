@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Platforms</h2>
+    <a class="text-success" href="/admin/dcim/platform/add/"><i class="fa fa-plus"></i> Add new Platform</a>
+    <table>
+        <caption>
+            {{platforms|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Manufacturer</th>
+            <th>Devices</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for platform in platforms %}
+        <tr>
+            <td class="text-center">
+                {{platform.name}}
+            </td>
+            <td class="text-center">
+                {{platform.manufacturer}}
+            </td>
+            <td class="text-center">
+                {{platform.devices.all|length}}
+            </td>
+            <td>
+                {{platform.description}}
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/platform/{{platform.pk}}/change/"><i class="fa fa-cog"></i> Change</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

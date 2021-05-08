@@ -7,6 +7,8 @@ from django.views.generic import ListView, DetailView
 from dcim.models.locations import Region, Location
 from dcim.models.racks import RackGroup, RackRole, Rack
 from dcim.models.devices import *
+from ipam.models.ip import *
+from ipam.models.vlan import *
 
 
 def dcim_component(request):
@@ -84,6 +86,54 @@ class LocationPrefixesView(PermissionRequiredMixin, View):
         return render(request, 'dcim/location/location-prefixes.html', {
             'object': location,
             'prefixes': prefixes
+        })
+
+
+class LocationVLANGroupsView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_vlangroup'
+
+    def get(self, request, *args, **kwargs):
+        location = get_object_or_404(Location, pk=kwargs['pk'])
+        vlangroups = location.vlan_groups.all()
+        return render(request, 'dcim/location/location-vlangroups.html', {
+            'object': location,
+            'vlangroups': vlangroups
+        })
+
+
+class LocationStatisticsView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_vlangroup'
+
+    def get(self, request, *args, **kwargs):
+        stats = {}
+        location = get_object_or_404(Location, pk=kwargs['pk'])
+        stats['Number of rack groups'] = location.rack_groups.all().count()
+        stats['Number of racks'] = Rack.objects.filter(rack_group__location=location).count()
+        stats['Number of devices'] = Device.objects.filter(rack__rack_group__location=location).count()
+        stats['Number of prefixes'] = location.ip_prefixes.all().count()
+        stats['Number of IP addresses'] = IPAddress.objects.filter(prefix__location=location).count()
+        stats['Number of VLAN groups'] = location.vlan_groups.all().count()
+        stats['Number of VLANs'] = VLAN.objects.filter(vlan_group__location=location).count()
+
+        return render(request, 'dcim/location/location-statistics.html', {
+            'object': location,
+            'stats': stats
+        })
+
+
+class LocationLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        location = get_object_or_404(Location, pk=kwargs['pk'])
+        location_model = ContentType.objects.get(app_label="dcim", model="location")
+        model_pk = location_model.pk
+        logs = LogEntry.objects.filter(content_type=location_model, object_id=location.pk).order_by('-action_time')[:10]
+
+        return render(request, 'dcim/location/location-logs.html', {
+            'object': location,
+            'logs': logs,
+            'model_pk': model_pk
         })
 
 #

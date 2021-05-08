@@ -104,6 +104,12 @@ pages = {
         'dcim/location-list/location-rackgroups/<int:pk>', 'location-rackgroups', 'Location Rack groups'),
     'location-prefixes': (
         'dcim/location-list/location-prefixes/<int:pk>', 'location-prefixes', 'Location Prefixes'),
+    'location-vlangroups': (
+        'dcim/location-list/location-vlangroups/<int:pk>', 'location-vlangroups', 'Location VLAN Groups'),
+    'location-statistics': (
+        'dcim/location-list/location-statistics/<int:pk>', 'location-statistics', 'Location Statistics'),
+    'location-logs': (
+        'dcim/location-list/location-logs/<int:pk>', 'location-logs', 'Location Logs'),
 
     'rackgroup-list': ('dcim/rackgroup-list/', 'rackgroup-list', 'Rack Groups'),
 
@@ -343,6 +349,12 @@ urlpatterns = [
          name=pages['location-rackgroups'][1]),
     path(pages['location-prefixes'][0], dcim_views.LocationPrefixesView.as_view(),
          name=pages['location-prefixes'][1]),
+    path(pages['location-vlangroups'][0], dcim_views.LocationVLANGroupsView.as_view(),
+         name=pages['location-vlangroups'][1]),
+    path(pages['location-statistics'][0], dcim_views.LocationStatisticsView.as_view(),
+         name=pages['location-statistics'][1]),
+    path(pages['location-logs'][0], dcim_views.LocationLogsView.as_view(),
+         name=pages['location-logs'][1]),
 
     path(pages['rackgroup-list'][0], dcim_views.RackGroupListView.as_view(), name=pages['rackgroup-list'][1]),
 

@@ -14,6 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import views as auth_views
 from users import views as user_views
 from ipam import views as ipam_views
+from dcim import views as dcim_views
 
 from dcim.models.devices import Device
 from ipam.models.ip import IPPrefix
@@ -57,6 +58,7 @@ pages = {
     'user-list': ('users/user-list/', 'user-list', 'Users'),
     'group-list': ('users/group-list/', 'group-list', 'Groups'),
 
+    # IPAM
     'ipam': ('ipam/', 'ipam', 'IPAM Component'),
     'ipam-logs': ('ipam/ipam-logs/', 'ipam-logs', 'Logs'),
 
@@ -89,6 +91,12 @@ pages = {
     'vlangroup-list': ('ipam/vlangroup-list/', 'vlangroup-list', 'VLAN Groups'),
 
     'vlanrole-list': ('ipam/vlanrole-list/', 'vlanrole-list', 'VLAN Roles'),
+
+    # DCIM
+    'dcim': ('dcim/', 'dcim', 'DCIM Component'),
+    'dcim-logs': ('dcim/dcim-logs/', 'dcim-logs', 'Logs'),
+
+    'region-list': ('dcim/region-list/', 'region-list', 'Regions'),
 }
 
 sidebar_navigation = {
@@ -164,6 +172,19 @@ sidebar_navigation = {
 
             }
         )
+    },
+
+    'DCIM Component': {
+        'Logs': (
+            pages['dcim-logs'],
+            {
+            }
+        ),
+        'Regions': (
+            pages['region-list'],
+            {
+            }
+        ),
     }
 }
 
@@ -241,4 +262,10 @@ urlpatterns = [
     path(pages['vlangroup-list'][0], ipam_views.VLANGroupListView.as_view(), name=pages['vlangroup-list'][1]),
 
     path(pages['vlanrole-list'][0], ipam_views.VLANRoleListView.as_view(), name=pages['vlanrole-list'][1]),
+
+    # DCIM
+    path(pages['dcim'][0], dcim_views.dcim_component, name=pages['dcim'][1]),
+    path(pages['dcim-logs'][0], dcim_views.dcim_logs, name=pages['dcim-logs'][1]),
+
+    path(pages['region-list'][0], dcim_views.RegionListView.as_view(), name=pages['region-list'][1]),
 ]

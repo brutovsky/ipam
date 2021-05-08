@@ -99,6 +99,11 @@ pages = {
     'region-list': ('dcim/region-list/', 'region-list', 'Regions'),
 
     'location-list': ('dcim/location-list/', 'location-list', 'Locations'),
+    'location-detail': ('dcim/location-list/location-detail/<int:pk>', 'location-detail', 'Location Detail'),
+    'location-rackgroups': (
+        'dcim/location-list/location-rackgroups/<int:pk>', 'location-rackgroups', 'Location Rack groups'),
+    'location-prefixes': (
+        'dcim/location-list/location-prefixes/<int:pk>', 'location-prefixes', 'Location Prefixes'),
 
     'rackgroup-list': ('dcim/rackgroup-list/', 'rackgroup-list', 'Rack Groups'),
 
@@ -333,6 +338,11 @@ urlpatterns = [
     path(pages['region-list'][0], dcim_views.RegionListView.as_view(), name=pages['region-list'][1]),
 
     path(pages['location-list'][0], dcim_views.LocationListView.as_view(), name=pages['location-list'][1]),
+    path(pages['location-detail'][0], dcim_views.LocationDetailView.as_view(), name=pages['location-detail'][1]),
+    path(pages['location-rackgroups'][0], dcim_views.LocationRackGroupsView.as_view(),
+         name=pages['location-rackgroups'][1]),
+    path(pages['location-prefixes'][0], dcim_views.LocationPrefixesView.as_view(),
+         name=pages['location-prefixes'][1]),
 
     path(pages['rackgroup-list'][0], dcim_views.RackGroupListView.as_view(), name=pages['rackgroup-list'][1]),
 
@@ -349,4 +359,5 @@ urlpatterns = [
     path(pages['devicerole-list'][0], dcim_views.DeviceRoleListView.as_view(), name=pages['devicerole-list'][1]),
 
     path(pages['device-list'][0], dcim_views.DeviceListView.as_view(), name=pages['device-list'][1]),
+
 ]

@@ -1,8 +1,9 @@
 from braces.views import PermissionRequiredMixin
 from django.contrib.admin.models import LogEntry
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
+from django.views.generic import ListView, DetailView
 from dcim.models.locations import Region, Location
 from dcim.models.racks import RackGroup, RackRole, Rack
 from dcim.models.devices import *
@@ -55,6 +56,35 @@ class LocationListView(PermissionRequiredMixin, ListView):
     context_object_name = 'locations'
     permission_required = "dcim.view_location"
 
+
+class LocationDetailView(PermissionRequiredMixin, DetailView):
+    model = Location
+    template_name = 'dcim/location/location-detail.html'
+    permission_required = "ipam.view_location"
+
+
+class LocationRackGroupsView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_rackgroup'
+
+    def get(self, request, *args, **kwargs):
+        location = get_object_or_404(Location, pk=kwargs['pk'])
+        rackgroups = location.rack_groups.all()
+        return render(request, 'dcim/location/location-rackgroups.html', {
+            'object': location,
+            'rackgroups': rackgroups
+        })
+
+
+class LocationPrefixesView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_ipprefix'
+
+    def get(self, request, *args, **kwargs):
+        location = get_object_or_404(Location, pk=kwargs['pk'])
+        prefixes = location.ip_prefixes.all()
+        return render(request, 'dcim/location/location-prefixes.html', {
+            'object': location,
+            'prefixes': prefixes
+        })
 
 #
 # RackGroup views

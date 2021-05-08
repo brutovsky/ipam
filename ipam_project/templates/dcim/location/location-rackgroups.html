@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Location {{object.name}} rack groups</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link" aria-current="page" href="{% url 'location-detail' object.pk %}">Location</a>
+            <a class="nav-link active" href="">Rack Groups</a>
+            <a class="nav-link" href="{% url 'location-prefixes' object.pk %}">Prefixes</a>
+            <a class="nav-link" href="">Stats</a>
+            <a class="nav-link" href="">ChangeLog</a>
+        </ul>
+        <table>
+            <caption>
+                {{rackgroups|length}} entries
+            </caption>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Racks</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+            {% for rackgroup in rackgroups %}
+            <tr>
+                <td class="text-center">
+                    {{rackgroup.name}}
+                </td>
+                <td class="text-center">
+                    <a href="{% url 'vlan-list' %}?group={{group.name}}">
+                        {{rackgroup.racks.all|length}}
+                    </a>
+                </td>
+                <td>
+                    {{rackgroup.description}}
+                </td>
+                <td><a class="text-warning" href="/admin/ipam/rackgroup/{{group.pk}}/change/"><i class="fa fa-cog"></i>
+                    Change</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

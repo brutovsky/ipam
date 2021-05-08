@@ -22,7 +22,9 @@
         {% for location in locations %}
         <tr>
             <td class="text-center">
-                {{location.name}}
+                <a href="{% url 'location-detail' location.pk %}">
+                    {{location.name}}
+                </a>
             </td>
             <td class="text-center">
                 <a href="{% url 'region-list' %}">
@@ -34,7 +36,8 @@
                 <span class="badge badge-success">
                     {{location.status}}
                 </span>
-                {% elif location.status == 'planned' or location.status == 'staging' or location.status == 'decommissioning'%}
+                {% elif location.status == 'planned' or location.status == 'staging' or location.status ==
+                'decommissioning'%}
                 <span class="badge badge-warning">
                     {{location.status}}
                 </span>

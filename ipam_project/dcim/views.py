@@ -41,3 +41,14 @@ class RegionListView(PermissionRequiredMixin, ListView):
     template_name = 'dcim/region/region-list.html'
     context_object_name = 'regions'
     permission_required = "dcim.view_region"
+
+
+#
+# Location views
+#
+
+class LocationListView(PermissionRequiredMixin, ListView):
+    model = Location
+    template_name = 'dcim/location/location-list.html'
+    context_object_name = 'locations'
+    permission_required = "dcim.view_location"

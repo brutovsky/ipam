@@ -97,6 +97,8 @@ pages = {
     'dcim-logs': ('dcim/dcim-logs/', 'dcim-logs', 'Logs'),
 
     'region-list': ('dcim/region-list/', 'region-list', 'Regions'),
+
+    'location-list': ('dcim/location-list/', 'location-list', 'Locations'),
 }
 
 sidebar_navigation = {
@@ -185,6 +187,11 @@ sidebar_navigation = {
             {
             }
         ),
+        'Locations': (
+            pages['location-list'],
+            {
+            }
+        ),
     }
 }
 
@@ -268,4 +275,6 @@ urlpatterns = [
     path(pages['dcim-logs'][0], dcim_views.dcim_logs, name=pages['dcim-logs'][1]),
 
     path(pages['region-list'][0], dcim_views.RegionListView.as_view(), name=pages['region-list'][1]),
+
+    path(pages['location-list'][0], dcim_views.LocationListView.as_view(), name=pages['location-list'][1]),
 ]

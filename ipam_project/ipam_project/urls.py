@@ -116,6 +116,9 @@ pages = {
     'rackrole-list': ('dcim/rackrole-list/', 'rackrole-list', 'Rack Roles'),
 
     'rack-list': ('dcim/rack-list/', 'rack-list', 'Racks'),
+    'rack-detail': ('dcim/rack-list/rack-detail/<int:pk>', 'rack-detail', 'Rack Detail'),
+    'rack-devices': ('dcim/rack-list/rack-devices/<int:pk>', 'rack-devices', 'Rack Devices'),
+    'rack-logs': ('dcim/rack-list/rack-logs/<int:pk>', 'rack-logs', 'Rack Logs'),
 
     'manufacturer-list': ('dcim/manufacturer-list/', 'manufacturer-list', 'Manufacturers'),
 
@@ -361,6 +364,9 @@ urlpatterns = [
     path(pages['rackrole-list'][0], dcim_views.RackRoleListView.as_view(), name=pages['rackrole-list'][1]),
 
     path(pages['rack-list'][0], dcim_views.RackListView.as_view(), name=pages['rack-list'][1]),
+    path(pages['rack-detail'][0], dcim_views.RackDetailView.as_view(), name=pages['rack-detail'][1]),
+    path(pages['rack-devices'][0], dcim_views.RackDevicesView.as_view(), name=pages['rack-devices'][1]),
+    path(pages['rack-logs'][0], dcim_views.RackLogsView.as_view(), name=pages['rack-logs'][1]),
 
     path(pages['manufacturer-list'][0], dcim_views.ManufacturerListView.as_view(), name=pages['manufacturer-list'][1]),
 

@@ -195,6 +195,39 @@ class RackListView(PermissionRequiredMixin, ListView):
         return context
 
 
+class RackDetailView(PermissionRequiredMixin, DetailView):
+    model = Rack
+    template_name = 'dcim/rack/rack-detail.html'
+    permission_required = "ipam.view_rack"
+
+
+class RackDevicesView(PermissionRequiredMixin, View):
+    permission_required = 'dcim.view_device'
+
+    def get(self, request, *args, **kwargs):
+        rack = get_object_or_404(Rack, pk=kwargs['pk'])
+        devices = rack.devices.all()
+        return render(request, 'dcim/rack/rack-devices.html', {
+            'object': rack,
+            'devices': devices
+        })
+
+
+class RackLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        rack = get_object_or_404(Rack, pk=kwargs['pk'])
+        rack_model = ContentType.objects.get(app_label="dcim", model="rack")
+        model_pk = rack_model.pk
+        logs = LogEntry.objects.filter(content_type=rack_model, object_id=rack.pk).order_by('-action_time')[:10]
+
+        return render(request, 'dcim/rack/rack-logs.html', {
+            'object': rack,
+            'logs': logs,
+            'model_pk': model_pk
+        })
+
 #
 # Manufacturer views
 #

@@ -150,7 +150,7 @@ class Device(models.Model):
     )
     rack = models.ForeignKey(
         Rack,
-        related_name='device',
+        related_name='devices',
         on_delete=models.PROTECT,
     )
     status = models.CharField(

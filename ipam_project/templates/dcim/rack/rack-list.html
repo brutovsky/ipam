@@ -57,7 +57,9 @@
         {% for rack in racks %}
         <tr>
             <td class="text-center">
-                {{rack.name}}
+                <a href="{% url 'rack-detail' rack.pk %}">
+                    {{rack.name}}
+                </a>
             </td>
             <td class="text-center">
                 {{rack.rack_group.location}}

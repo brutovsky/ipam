@@ -121,12 +121,12 @@ class DeviceRole(models.Model):
 class Device(models.Model):
     type = models.ForeignKey(
         DeviceType,
-        related_name='device',
+        related_name='devices',
         on_delete=models.PROTECT,
     )
     role = models.ForeignKey(
         DeviceRole,
-        related_name='device',
+        related_name='devices',
         on_delete=models.PROTECT,
         blank=True,
         null=True,

@@ -20,6 +20,38 @@
         </tr>
         </thead>
         <tfoot>
+        <form id='form_filter' action="{% url 'device-list' %}" method="get">
+            | Device Type:
+            <select name="devicetype" id="select_devicetype">
+                <option value=""
+                        {% if selected_devicetype %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in devicetype_options %}
+                {% if selected_devicetype == option.model %}
+                <option value="{{option.model}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option.model}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            | Role:
+            <select name="role" id="select_role">
+                <option value=""
+                        {% if selected_role %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in role_options %}
+                {% if selected_role == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
         </tfoot>
         <tbody>
         {% for device in devices %}
@@ -60,5 +92,17 @@
         {% endfor %}
         </tbody>
     </table>
+     <script>
+        $(document).ready(() => {
+            $('#select_devicetype').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+            $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
 </div>
 {% endblock content %}

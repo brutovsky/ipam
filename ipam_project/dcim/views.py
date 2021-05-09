@@ -279,3 +279,29 @@ class DeviceListView(PermissionRequiredMixin, ListView):
     template_name = 'dcim/device/device-list.html'
     context_object_name = 'devices'
     permission_required = "dcim.view_device"
+
+    def get_queryset(self):
+        role_filter = self.request.GET.get('role', '')
+        devicetype_filter = self.request.GET.get('devicetype', '')
+
+        print(devicetype_filter)
+
+        queryset = Device.objects
+
+        if role_filter:
+            role = DeviceRole.objects.get(name=role_filter)
+            queryset = queryset.filter(role=role.id)
+
+        if devicetype_filter:
+            devicetype = DeviceType.objects.get(model=devicetype_filter)
+            queryset = queryset.filter(type=devicetype.id)
+
+        return queryset.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['role_options'] = DeviceRole.objects.all()
+        context['devicetype_options'] = DeviceType.objects.all()
+        context['selected_role'] = self.request.GET.get('role', '')
+        context['selected_devicetype'] = self.request.GET.get('devicetype', '')
+        return context

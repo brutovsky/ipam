@@ -45,7 +45,9 @@
                 {{devicetype.manufacturer}}
             </td>
             <td class="text-center">
-                {{devicetype.devices.all|length}}
+                <a href="{% url 'device-list' %}?devicetype={{devicetype.model}}">
+                    {{devicetype.devices.all|length}}
+                </a>
             </td>
             <td><a class="text-warning" href="/admin/dcim/devicetype/{{devicetype.pk}}/change/"><i
                     class="fa fa-cog"></i> Change</a>

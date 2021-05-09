@@ -26,7 +26,9 @@
                 {{role.name}}
             </td>
             <td class="text-center">
-                {{role.devices.all|length}}
+                <a href="{% url 'device-list' %}?role={{role.name}}">
+                    {{role.devices.all|length}}
+                </a>
             </td>
             <td>
                 <label class="label" style="color: #ffffff; background-color: {{role.color}}">{{role.name}}</label>
@@ -34,7 +36,8 @@
             <td>
                 {{role.description}}
             </td>
-            <td><a class="text-warning" href="/admin/dcim/devicerole/{{role.pk}}/change/"><i class="fa fa-cog"></i> Change</a></td>
+            <td><a class="text-warning" href="/admin/dcim/devicerole/{{role.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
         </tr>
         {% endfor %}
         </tbody>

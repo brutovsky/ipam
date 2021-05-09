@@ -129,6 +129,10 @@ pages = {
     'devicerole-list': ('dcim/devicerole-list/', 'devicerole-list', 'Device Roles'),
 
     'device-list': ('dcim/device-list/', 'device-list', 'Devices'),
+    'device-detail': ('dcim/device-list/device-detail/<int:pk>', 'device-detail', 'Device Detail'),
+    'device-interfaces': ('dcim/device-list/device-interfaces/<int:pk>', 'device-interfaces', 'Device Interfaces'),
+    'device-services': ('dcim/device-list/device-services/<int:pk>', 'device-services', 'Device Services'),
+    'device-logs': ('dcim/device-list/device-logs/<int:pk>', 'device-logs', 'Device Logs'),
 }
 
 sidebar_navigation = {
@@ -377,5 +381,9 @@ urlpatterns = [
     path(pages['devicerole-list'][0], dcim_views.DeviceRoleListView.as_view(), name=pages['devicerole-list'][1]),
 
     path(pages['device-list'][0], dcim_views.DeviceListView.as_view(), name=pages['device-list'][1]),
+    path(pages['device-detail'][0], dcim_views.DeviceDetailView.as_view(), name=pages['device-detail'][1]),
+    path(pages['device-interfaces'][0], dcim_views.DeviceInterfacesView.as_view(), name=pages['device-interfaces'][1]),
+    path(pages['device-services'][0], dcim_views.DeviceServicesView.as_view(), name=pages['device-services'][1]),
+    path(pages['device-logs'][0], dcim_views.DeviceLogsView.as_view(), name=pages['device-logs'][1]),
 
 ]

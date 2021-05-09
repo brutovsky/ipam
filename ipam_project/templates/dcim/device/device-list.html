@@ -57,7 +57,9 @@
         {% for device in devices %}
         <tr>
             <td class="text-center">
-                {{device.name}}
+                <a href="{% url 'device-detail' device.pk %}">
+                    {{device.name}}
+                </a>
             </td>
             <td>
                 {{device.type}}
@@ -92,7 +94,7 @@
         {% endfor %}
         </tbody>
     </table>
-     <script>
+    <script>
         $(document).ready(() => {
             $('#select_devicetype').change(() => {
                 const form = $('#form_filter')

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Device {{object.name}} services</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link" aria-current="page" href="{% url 'device-detail' object.pk %}">Location</a>
+            <a class="nav-link" href="{% url 'device-interfaces' object.pk %}">Interfaces</a>
+            <a class="nav-link active" href="">Services</a>
+            <a class="nav-link" href="{% url 'device-logs' object.pk %}">ChangeLog</a>
+        </ul>
+        <table>
+            <caption>
+                {{services|length}} entries
+            </caption>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Protocol</th>
+                <th>Ports</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+            {% for service in services %}
+            <tr>
+                <td class="text-center">
+                    <a href="{% url 'service-detail' service.id %}">
+                        {{service.name}}
+                    </a>
+                </td>
+                <td class="text-center">
+                    {{service.protocol}}
+                </td>
+                <td class="text-center">
+                    {% for port in service.ports %}
+                    <span class="badge badge-light">
+                    {{port}}
+                </span>
+                    {% endfor %}
+                </td>
+                <td><a class="text-warning" href="/admin/ipam/service/{{service.pk}}/change/"><i class="fa fa-cog"></i>
+                    Change</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

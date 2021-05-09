@@ -228,6 +228,7 @@ class RackLogsView(PermissionRequiredMixin, View):
             'model_pk': model_pk
         })
 
+
 #
 # Manufacturer views
 #
@@ -266,6 +267,7 @@ class PlatformListView(PermissionRequiredMixin, ListView):
         context['selected_manufacturer'] = self.request.GET.get('manufacturer', '')
         return context
 
+
 #
 # DeviceType views
 #
@@ -292,6 +294,8 @@ class DeviceTypeListView(PermissionRequiredMixin, ListView):
         context['manufacturer_options'] = Manufacturer.objects.all()
         context['selected_manufacturer'] = self.request.GET.get('manufacturer', '')
         return context
+
+
 #
 # DeviceRole views
 #
@@ -338,3 +342,49 @@ class DeviceListView(PermissionRequiredMixin, ListView):
         context['selected_role'] = self.request.GET.get('role', '')
         context['selected_devicetype'] = self.request.GET.get('devicetype', '')
         return context
+
+
+class DeviceDetailView(PermissionRequiredMixin, DetailView):
+    model = Device
+    template_name = 'dcim/device/device-detail.html'
+    permission_required = "dcim.view_device"
+
+
+class DeviceInterfacesView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_interface'
+
+    def get(self, request, *args, **kwargs):
+        device = get_object_or_404(Device, pk=kwargs['pk'])
+        interfaces = device.interfaces.all()
+        return render(request, 'dcim/device/device-interfaces.html', {
+            'object': device,
+            'interfaces': interfaces
+        })
+
+
+class DeviceServicesView(PermissionRequiredMixin, View):
+    permission_required = 'ipam.view_service'
+
+    def get(self, request, *args, **kwargs):
+        device = get_object_or_404(Device, pk=kwargs['pk'])
+        services = device.services.all()
+        return render(request, 'dcim/device/device-services.html', {
+            'object': device,
+            'services': services
+        })
+
+
+class DeviceLogsView(PermissionRequiredMixin, View):
+    permission_required = 'admin.view_logentry'
+
+    def get(self, request, *args, **kwargs):
+        device = get_object_or_404(Device, pk=kwargs['pk'])
+        device_model = ContentType.objects.get(app_label="dcim", model="device")
+        model_pk = device_model.pk
+        logs = LogEntry.objects.filter(content_type=device_model, object_id=device.pk).order_by('-action_time')[:10]
+
+        return render(request, 'dcim/device/device-logs.html', {
+            'object': device,
+            'logs': logs,
+            'model_pk': model_pk
+        })

@@ -26,15 +26,20 @@
                 {{manufacturer.name}}
             </td>
             <td class="text-center">
-                {{manufacturer.device_types.all|length}}
+                <a href="{% url 'devicetype-list' %}?manufacturer={{manufacturer.name}}">
+                    {{manufacturer.device_types.all|length}}
+                </a>
             </td>
             <td class="text-center">
-                {{manufacturer.platforms.all|length}}
+                <a href="{% url 'platform-list' %}?manufacturer={{manufacturer.name}}">
+                    {{manufacturer.platforms.all|length}}
+                </a>
             </td>
             <td>
                 {{manufacturer.description}}
             </td>
-            <td><a class="text-warning" href="/admin/dcim/manufacturer/{{manufacturer.pk}}/change/"><i class="fa fa-cog"></i> Change</a></td>
+            <td><a class="text-warning" href="/admin/dcim/manufacturer/{{manufacturer.pk}}/change/"><i
+                    class="fa fa-cog"></i> Change</a></td>
         </tr>
         {% endfor %}
         </tbody>

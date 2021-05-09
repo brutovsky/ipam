@@ -20,6 +20,38 @@
         </tr>
         </thead>
         <tfoot>
+        <form id='form_filter' action="{% url 'rack-list' %}" method="get">
+            | Group:
+            <select name="group" id="select_group">
+                <option value=""
+                        {% if selected_group %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in group_options %}
+                {% if selected_group == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            | Role:
+            <select name="role" id="select_role">
+                <option value=""
+                        {% if selected_role %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in role_options %}
+                {% if selected_role == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
         </tfoot>
         <tbody>
         {% for rack in racks %}
@@ -61,5 +93,17 @@
         {% endfor %}
         </tbody>
     </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_group').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+            $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
 </div>
 {% endblock content %}

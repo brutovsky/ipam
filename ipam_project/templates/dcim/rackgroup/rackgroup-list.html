@@ -26,10 +26,12 @@
                 {{rackgroup.name}}
             </td>
             <td class="text-center">
-                {{rackgroup.location}}
+                <a href="{% url 'location-list'%}">
+                    {{rackgroup.location}}
+                </a>
             </td>
             <td class="text-center">
-                <a href="{% url 'vlan-list' %}?group={{group.name}}">
+                <a href="{% url 'rack-list' %}?group={{rackgroup.name}}">
                     {{rackgroup.racks.all|length}}
                 </a>
             </td>

@@ -136,6 +136,7 @@ class LocationLogsView(PermissionRequiredMixin, View):
             'model_pk': model_pk
         })
 
+
 #
 # RackGroup views
 #
@@ -162,11 +163,36 @@ class RackRoleListView(PermissionRequiredMixin, ListView):
 # Rack views
 #
 
+
 class RackListView(PermissionRequiredMixin, ListView):
     model = Rack
     template_name = 'dcim/rack/rack-list.html'
     context_object_name = 'racks'
     permission_required = "dcim.view_rack"
+
+    def get_queryset(self):
+        role_filter = self.request.GET.get('role', '')
+        group_filter = self.request.GET.get('group', '')
+
+        queryset = Rack.objects
+
+        if role_filter:
+            role = RackRole.objects.get(name=role_filter)
+            queryset = queryset.filter(role=role.id)
+
+        if group_filter:
+            group = RackGroup.objects.get(name=group_filter)
+            queryset = queryset.filter(rack_group=group.id)
+
+        return queryset.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['role_options'] = RackRole.objects.all()
+        context['group_options'] = RackGroup.objects.all()
+        context['selected_role'] = self.request.GET.get('role', '')
+        context['selected_group'] = self.request.GET.get('group', '')
+        return context
 
 
 #
@@ -190,6 +216,22 @@ class PlatformListView(PermissionRequiredMixin, ListView):
     context_object_name = 'platforms'
     permission_required = "dcim.view_platform"
 
+    def get_queryset(self):
+        manufacturer_filter = self.request.GET.get('manufacturer', '')
+
+        queryset = Platform.objects
+
+        if manufacturer_filter:
+            manufacturer = Manufacturer.objects.get(name=manufacturer_filter)
+            queryset = queryset.filter(manufacturer=manufacturer.id)
+
+        return queryset.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['manufacturer_options'] = Manufacturer.objects.all()
+        context['selected_manufacturer'] = self.request.GET.get('manufacturer', '')
+        return context
 
 #
 # DeviceType views
@@ -201,7 +243,22 @@ class DeviceTypeListView(PermissionRequiredMixin, ListView):
     context_object_name = 'devicetypes'
     permission_required = "dcim.view_devicetype"
 
+    def get_queryset(self):
+        manufacturer_filter = self.request.GET.get('manufacturer', '')
 
+        queryset = DeviceType.objects
+
+        if manufacturer_filter:
+            manufacturer = Manufacturer.objects.get(name=manufacturer_filter)
+            queryset = queryset.filter(manufacturer=manufacturer.id)
+
+        return queryset.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['manufacturer_options'] = Manufacturer.objects.all()
+        context['selected_manufacturer'] = self.request.GET.get('manufacturer', '')
+        return context
 #
 # DeviceRole views
 #

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Services</h2>
+    <a class="text-success" href="/admin/ipam/service/add/"><i class="fa fa-plus"></i> Add new service</a>
+    <table>
+        <caption>
+            {{services|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Device</th>
+            <th>Protocol</th>
+            <th>Ports</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for service in services %}
+        <tr>
+            <td class="text-center">
+                <a href="{% url 'service-detail' service.id %}">
+                    {{service.name}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'device-detail' service.device.pk %}">
+                    {{service.device}}
+                </a>
+            </td>
+            <td class="text-center">
+                {{service.protocol}}
+            </td>
+            <td class="text-center">
+                {% for port in service.ports %}
+                <span class="badge badge-light">
+                    {{port}}
+                </span>
+                {% endfor %}
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/service/{{service.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

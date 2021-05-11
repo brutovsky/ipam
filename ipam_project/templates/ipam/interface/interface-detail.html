@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Interface {{object.name}}</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link active" aria-current="page" href="">Interface</a>
+            <a class="nav-link" href="{% url 'interface-logs' object.pk %}">ChangeLog</a>
+        </ul>
+        <table class="table table-hover panel-body attr-table">
+            <tbody>
+            <tr>
+                <td>Is Enabled</td>
+                <td>
+                    {% if object.enabled %}
+                    <i class="fa fa-check-circle-o text-success"></i>
+                    {% else %}
+                    <i class="fa fa-times text-danger"></i>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>
+                    {{object.type}}
+                </td>
+            </tr>
+            <tr>
+                <td>Device</td>
+                <td>
+                    <a href="{% url 'device-detail' object.device.pk %}">
+                        {{object.device}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><span>{{object.description}}</span></td>
+            </tr>
+            <tr>
+                <td>Untagged VLAN</td>
+                <td>
+                    {% if object.untagged_vlan %}
+                    <a href="{% url 'vlan-detail' object.untagged_vlan.pk %}">
+                        {{object.untagged_vlan}}
+                    </a>
+                    {% else %}
+                    <span class="text-muted">{{object.untagged_vlan}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Tagged VLANs</td>
+                <td>
+                    <ul>
+                        {% if object.tagged_vlans.all|length != 0 %}
+                        {% for vlan in object.tagged_vlans.all %}
+                        <li>
+                            <a href="{% url 'vlan-detail' vlan.pk %}">
+                                {{vlan}}
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% else %}
+                        <span class="text-muted">None</span>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>IP Addresses</td>
+                <td>
+                    <ul>
+                        {% if object.ip_addresses.all|length != 0 %}
+                        {% for ip in object.ip_addresses.all %}
+                        <li>
+                            <a href="{% url 'ipaddress-detail' ip.id %}">
+                                {{ip}}
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% else %}
+                        <span class="text-muted">None</span>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>Actions</td>
+                <td><a class="text-warning" href="/admin/ipam/interface/{{object.pk}}/change/"><i class="fa fa-cog"></i>
+                    Edit</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

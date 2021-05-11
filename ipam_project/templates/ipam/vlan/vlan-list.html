@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>VLANs</h2>
+    <a class="text-success" href="/admin/ipam/vlan/add/"><i class="fa fa-plus"></i> Add new VLAN</a>
+    <table>
+        <caption>
+            {{vlans|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Group</th>
+            <th>VID</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <form id='form_filter' action="{% url 'vlan-list' %}" method="get">
+            | Group:
+            <select name="group" id="select_group">
+                <option value=""
+                        {% if selected_group %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in group_options %}
+                {% if selected_group == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            | Role:
+            <select name="role" id="select_role">
+                <option value=""
+                        {% if selected_role %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in role_options %}
+                {% if selected_role == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
+        </tfoot>
+        <tbody>
+        {% for vlan in vlans %}
+        <tr>
+            <td class="text-center">
+                <a href="{% url 'vlan-detail' vlan.pk %}">
+                    {{vlan.name}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'vlangroup-list' %}">
+                    {{vlan.vlan_group}}
+                </a>
+            </td>
+            <td class="text-center">
+                {{vlan.vid}}
+            </td>
+            <td class="text-center">
+                {% if vlan.status == 'active' %}
+                <span class="badge badge-success">
+                    {{vlan.status}}
+                </span>
+                {% elif vlan.status == 'reserved' %}
+                <span class="badge badge-secondary">
+                    {{vlan.status}}
+                </span>
+                {% elif vlan.status == 'deprecated' %}
+                <span class="badge badge-danger">
+                    {{vlan.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td class="text-center">
+                {% if vlan.role %}
+                <a href="{% url 'vlanrole-list' %}">
+                    {{vlan.role}}
+                </a>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/vlan/{{vlan.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_group').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+            $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
+</div>
+{% endblock content %}

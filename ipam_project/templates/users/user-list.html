@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>User list</h2>
+    <a class="text-success" href="/admin/auth/user/add/"><i class="fa fa-user-plus"></i> Add new user</a>
+    <table>
+        <caption>
+            {{users|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>F. Name</th>
+            <th>L. Name</th>
+            <th>Email</th>
+            <th>Is Staff</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for user in users %}
+        <tr>
+            <th>{{user.pk}}</th>
+            <td>{{user.username}}</td>
+            <td>{{user.first_name}}</td>
+            <td>{{user.last_name}}</td>
+            <td>{{user.email}}</td>
+            <td>
+            {% if user.is_staff%}
+            <i class="fa fa-thumbs-up text-success"></i>
+            {% else %}
+            <i class="fa fa-thumbs-down text-danger"></i>
+            {% endif%}</td>
+            <td><a class="text-warning" href="/admin/auth/user/{{user.pk}}/change/"><i class="fa fa-cog"></i> Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Device Types</h2>
+    <a class="text-success" href="/admin/dcim/devicetype/add/"><i class="fa fa-plus"></i> Add new Device type</a>
+    <table>
+        <caption>
+            {{devicetypes|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Model</th>
+            <th>Manufacturer</th>
+            <th>Devices</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <form id='form_filter' action="{% url 'devicetype-list' %}" method="get">
+            | Manufacturer:
+            <select name="manufacturer" id="select_manufacturer">
+                <option value=""
+                        {% if selected_manufacturer %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in manufacturer_options %}
+                {% if selected_manufacturer == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
+        </tfoot>
+        <tbody>
+        {% for devicetype in devicetypes %}
+        <tr>
+            <td class="text-center">
+                {{devicetype.model}}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'manufacturer-list' %}">
+                    {{devicetype.manufacturer}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'device-list' %}?devicetype={{devicetype.model}}">
+                    {{devicetype.devices.all|length}}
+                </a>
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/devicetype/{{devicetype.pk}}/change/"><i
+                    class="fa fa-cog"></i> Change</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_manufacturer').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
+</div>
+{% endblock content %}

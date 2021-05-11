@@ -1,111 +1,93 @@
-from .serializers import RegionSerializer, SiteSerializer
-from dcim.models.site import Region, Site
+from .serializers import *
+from dcim.models.locations import *
+from dcim.models.racks import *
+from dcim.models.devices import *
+from rest_framework import viewsets
 
-from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 
 #
-# Region
+# Region View
 #
-
-class RegionList(APIView):
+class RegionViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list` and `retrieve` actions.
+    """
     queryset = Region.objects.all()
-    """
-    List all regions.
-    """
-    def get(self, request, format=None):
-        regions = Region.objects.all()
-        serializer = RegionSerializer(regions, many=True)
-        return Response(serializer.data)
+    serializer_class = RegionSerializer
+    lookup_field = 'name'
 
-    def post(self, request, format=None):
-        serializer = RegionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class RegionDetail(APIView):
-    queryset = Region.objects.all()
-    """
-    Retrieve, update or delete a region.
-    """
-    def get_object(seld,pk):
-        try:
-            return Region.objects.get(pk=pk)
-        except Region.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk, format=None):
-        region = self.get_object(pk)
-        serializer = RegionSerializer(region)
-        return Response(serializer.data)
-
-    def put(self, request, pk, format=None):
-        region = self.get_object(pk)
-        serializer = RegionSerializer(region, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        region = self.get_object(pk)
-        print(region)
-        region.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 #
-# Site
+# Location View
 #
-
-class SiteList(APIView):
-    queryset = Site.objects.all()
+class LocationViewSet(viewsets.ModelViewSet):
     """
-    List all sites.
+    This viewset automatically provides `list` and `retrieve` actions.
     """
-    def get(self, request, format=None):
-        sites = Site.objects.all()
-        serializer = SiteSerializer(sites, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = SiteSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+    lookup_field = 'name'
 
 
-class SiteDetail(APIView):
-    queryset = Site.objects.all()
-    """
-    Retrieve, update or delete a site.
-    """
-    def get_object(seld,pk):
-        try:
-            return Site.objects.get(pk=pk)
-        except Site.DoesNotExist:
-            raise Http404
+#
+# RackGroup View
+#
+class RackGroupViewSet(viewsets.ModelViewSet):
+    queryset = RackGroup.objects.all()
+    serializer_class = RackGroupSerializer
 
-    def get(self, request, pk, format=None):
-        site = self.get_object(pk)
-        serializer = SiteSerializer(site)
-        return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
-        site = self.get_object(pk)
-        serializer = SiteSerializer(site, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+# RackRole View
+#
+class RackRoleViewSet(viewsets.ModelViewSet):
+    queryset = RackRole.objects.all()
+    serializer_class = RackRoleSerializer
 
-    def delete(self, request, pk, format=None):
-        site = self.get_object(pk)
-        print(site)
-        site.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+
+#
+# Rack View
+#
+class RackViewSet(viewsets.ModelViewSet):
+    queryset = Rack.objects.all()
+    serializer_class = RackSerializer
+
+
+#
+# Manufacturer View
+#
+class ManufacturerViewSet(viewsets.ModelViewSet):
+    queryset = Manufacturer.objects.all()
+    serializer_class = ManufacturerSerializer
+
+
+#
+# Platform View
+#
+class PlatformViewSet(viewsets.ModelViewSet):
+    queryset = Platform.objects.all()
+    serializer_class = PlatformSerializer
+
+
+#
+# DeviceType View
+#
+class DeviceTypeViewSet(viewsets.ModelViewSet):
+    queryset = DeviceType.objects.all()
+    serializer_class = DeviceTypeSerializer
+
+
+#
+# DeviceRole View
+#
+class DeviceRoleViewSet(viewsets.ModelViewSet):
+    queryset = DeviceRole.objects.all()
+    serializer_class = DeviceRoleSerializer
+
+
+#
+# Device View
+#
+class DeviceViewSet(viewsets.ModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer

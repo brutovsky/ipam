@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Location {{object.name}}</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link active" aria-current="page" href="">Location</a>
+            <a class="nav-link" href="{% url 'location-rackgroups' object.pk %}">Rack Groups</a>
+            <a class="nav-link" href="{% url 'location-prefixes' object.pk %}">Prefixes</a>
+            <a class="nav-link" href="{% url 'location-vlangroups' object.pk %}">VLAN Groups</a>
+            <a class="nav-link" href="{% url 'location-statistics' object.pk %}">Stats</a>
+            <a class="nav-link" href="{% url 'location-logs' object.pk %}">ChangeLog</a>
+        </ul>
+        <table class="table table-hover panel-body attr-table">
+            <tbody>
+            <tr>
+                <td>Region</td>
+                <td>
+                    <a href="{% url 'region-list' %}">
+                        {{object.region}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    {% if location.status == 'active' %}
+                    <span class="badge badge-success">
+                    {{location.status}}
+                </span>
+                    {% elif location.status == 'planned' or location.status == 'staging' or location.status == 'decommissioning' %}
+                    <span class="badge badge-warning">
+                    {{location.status}}
+                </span>
+                    {% elif location.status == 'retired' %}
+                    <span class="badge badge-secondary">
+                    {{location.status}}
+                </span>
+                    {% endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>Physical Address</td>
+                <td>
+                    {{ object.physical_address }}
+                </td>
+            </tr>
+            <tr>
+                <td>Geolocation</td>
+                <td>
+                    {% if object.latitude %}
+                    <span>{{object.latitude}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.latitude}}</span>
+                    {% endif %}
+                    ,
+                    {% if object.longitude %}
+                    <span>{{object.longitude}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.longitude}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Contact name</td>
+                <td>
+                    {{ object.contact_name }}
+                </td>
+            </tr>
+            <tr>
+                <td>Contact phone</td>
+                <td>
+                    {{ object.contact_phone }}
+                </td>
+            </tr>
+            <tr>
+                <td>Contact email</td>
+                <td>
+                    {{ object.contact_email }}
+                </td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><span>{{object.description}}</span></td>
+            </tr>
+            <tr>
+                <td>Actions</td>
+                <td><a class="text-warning" href="/admin/dcim/location/{{object.pk}}/change/"><i class="fa fa-cog"></i>
+                    Edit</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

@@ -4,7 +4,7 @@ from dcim.choices import *
 
 __all__ = (
     'Region',
-    'Site',
+    'Location',
 )
 
 #
@@ -32,14 +32,14 @@ class Region(models.Model):
 
     class Meta:
         ordering = ['name']
-        app_label = "dcim"
+        app_label = 'dcim'
 
 
 #
-# Sites
+# Locations
 #
 
-class Site(models.Model):
+class Location(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True
@@ -50,10 +50,9 @@ class Site(models.Model):
         default=SiteStatusChoices.STATUS_ACTIVE
     )
     region = models.ForeignKey(
-        to='dcim.Region',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
+        Region,
+        related_name='locations',
+        on_delete=models.PROTECT
     )
     description = models.CharField(
         max_length=200,
@@ -95,4 +94,4 @@ class Site(models.Model):
 
     class Meta:
         ordering = ['name']
-        app_label = "dcim"
+        app_label = 'dcim'

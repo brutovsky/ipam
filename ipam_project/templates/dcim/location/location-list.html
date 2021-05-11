@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Locations</h2>
+    <a class="text-success" href="/admin/dcim/location/add/"><i class="fa fa-plus"></i> Add new location</a>
+    <table>
+        <caption>
+            {{locations|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Region</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for location in locations %}
+        <tr>
+            <td class="text-center">
+                <a href="{% url 'location-detail' location.pk %}">
+                    {{location.name}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'region-list' %}">
+                    {{location.region}}
+                </a>
+            </td>
+            <td class="text-center">
+                {% if location.status == 'active' %}
+                <span class="badge badge-success">
+                    {{location.status}}
+                </span>
+                {% elif location.status == 'planned' or location.status == 'staging' or location.status ==
+                'decommissioning'%}
+                <span class="badge badge-warning">
+                    {{location.status}}
+                </span>
+                {% elif location.status == 'retired' %}
+                <span class="badge badge-secondary">
+                    {{location.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/location/{{location.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

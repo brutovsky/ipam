@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>IP {{object.address}}</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link active" aria-current="page" href="">IP Address</a>
+            <a class="nav-link" href="{% url 'ipaddress-logs' object.pk %}">ChangeLog</a>
+        </ul>
+        <table class="table table-hover panel-body attr-table">
+            <tbody>
+            <tr>
+                <td>Family</td>
+                <td>IPv{{object.prefix.family}}</td>
+            </tr>
+            <tr>
+                <td>Parent prefix</td>
+                <td>
+                    {% if object.prefix %}
+                    <a href="{% url 'prefix-detail' object.prefix.pk%}">{{object.prefix}}</a>
+                    {% else %}
+                    <span class="text-muted">{{object.prefix}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    {% if object.status == 'active' %}
+                    <span class="badge badge-success">
+                    {{object.status}}
+                </span>
+                    {% elif object.status == 'reserved' %}
+                    <span class="badge badge-secondary">
+                    {{object.status}}
+                </span>
+                    {% elif object.status == 'deprecated' %}
+                    <span class="badge badge-danger">
+                    {{object.status}}
+                </span>
+                    {% endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>
+                    {% if object.role %}
+                    <a href="{% url 'iprole-list' %}">
+                        {{object.role}}
+                    </a>
+                    {% else %}
+                    <span class="text-muted">{{object.role}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><span>{{object.description}}</span></td>
+            </tr>
+            <tr>
+                <td>Device</td>
+                <td>
+                    {% if object.assigned_interface %}
+                    <a href="{% url 'device-detail' object.assigned_interface.device.pk %}">
+                        {{object.assigned_interface.device}}
+                    </a>
+                    {% else %}
+                    <span class="text-muted">{{object.assigned_interface}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Interface</td>
+                <td>
+                    {% if object.assigned_interface %}
+                    <a href="{% url 'interface-detail' object.assigned_interface.pk %}">
+                        {{object.assigned_interface}}
+                    </a>
+                    {% else %}
+                    <span class="text-muted">{{object.assigned_interface}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Service</td>
+                <td>
+                    {% if object.assigned_service %}
+                    <a href="{% url 'service-detail' object.assigned_service.pk %}">
+                        {{object.assigned_service}}
+                    </a>
+                    {% else %}
+                    <span class="text-muted">{{object.assigned_service}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Actions</td>
+                <td><a class="text-warning" href="/admin/ipam/ipaddress/{{object.pk}}/change/"><i class="fa fa-cog"></i>
+                    Edit</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

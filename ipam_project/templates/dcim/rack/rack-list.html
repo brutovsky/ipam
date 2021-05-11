@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Racks</h2>
+    <a class="text-success" href="/admin/dcim/rack/add/"><i class="fa fa-plus"></i> Add new rack</a>
+    <table>
+        <caption>
+            {{racks|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Group</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Devices</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <form id='form_filter' action="{% url 'rack-list' %}" method="get">
+            | Group:
+            <select name="group" id="select_group">
+                <option value=""
+                        {% if selected_group %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in group_options %}
+                {% if selected_group == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            | Role:
+            <select name="role" id="select_role">
+                <option value=""
+                        {% if selected_role %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in role_options %}
+                {% if selected_role == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
+        </tfoot>
+        <tbody>
+        {% for rack in racks %}
+        <tr>
+            <td class="text-center">
+                <a href="{% url 'rack-detail' rack.pk %}">
+                    {{rack.name}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'location-detail' rack.rack_group.location.pk %}">
+                    {{rack.rack_group.location}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'rackgroup-list' %}">
+                    {{rack.rack_group}}
+                </a>
+            </td>
+            <td class="text-center">
+                {% if rack.status == 'available' or rack.status == 'active' %}
+                <span class="badge badge-success">
+                    {{rack.status}}
+                </span>
+                {% elif rack.status == 'reserved'%}
+                <span class="badge badge-secondary">
+                    {{rack.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td class="text-center">
+                {% if rack.role %}
+                <label class="label"
+                       style="color: #ffffff; background-color: {{rack.role.color}}">{{rack.role.name}}</label>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'device-list' %}?rack={{rack.name}}">
+                    {{rack.devices.all|length}}
+                </a>
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/rack/{{rack.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_group').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+            $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
+</div>
+{% endblock content %}

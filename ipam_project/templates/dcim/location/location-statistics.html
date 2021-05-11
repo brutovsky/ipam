@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Location {{object.name}} Statistics</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link" aria-current="page" href="{% url 'location-detail' object.pk %}">Location</a>
+            <a class="nav-link" href="{% url 'location-rackgroups' object.pk %}">Rack Groups</a>
+            <a class="nav-link" href="{% url 'location-prefixes' object.pk %}">Prefixes</a>
+            <a class="nav-link" href="{% url 'location-vlangroups' object.pk %}">VLAN Groups</a>
+            <a class="nav-link active" href="">Stats</a>
+            <a class="nav-link" href="{% url 'location-logs' object.pk %}">ChangeLog</a>
+        </ul>
+        <table class="table table-condensed table-hover statistics">
+            <tbody>
+            {% for module_name, module_count in stats.items %}
+            <tr>
+                <td class="title">{{module_name}}</td>
+                <td class="stats-badge"><span class="badge badge1 badge5">{{module_count}}</span></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

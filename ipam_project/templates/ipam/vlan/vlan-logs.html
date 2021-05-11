@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>VLAN {{object.name}} logs</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link" aria-current="page" href="{% url 'vlan-detail' object.pk %}">VLAN</a>
+            <a class="nav-link" href="{% url 'vlan-prefixes' object.pk %}">Prefixes</a>
+            <a class="nav-link active" href="">ChangeLog</a>
+        </ul>
+        {% if logs|length == 0%}
+        <br/>
+        <span class="text-muted">None</span>
+        {% else %}
+        <table>
+            <caption>
+                {{logs|length}} entries
+            </caption>
+            <thead>
+            <tr>
+                <th>Time</th>
+                <th>User name</th>
+                <th>Action</th>
+                <th>Details</th>
+            </tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+            {% for log in logs %}
+            <tr>
+                <th>{{log.action_time}}</th>
+                <th>{{log.user}}</th>
+                <th>
+                    {% if log.is_addition %}
+                    <span class="label text-success">Added</span>
+                    {% elif log.is_deletion %}
+                    <span class="label text-danger">Deleted</span>
+                    {% elif log.is_change %}
+                    <span class="label text-primary">Updated</span>
+                    {% endif %}
+                </th>
+                <th>{{log}}</th>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

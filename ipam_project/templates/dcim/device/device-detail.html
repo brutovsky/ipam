@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Device {{object.name}}</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link active" aria-current="page" href="">Location</a>
+            <a class="nav-link" href="{% url 'device-interfaces' object.pk %}">Interfaces</a>
+            <a class="nav-link" href="{% url 'device-services' object.pk %}">Services</a>
+            <a class="nav-link" href="{% url 'device-logs' object.pk %}">ChangeLog</a>
+        </ul>
+        <table class="table table-hover panel-body attr-table">
+            <tbody>
+            <tr>
+                <td>Rack</td>
+                <td>
+                    <a href="{% url 'rack-detail' object.rack.pk %}">
+                        {{object.rack}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>
+                    {% if object.type %}
+                    <span>{{object.type}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.type}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>
+                    {% if object.role %}
+                    <label class="label" style="color: #ffffff; background-color: {{object.role.color}}">{{object.role.name}}</label>
+                    {% else %}
+                    <span class="text-muted">{{object.role}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Platform</td>
+                <td>
+                    {% if object.platform %}
+                    <span>{{object.platform}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.platform}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    {% if device.status == 'active' %}
+                    <span class="badge badge-success">
+                    {{device.status}}
+                </span>
+                    {% elif device.status == 'offline' %}
+                    <span class="badge badge-danger">
+                    {{device.status}}
+                </span>
+                    {% endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>Serial</td>
+                <td>
+                    {% if object.serial %}
+                    <span>{{object.serial}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.serial}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>MAC-address</td>
+                <td>
+                    {% if object.mac_address %}
+                    <span>{{object.mac_address}}</span>
+                    {% else %}
+                    <span class="text-muted">{{object.mac_address}}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Actions</td>
+                <td><a class="text-warning" href="/admin/dcim/device/{{object.pk}}/change/"><i class="fa fa-cog"></i>
+                    Edit</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

@@ -40,3 +40,16 @@ class AttributeGenerator:
 
 def toset(ipprefix):
     return IPSet([ipprefix.prefix])
+
+
+def calc_ipaddress_children(subnets):
+    result = 0
+    for subnet in subnets:
+        if subnet.is_container:
+            result += calc_ipaddress_children(subnet.subnets.all())
+        else:
+            child_count = IPSet([ip.address.ip for ip in subnet.ip_addresses.all()]).size
+            if subnet.prefix.version == 4 and subnet.prefix.prefixlen < 31 and not subnet.is_pool:
+                child_count += 2
+            result += child_count
+    return result

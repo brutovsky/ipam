@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Interfaces</h2>
+    <a class="text-success" href="/admin/ipam/ipaddress/add/"><i class="fa fa-plus"></i> Add new interface</a>
+    <table>
+        <caption>
+            {{interfaces|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Is Enabled</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Device</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for interface in interfaces %}
+        <tr>
+            <td>
+                {% if interface.enabled %}
+                <i class="fa fa-check-circle-o text-success"></i>
+                {% else %}
+                <i class="fa fa-times text-danger"></i>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'interface-detail' interface.id %}">
+                    {{interface.name}}
+                </a>
+            </td>
+            <td class="text-center">
+                {{interface.type}}
+            </td>
+            <td>
+                <a href="{% url 'device-detail' interface.device.pk %}">
+                    {{interface.device}}
+                </a>
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/interface/{{interface.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

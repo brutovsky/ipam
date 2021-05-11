@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>VLAN Roles</h2>
+    <a class="text-success" href="/admin/ipam/vlanrole/add/"><i class="fa fa-plus"></i> Add new VLAN role</a>
+    <table>
+        <caption>
+            {{vlanroles|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>VLANs</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for role in vlanroles %}
+        <tr>
+            <td class="text-center">
+                {{role.name}}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'vlan-list' %}?role={{role.name}}">
+                    {{role.vlans.all|length}}
+                </a>
+            </td>
+            <td>
+                {{role.description}}
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/vlanrole/{{role.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

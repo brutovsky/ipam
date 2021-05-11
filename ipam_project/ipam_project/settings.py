@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'ipam.apps.IpamConfig',
 
     'crispy_forms',
+
+    'django_admin_logs',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ipam_project.middleware.navigation_middleware'
 ]
 
 ROOT_URLCONF = 'ipam_project.urls'
@@ -144,7 +147,9 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/api/account/profile'
+LOGIN_REDIRECT_URL = 'profile'
+
+LOGIN_URL = 'login'
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

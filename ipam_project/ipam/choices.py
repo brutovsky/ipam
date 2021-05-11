@@ -29,7 +29,7 @@ class IPPrefixStatusChoices(models.TextChoices):
 class VLANStatusChoices(models.TextChoices):
     STATUS_ACTIVE = 'active'
     STATUS_RESERVED = 'reserved'
-    STATUS_AVAILABLE = 'available'
+    STATUS_DEPRECATED = 'deprecated'
 
 
 #

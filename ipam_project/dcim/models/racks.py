@@ -25,12 +25,6 @@ class RackGroup(models.Model):
         related_name='rack_groups',
         on_delete=models.PROTECT,
     )
-    parent = models.ForeignKey(
-        to='self',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
     description = models.CharField(
         max_length=200,
         blank=True

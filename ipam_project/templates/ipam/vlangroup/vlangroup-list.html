@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>VLAN Groups</h2>
+    <a class="text-success" href="/admin/ipam/vlangroup/add/"><i class="fa fa-plus"></i> Add new VLAN group</a>
+    <table>
+        <caption>
+            {{vlangroups|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>VLANs</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <!--        | Role:-->
+        <!--        <form id='form_filter' action="{% url 'ipaddress-list' %}" method="get">-->
+        <!--            <select name="role" id="select_role">-->
+        <!--                <option value=""-->
+        <!--                        {% if selected_role %}{% else %} selected="selected" {% endif %}>-->
+        <!--                    —-->
+        <!--                </option>-->
+        <!--                {% for option in role_options %}-->
+        <!--                {% if selected_role == option.name %}-->
+        <!--                <option value="{{option.name}}" selected>{{option}}</option>-->
+        <!--                {% else %}-->
+        <!--                {{selected_role}} == {{option.id}}-->
+        <!--                <option value="{{option.name}}">{{option}}</option>-->
+        <!--                {% endif %}-->
+        <!--                {% endfor %}-->
+        <!--            </select>-->
+        <!--        </form>-->
+        <!--        |-->
+        </tfoot>
+        <tbody>
+        {% for group in vlangroups %}
+        <tr>
+            <td class="text-center">
+                {{group.name}}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'location-detail' group.location.pk %}">
+                    {{group.location}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'vlan-list' %}?group={{group.name}}">
+                    {{group.vlans.all|length}}
+                </a>
+            </td>
+            <td>
+                {{group.description}}
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/vlangroup/{{group.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!--    <script>-->
+    <!--        $(document).ready(() => {-->
+    <!--            $('#select_role').change(() => {-->
+    <!--                const form = $('#form_filter')-->
+    <!--                form.submit()-->
+    <!--            });-->
+    <!--        });-->
+    <!--    </script>-->
+</div>
+{% endblock content %}

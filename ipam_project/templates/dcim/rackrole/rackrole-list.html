@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Rack Roles</h2>
+    <a class="text-success" href="/admin/dcim/rackrole/add/"><i class="fa fa-plus"></i> Add new Rack role</a>
+    <table>
+        <caption>
+            {{rackroles|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Racks</th>
+            <th>Color</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+        {% for role in rackroles %}
+        <tr>
+            <td class="text-center">
+                {{role.name}}
+            </td>
+            <td class="text-center">
+                <a href="{% url 'rack-list' %}?role={{role.name}}">
+                    {{role.racks.all|length}}
+                </a>
+            </td>
+            <td>
+                <label class="label" style="color: #ffffff; background-color: {{role.color}}">{{role.name}}</label>
+            </td>
+            <td>
+                {{role.description}}
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/rackrole/{{role.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>IP Addresses</h2>
+    <a class="text-success" href="/admin/ipam/ipaddress/add/"><i class="fa fa-plus"></i> Add new ip address</a>
+    <table>
+        <caption>
+            {{ipaddresses|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>IP Address</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th>Device</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        | Role:
+        <form id='form_filter' action="{% url 'ipaddress-list' %}" method="get">
+            <select name="role" id="select_role">
+                <option value=""
+                        {% if selected_role %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in role_options %}
+                {% if selected_role == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
+        </tfoot>
+        <tbody>
+        {% for ipaddress in ipaddresses %}
+        <tr>
+            <td>
+                <a href="{% url 'ipaddress-detail' ipaddress.id %}">
+                    {{ipaddress.address}}
+                </a>
+            </td>
+            <td class="text-center">
+                {% if ipaddress.status == 'active' %}
+                <span class="badge badge-success">
+                    {{ipaddress.status}}
+                </span>
+                {% elif ipaddress.status == 'reserved' %}
+                <span class="badge badge-secondary">
+                    {{ipaddress.status}}
+                </span>
+                {% elif ipaddress.status == 'deprecated' %}
+                <span class="badge badge-danger">
+                    {{ipaddress.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td class="text-center">
+                {% if ipaddress.role %}
+                <a href="{% url 'iprole-list' %}">
+                    {{ipaddress.role}}
+                </a>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td>
+                {% if ipaddress.assigned_interface %}
+                <a href="{% url 'device-detail' ipaddress.assigned_interface.device.pk %}">
+                    {{ipaddress.assigned_interface.device}}
+                </a>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td><a class="text-warning" href="/admin/ipam/ipaddress/{{ipaddress.pk}}/change/"><i class="fa fa-cog"></i>
+                Change</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
+</div>
+{% endblock content %}

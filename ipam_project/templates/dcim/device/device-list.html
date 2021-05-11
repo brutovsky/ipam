@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Devices</h2>
+    <a class="text-success" href="/admin/dcim/device/add/"><i class="fa fa-plus"></i> Add new Device</a>
+    <table>
+        <caption>
+            {{devices|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Rack</th>
+            <th>Role</th>
+            <th>Location</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <form id='form_filter' action="{% url 'device-list' %}" method="get">
+            | Device Type:
+            <select name="devicetype" id="select_devicetype">
+                <option value=""
+                        {% if selected_devicetype %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in devicetype_options %}
+                {% if selected_devicetype == option.model %}
+                <option value="{{option.model}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option.model}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            | Role:
+            <select name="role" id="select_role">
+                <option value=""
+                        {% if selected_role %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in role_options %}
+                {% if selected_role == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            | Rack:
+            <select name="rack" id="select_rack">
+                <option value=""
+                        {% if selected_rack %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in rack_options %}
+                {% if selected_rack == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
+        </tfoot>
+        <tbody>
+        {% for device in devices %}
+        <tr>
+            <td class="text-center">
+                <a href="{% url 'device-detail' device.pk %}">
+                    {{device.name}}
+                </a>
+            </td>
+            <td>
+                {{device.type}}
+            </td>
+            <td class="text-center">
+                {% if device.status == 'active' %}
+                <span class="badge badge-success">
+                    {{device.status}}
+                </span>
+                {% elif device.status == 'offline' %}
+                <span class="badge badge-danger">
+                    {{device.status}}
+                </span>
+                {% endif%}
+            </td>
+            <td>
+                <a href="{% url 'rack-list' %}">
+                    {{device.rack}}
+                </a>
+            </td>
+            <td>
+                {% if device.role %}
+                <label class="label" style="color: #ffffff; background-color: {{device.role.color}}">{{device.role.name}}</label>
+                {% else %}
+                —
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'location-detail' device.rack.rack_group.location.pk %}">
+                    {{device.rack.rack_group.location}}
+                </a>
+            </td>
+            <td><a class="text-warning" href="/admin/dcim/device/{{device.pk}}/change/"><i class="fa fa-cog"></i> Change</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_devicetype').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+            $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+            $('#select_rack').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+        });
+    </script>
+</div>
+{% endblock content %}

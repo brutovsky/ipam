@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Rack {{object.name}}</h2>
+    <div class="panel panel-default">
+        <ul class="nav nav-tabs">
+            <a class="nav-link active" aria-current="page" href="">Rack</a>
+            <a class="nav-link" href="{% url 'rack-devices' object.pk %}">Devices</a>
+            <a class="nav-link" href="{% url 'rack-logs' object.pk %}">ChangeLog</a>
+        </ul>
+        <table class="table table-hover panel-body attr-table">
+            <tbody>
+            <tr>
+                <td>Group</td>
+                <td>{{object.rack_group}}</td>
+            </tr>
+            <tr>
+                <td>Location</td>
+                <td>
+                    <a href="{% url 'location-detail' object.rack_group.location.pk %}">
+                        {{object.rack_group.location}}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>
+                    {% if object.status == 'active' or object.status == 'available' %}
+                    <span class="badge badge-success">
+                    {{object.status}}
+                </span>
+                    {% elif object.status == 'reserved' %}
+                    <span class="badge badge-secondary">
+                    {{object.status}}
+                </span>
+                    {% endif%}
+                </td>
+            </tr>
+            <tr>
+                <td>Role</td>
+                <td>
+                    {% if object.role %}
+                    <label class="label"
+                       style="color: #ffffff; background-color: {{rack.role.color}}">{{rack.role.name}}</label>
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Serial</td>
+                <td><span>{{object.serial}}</span></td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td><span>{{object.type}}</span></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><span>{{object.description}}</span></td>
+            </tr>
+            <tr>
+                <td>Actions</td>
+                <td><a class="text-warning" href="/admin/dcim/rack/{{object.pk}}/change/"><i class="fa fa-cog"></i>
+                    Edit</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

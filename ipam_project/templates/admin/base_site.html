@@ -1,0 +1,9 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+{% block branding %}
+{% block extrastyle %}
+<link rel='stylesheet' href='{% static 'admin.css' %}'>
+{% endblock %}
+<!--<img src="{% static 'img/logo.png' %}" alt="IPAM " class="brand_img" height="50" width="80">-->
+<h1 = 'head'>IPAM Admin Area</h1>
+{% endblock %}

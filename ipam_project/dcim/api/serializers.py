@@ -151,7 +151,7 @@ class PlatformSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Platform
-        fields = ['id', 'url', 'name', 'manufacturer', 'description', 'devices']
+        fields = ['id', 'url', 'name', 'manufacturer', 'description', 'device']
 
 
 class DeviceTypeSerializer(serializers.ModelSerializer):
@@ -171,7 +171,7 @@ class DeviceTypeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DeviceType
-        fields = ['id', 'url', 'manufacturer', 'model', 'devices']
+        fields = ['id', 'url', 'manufacturer', 'model', 'device']
 
 
 class DeviceRoleSerializer(serializers.ModelSerializer):
@@ -186,7 +186,7 @@ class DeviceRoleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DeviceRole
-        fields = ['id', 'url', 'name', 'color', 'description', 'devices']
+        fields = ['id', 'url', 'name', 'color', 'description', 'device']
 
 
 class DeviceSerializer(serializers.ModelSerializer):

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div>
+    <h2>Recent logs</h2>
+    <table>
+        <caption>
+            {{logs|length}} entries
+        </caption>
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>User name</th>
+            <th>Action</th>
+            <th>Details</th>
+            <th>Object</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <form id='form_model' action="/users/users-logs" method="get">
+            <select name="model" id="select_model">
+                {% for option in select_options %}
+                {% if selected_option == option.model %}
+                <option value="{{option.model}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option.model}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+        </form>
+        |
+        {% if model_pk %}
+        <a href="/admin/admin/logentry/?content_type__id__exact={{model_pk}}">Go to admin site page</a>
+        {% endif %}
+        </tfoot>
+        <tbody>
+        {% for log in logs %}
+        <tr>
+            <th>{{log.action_time}}</th>
+            <th>{{log.user}}</th>
+            <th>
+                {% if log.is_addition %}
+                <span class="label text-success">Added</span>
+                {% elif log.is_deletion %}
+                <span class="label text-danger">Deleted</span>
+                {% elif log.is_change %}
+                <span class="label text-primary">Updated</span>
+                {% endif %}
+            </th>
+            <th>{{log}}</th>
+            <th><a href="{{log.get_admin_url}}">{{log.object_repr}}</a></th>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(() => {
+            $('#select_model').change(() => {
+                const form = $('#form_model')
+                form.submit()
+            });
+        });
+    </script>
+</div>
+{% endblock content %}

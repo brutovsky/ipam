@@ -74,7 +74,7 @@
                 </td>
                 <td class="text-center">
                     {% if prefix.location %}
-                    <a href="/admin/dcim/location/{{prefix.location.pk}}/change/">
+                    <a href="{% url 'location-detail' prefix.location.pk %}">
                         {{prefix.location}}
                     </a>
                     {% else %}
@@ -83,14 +83,18 @@
                 </td>
                 <td class="text-center">
                     {% if prefix.vlan %}
-                    {{prefix.vlan}}
+                    <a href="{% url 'vlan-detail' prefix.vlan.pk %}">
+                        {{prefix.vlan}}
+                    </a>
                     {% else %}
                     —
                     {% endif %}
                 </td>
                 <td class="text-center">
                     {% if prefix.role %}
-                    {{prefix.role}}
+                    <a href="{% url 'iprole-detail' prefix.role.pk %}">
+                        {{prefix.role}}
+                    </a>
                     {% else %}
                     —
                     {% endif %}

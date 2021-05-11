@@ -62,10 +62,14 @@
                 </a>
             </td>
             <td class="text-center">
-                {{rack.rack_group.location}}
+                <a href="{% url 'location-detail' rack.rack_group.location.pk %}">
+                    {{rack.rack_group.location}}
+                </a>
             </td>
             <td class="text-center">
-                {{rack.rack_group}}
+                <a href="{% url 'rackgroup-list' %}">
+                    {{rack.rack_group}}
+                </a>
             </td>
             <td class="text-center">
                 {% if rack.status == 'available' or rack.status == 'active' %}
@@ -87,7 +91,9 @@
                 {% endif %}
             </td>
             <td class="text-center">
-                {{rack.devices.all|length}}
+                <a href="{% url 'device-list' %}?rack={{rack.name}}">
+                    {{rack.devices.all|length}}
+                </a>
             </td>
             <td><a class="text-warning" href="/admin/dcim/rack/{{rack.pk}}/change/"><i class="fa fa-cog"></i>
                 Change</a></td>

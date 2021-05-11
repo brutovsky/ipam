@@ -10,9 +10,9 @@
         </caption>
         <thead>
         <tr>
+            <th>Name</th>
             <th>Group</th>
             <th>VID</th>
-            <th>Name</th>
             <th>Status</th>
             <th>Role</th>
             <th></th>
@@ -56,17 +56,17 @@
         {% for vlan in vlans %}
         <tr>
             <td class="text-center">
-                <a>
+                <a href="{% url 'vlan-detail' vlan.pk %}">
+                    {{vlan.name}}
+                </a>
+            </td>
+            <td class="text-center">
+                <a href="{% url 'vlangroup-list' %}">
                     {{vlan.vlan_group}}
                 </a>
             </td>
             <td class="text-center">
                 {{vlan.vid}}
-            </td>
-            <td class="text-center">
-                <a href="{% url 'vlan-detail' vlan.pk %}">
-                    {{vlan.name}}
-                </a>
             </td>
             <td class="text-center">
                 {% if vlan.status == 'active' %}
@@ -85,7 +85,9 @@
             </td>
             <td class="text-center">
                 {% if vlan.role %}
-                {{vlan.role}}
+                <a href="{% url 'vlanrole-list' %}">
+                    {{vlan.role}}
+                </a>
                 {% else %}
                 —
                 {% endif %}

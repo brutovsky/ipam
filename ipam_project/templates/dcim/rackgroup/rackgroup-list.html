@@ -26,7 +26,7 @@
                 {{rackgroup.name}}
             </td>
             <td class="text-center">
-                <a href="{% url 'location-list'%}">
+                <a href="{% url 'location-detail'  rackgroup.location.pk %}">
                     {{rackgroup.location}}
                 </a>
             </td>

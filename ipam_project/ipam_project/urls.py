@@ -2,9 +2,7 @@ from django.contrib import admin
 from django.contrib.admin.models import LogEntry
 from django.shortcuts import render
 from django.urls import path, include
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
-from rest_framework.views import APIView
+from django.contrib.auth.models import User, Group
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, schema, permission_classes
 from rest_framework.response import Response
@@ -16,8 +14,12 @@ from users import views as user_views
 from ipam import views as ipam_views
 from dcim import views as dcim_views
 
-from dcim.models.devices import Device
-from ipam.models.ip import IPPrefix
+from dcim.models.locations import *
+from dcim.models.devices import *
+from dcim.models.racks import *
+from ipam.models.ip import *
+from ipam.models.vlan import *
+from ipam.models.services import *
 
 
 @api_view(['GET'])
@@ -136,133 +138,156 @@ pages = {
 }
 
 sidebar_navigation = {
-    'Users Component': {
+    ('Users Component', 'auth'): {
         'Logs': (
             pages['users-logs'],
+            'admin.view_logentry',
             {
             }
         ),
         'Users': (
             pages['user-list'],
+            'auth.view_user',
             {
             }
         ),
         'Groups': (
             pages['group-list'],
+            'auth.view_group',
             {
             }
         )
     },
 
-    'IPAM Component': {
+    ('IPAM Component', 'ipam'): {
         'Logs': (
             pages['ipam-logs'],
+            'admin.view_logentry',
             {
             }
         ),
         'IP Roles': (
             pages['iprole-list'],
+            'ipam.view_iprole',
             {
 
             }
         ),
         'Prefixes': (
             pages['prefix-list'],
+            'ipam.view_ipprefix',
             {
 
             }
         ),
         'IP Addresses': (
             pages['ipaddress-list'],
+            'ipam.view_ipaddress',
             {
 
             }
         ),
         'Services': (
             pages['service-list'],
+            'ipam.view_service',
             {
 
             }
         ),
         'Interfaces': (
             pages['interface-list'],
+            'ipam.view_interface',
             {
 
             }
         ),
         'VLAN Roles': (
             pages['vlanrole-list'],
+            'ipam.view_vlanrole',
             {
 
             }
         ),
         'VLAN Groups': (
             pages['vlangroup-list'],
+            'ipam.view_vlangroup',
             {
 
             }
         ),
         'VLANs': (
             pages['vlan-list'],
+            'ipam.view_vlan',
             {
 
             }
         )
     },
 
-    'DCIM Component': {
+    ('DCIM Component', 'dcim'): {
         'Logs': (
             pages['dcim-logs'],
+            'admin.view_logentry',
             {
             }
         ),
         'Regions': (
             pages['region-list'],
+            'dcim.view_region',
             {
             }
         ),
         'Locations': (
             pages['location-list'],
+            'dcim.view_location',
             {
             }
         ),
         'Rack Group': (
             pages['rackgroup-list'],
+            'dcim.view_rackgroup',
             {
             }
         ),
         'Rack Roles': (
             pages['rackrole-list'],
+            'dcim.view_rackrole',
             {
             }
         ),
         'Racks': (
             pages['rack-list'],
+            'dcim.view_rack',
             {
             }
         ),
         'Manufacturers': (
             pages['manufacturer-list'],
+            'dcim.view_manufecturer',
             {
             }
         ),
         'Platforms': (
             pages['platform-list'],
+            'dcim.view_platform',
             {
             }
         ),
         'Device Types': (
             pages['devicetype-list'],
+            'dcim.view_devicetype',
             {
             }
         ),
         'Device Roles': (
             pages['devicerole-list'],
+            'dcim.view_devicerole',
             {
             }
         ),
         'Devices': (
             pages['device-list'],
+            'dcim.view_device',
             {
             }
         ),
@@ -279,8 +304,16 @@ def home(request):
         'Users': {},
     }
 
-    statistics['IPAM']['Number of prefixes'] = IPPrefix.objects.all().count()
+    statistics['IPAM']['Number of Prefixes'] = IPPrefix.objects.all().count()
+    statistics['IPAM']['Number of IP Addresses'] = IPAddress.objects.all().count()
+    statistics['IPAM']['Number of VLANs'] = VLAN.objects.all().count()
+    statistics['IPAM']['Number of services'] = Service.objects.all().count()
+
+    statistics['DCIM']['Number of location'] = Location.objects.all().count()
+    statistics['DCIM']['Number of racks'] = Rack.objects.all().count()
     statistics['DCIM']['Number of device'] = Device.objects.all().count()
+
+    statistics['Users']['Number of groups'] = Group.objects.all().count()
     statistics['Users']['Number of users'] = User.objects.all().count()
 
     return render(request, 'home.html', {

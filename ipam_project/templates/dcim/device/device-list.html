@@ -50,6 +50,21 @@
                 {% endif %}
                 {% endfor %}
             </select>
+            | Rack:
+            <select name="rack" id="select_rack">
+                <option value=""
+                        {% if selected_rack %}{% else %} selected="selected" {% endif %}>
+                    —
+                </option>
+                {% for option in rack_options %}
+                {% if selected_rack == option.name %}
+                <option value="{{option.name}}" selected>{{option}}</option>
+                {% else %}
+                {{selected_role}} == {{option.id}}
+                <option value="{{option.name}}">{{option}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
         </form>
         |
         </tfoot>
@@ -76,7 +91,9 @@
                 {% endif%}
             </td>
             <td>
-                {{device.rack}}
+                <a href="{% url 'rack-list' %}">
+                    {{device.rack}}
+                </a>
             </td>
             <td>
                 {% if device.role %}
@@ -86,7 +103,9 @@
                 {% endif %}
             </td>
             <td>
-                {{device.rack.rack_group.location}}
+                <a href="{% url 'location-detail' device.rack.rack_group.location.pk %}">
+                    {{device.rack.rack_group.location}}
+                </a>
             </td>
             <td><a class="text-warning" href="/admin/dcim/device/{{device.pk}}/change/"><i class="fa fa-cog"></i> Change</a>
             </td>
@@ -101,6 +120,10 @@
                 form.submit()
             });
             $('#select_role').change(() => {
+                const form = $('#form_filter')
+                form.submit()
+            });
+            $('#select_rack').change(() => {
                 const form = $('#form_filter')
                 form.submit()
             });

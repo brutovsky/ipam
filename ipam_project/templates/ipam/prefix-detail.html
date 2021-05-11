@@ -23,7 +23,11 @@
                 <td>Location</td>
                 <td>
                     {% if object.location %}
-                    <span>{{object.location}}</span>
+                    <span>
+                        <a href="{% url 'location-detail' object.location.pk %}">
+                    {{object.location}}
+                </a>
+                    </span>
                     {% else %}
                     <span class="text-muted">{{object.location}}</span>
                     {% endif %}
@@ -33,7 +37,11 @@
                 <td>VLAN</td>
                 <td>
                     {% if object.vlan %}
-                    <span>{{object.vlan}}</span>
+                    <span>
+                        <a href="{% url 'vlan-detail' object.vlan.pk %}">
+                        {{object.vlan}}
+                    </a>
+                    </span>
                     {% else %}
                     <span class="text-muted">{{object.vlan}}</span>
                     {% endif %}
@@ -71,7 +79,9 @@
                 <td>Role</td>
                 <td>
                     {% if object.role %}
-                    <a href="/ipam/prefixes/?role=loopback">{{object.role}}</a>
+                    <a href="{% url 'iprole-list' %}">
+                        {{object.role}}
+                    </a>
                     {% else %}
                     <span class="text-muted">{{object.role}}</span>
                     {% endif %}

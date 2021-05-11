@@ -62,16 +62,20 @@
             </td>
             <td class="text-center">
                 {% if ipaddress.role %}
-                {{ipaddress.role}}
+                <a href="{% url 'iprole-list' %}">
+                    {{ipaddress.role}}
+                </a>
                 {% else %}
                 —
                 {% endif %}
             </td>
             <td>
                 {% if ipaddress.assigned_interface %}
-                {{ipaddress.assigned_interface.device}}
+                <a href="{% url 'device-detail' ipaddress.assigned_interface.device.pk %}">
+                    {{ipaddress.assigned_interface.device}}
+                </a>
                 {% else %}
-                <span class="text-muted">{{ipaddress.assigned_interface}}</span>
+                —
                 {% endif %}
             </td>
             <td><a class="text-warning" href="/admin/ipam/ipaddress/{{ipaddress.pk}}/change/"><i class="fa fa-cog"></i>

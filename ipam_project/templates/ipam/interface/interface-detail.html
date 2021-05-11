@@ -29,7 +29,7 @@
             <tr>
                 <td>Device</td>
                 <td>
-                    <a>
+                    <a href="{% url 'device-detail' object.device.pk %}">
                         {{object.device}}
                     </a>
                 </td>
@@ -42,7 +42,9 @@
                 <td>Untagged VLAN</td>
                 <td>
                     {% if object.untagged_vlan %}
-                    {{object.untagged_vlan}}
+                    <a href="{% url 'vlan-detail' object.untagged_vlan.pk %}">
+                        {{object.untagged_vlan}}
+                    </a>
                     {% else %}
                     <span class="text-muted">{{object.untagged_vlan}}</span>
                     {% endif %}
@@ -55,7 +57,9 @@
                         {% if object.tagged_vlans.all|length != 0 %}
                         {% for vlan in object.tagged_vlans.all %}
                         <li>
-                            {{vlan}}
+                            <a href="{% url 'vlan-detail' vlan.pk %}">
+                                {{vlan}}
+                            </a>
                         </li>
                         {% endfor %}
                         {% else %}

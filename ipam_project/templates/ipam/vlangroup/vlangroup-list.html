@@ -44,7 +44,9 @@
                 {{group.name}}
             </td>
             <td class="text-center">
-                {{group.location}}
+                <a href="{% url 'location-detail' group.location.pk %}">
+                    {{group.location}}
+                </a>
             </td>
             <td class="text-center">
                 <a href="{% url 'vlan-list' %}?group={{group.name}}">

@@ -46,7 +46,9 @@
                 <td>Role</td>
                 <td>
                     {% if object.role %}
-                    <a href="/ipam/prefixes/?role=loopback">{{object.role}}</a>
+                    <a href="{% url 'iprole-list' %}">
+                        {{object.role}}
+                    </a>
                     {% else %}
                     <span class="text-muted">{{object.role}}</span>
                     {% endif %}
@@ -60,7 +62,9 @@
                 <td>Device</td>
                 <td>
                     {% if object.assigned_interface %}
-                    {{object.assigned_interface.device}}
+                    <a href="{% url 'device-detail' object.assigned_interface.device.pk %}">
+                        {{object.assigned_interface.device}}
+                    </a>
                     {% else %}
                     <span class="text-muted">{{object.assigned_interface}}</span>
                     {% endif %}
@@ -70,7 +74,9 @@
                 <td>Interface</td>
                 <td>
                     {% if object.assigned_interface %}
-                    {{object.assigned_interface}}
+                    <a href="{% url 'interface-detail' object.assigned_interface.pk %}">
+                        {{object.assigned_interface}}
+                    </a>
                     {% else %}
                     <span class="text-muted">{{object.assigned_interface}}</span>
                     {% endif %}
@@ -80,7 +86,9 @@
                 <td>Service</td>
                 <td>
                     {% if object.assigned_service %}
-                    {{object.assigned_service}}
+                    <a href="{% url 'service-detail' object.assigned_service.pk %}">
+                        {{object.assigned_service}}
+                    </a>
                     {% else %}
                     <span class="text-muted">{{object.assigned_service}}</span>
                     {% endif %}

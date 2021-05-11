@@ -1,5 +1,6 @@
 from braces.views import PermissionRequiredMixin
 from django.contrib.admin.models import LogEntry
+from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -10,14 +11,12 @@ from ipam.models.device_components import Interface
 from ipam.models.vlan import VLAN, VLANGroup, VLANRole
 
 
-# Create your views here.
-
-
 def ipam_component(request):
     response = redirect('/ipam/ipam-logs')
     return response
 
 
+@permission_required('admin.view_logentry')
 def ipam_logs(request):
     if request.method == 'GET' and 'model' in request.GET:
         model = request.GET['model']

@@ -42,7 +42,9 @@
                 {{devicetype.model}}
             </td>
             <td class="text-center">
-                {{devicetype.manufacturer}}
+                <a href="{% url 'manufacturer-list' %}">
+                    {{devicetype.manufacturer}}
+                </a>
             </td>
             <td class="text-center">
                 <a href="{% url 'device-list' %}?devicetype={{devicetype.model}}">

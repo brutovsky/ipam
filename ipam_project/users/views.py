@@ -6,14 +6,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic import *
 
 from .forms import UserRegisterForm, UserProfileForm, ChangePasswordForm
 import django.contrib.auth.password_validation as validators
-
-
-# Create your views here.
 
 
 def register(request):
@@ -73,18 +70,16 @@ def change_password(request):
     return render(request, 'users/change-password.html', {'form': form})
 
 
-class UserListView(StaffuserRequiredMixin, PermissionRequiredMixin,  ListView):
+class UserListView(StaffuserRequiredMixin, SuperuserRequiredMixin,  ListView):
     model = User
     template_name = 'users/user-list.html'
     context_object_name = 'users'
-    permission_required = "auth.view_user"
 
 
-class GroupListView(StaffuserRequiredMixin, PermissionRequiredMixin,  ListView):
+class GroupListView(StaffuserRequiredMixin, SuperuserRequiredMixin,  ListView):
     model = Group
     template_name = 'users/group-list.html'
     context_object_name = 'groups'
-    permission_required = "auth.view_group"
 
 
 def user_component(request):
@@ -92,6 +87,7 @@ def user_component(request):
     return response
 
 
+@permission_required('admin.view_logentry')
 def users_logs(request):
     if request.method == 'GET' and 'model' in request.GET:
         model = request.GET['model']

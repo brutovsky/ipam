@@ -134,7 +134,7 @@ class Device(models.Model):
     )
     platform = models.ForeignKey(
         Platform,
-        related_name='device',
+        related_name='devices',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

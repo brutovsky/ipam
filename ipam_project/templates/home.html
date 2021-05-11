@@ -26,27 +26,6 @@
     <br>
 </section>
 
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 widget-dash" id="w-statistics">
-    <div class="inner"><h4>Statistics</h4>
-        {% for title, components in statistics.items %}
-        <div><span>{{title}}</span>
-            <div class="container-fluid" style="padding-top:5px">
-                <table class="table table-condensed table-hover statistics">
-                    <tbody>
-                    {% for module_name, module_count in components.items %}
-                    <tr>
-                        <td class="title">{{module_name}}</td>
-                        <td class="stats-badge"><span class="badge badge1 badge5">{{module_count}}</span></td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
 <hr/>
 
 <div>

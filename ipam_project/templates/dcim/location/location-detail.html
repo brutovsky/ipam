@@ -16,25 +16,28 @@
             <tbody>
             <tr>
                 <td>Region</td>
-                <td>{{object.region}}</td>
+                <td>
+                    <a href="{% url 'region-list' %}">
+                        {{object.region}}
+                    </a>
+                </td>
             </tr>
             <tr>
                 <td>Status</td>
                 <td>
-                   {% if location.status == 'active' %}
-                <span class="badge badge-success">
+                    {% if location.status == 'active' %}
+                    <span class="badge badge-success">
                     {{location.status}}
                 </span>
-                {% elif location.status == 'planned' or location.status == 'staging' or location.status ==
-                'decommissioning'%}
-                <span class="badge badge-warning">
+                    {% elif location.status == 'planned' or location.status == 'staging' or location.status == 'decommissioning' %}
+                    <span class="badge badge-warning">
                     {{location.status}}
                 </span>
-                {% elif location.status == 'retired' %}
-                <span class="badge badge-secondary">
+                    {% elif location.status == 'retired' %}
+                    <span class="badge badge-secondary">
                     {{location.status}}
                 </span>
-                {% endif%}
+                    {% endif%}
                 </td>
             </tr>
             <tr>
@@ -83,7 +86,7 @@
             </tr>
             <tr>
                 <td>Actions</td>
-                <td><a class="text-warning" href="/admin/ipam/ipprefix/{{object.pk}}/change/"><i class="fa fa-cog"></i>
+                <td><a class="text-warning" href="/admin/dcim/location/{{object.pk}}/change/"><i class="fa fa-cog"></i>
                     Edit</a></td>
             </tr>
             </tbody>

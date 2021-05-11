@@ -69,14 +69,18 @@
                 </td>
                 <td class="text-center">
                     {% if prefix.vlan %}
-                    {{prefix.vlan}}
+                    <a href="{% url 'vlan-detail' prefix.vlan.pk %}">
+                        {{prefix.vlan}}
+                    </a>
                     {% else %}
                     —
                     {% endif %}
                 </td>
                 <td class="text-center">
                     {% if prefix.role %}
-                    {{prefix.role}}
+                    <a href="{% url 'iprole-list' %}">
+                        {{prefix.role}}
+                    </a>
                     {% else %}
                     —
                     {% endif %}

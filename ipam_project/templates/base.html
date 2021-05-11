@@ -18,7 +18,8 @@
     <script src="https://use.fontawesome.com/8aa8ff0eb5.js"></script>
 
     <!-- Optional JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/@popperjs/core@2"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -116,36 +117,57 @@
             <aside>
                 <h2>Content</h2>
                 {% if request.sidebar_navigation %}
-                {% for component_name, navigation in request.sidebar_navigation.items %}
 
-                {{component_name}}
+                {% for component_info, navigation in request.sidebar_navigation.items %}
+
+                {% if component_info.1 in perms %}
+
+                {% if component_info.0 == request.current_component %}
+                <span class="text-muted">
+                    {{component_info.0}}
+                </span>
+                {% else %}
+                {{component_info.0}}
+                {% endif %}
+
 
                 {% for key, val in navigation.items %}
 
-                {% if request.current_component %}
-                {% if request.current_component == key %}
+                {% if val.1 in perms %}
+
+                {% if request.current_module %}
+
+                {% if request.current_module == key %}
                 <li><a href="{% url val.0.1 %}" class="text-muted">{{key}}</a>
                     {% else %}
                 <li><a href="{% url val.0.1 %}">{{key}}</a>
                     {% endif %}
+
                     {% else %}
                 <li><a href="{% url val.0.1 %}">{{key}}</a>
+
                     {% endif %}
-                    <ul>
-                        {% for k, v in val.1.items %}
-                        {% if request.last_link.2 == v.2 %}
-                        <li><a href="{% url v.1 %}" class="text-muted">{{k}}</a></li>
-                        {% else %}
-                        <li><a href="{% url v.1 %}">{{k}}</a></li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
+<!--                    <ul>-->
+<!--                        {% for k, v in val.1.items %}-->
+<!--                        {% if request.last_link.2 == v.2 %}-->
+<!--                        <li><a href="{% url v.1 %}" class="text-muted">{{k}}</a></li>-->
+<!--                        {% else %}-->
+<!--                        <li><a href="{% url v.1 %}">{{k}}</a></li>-->
+<!--                        {% endif %}-->
+<!--                        {% endfor %}-->
+<!--                    </ul>-->
                 </li>
 
+                {% endif %}
 
                 {% endfor %}
                 <br/>
+
+
+                {% endif %}
+
                 {% endfor %}
+
                 {% endif %}
             </aside>
         </div>

@@ -1,5 +1,6 @@
 from braces.views import PermissionRequiredMixin
 from django.contrib.admin.models import LogEntry
+from django.contrib.auth.decorators import permission_required
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
@@ -16,6 +17,7 @@ def dcim_component(request):
     return response
 
 
+@permission_required('admin.view_logentry')
 def dcim_logs(request):
     if request.method == 'GET' and 'model' in request.GET:
         model = request.GET['model']
@@ -320,8 +322,7 @@ class DeviceListView(PermissionRequiredMixin, ListView):
     def get_queryset(self):
         role_filter = self.request.GET.get('role', '')
         devicetype_filter = self.request.GET.get('devicetype', '')
-
-        print(devicetype_filter)
+        rack_filter = self.request.GET.get('rack', '')
 
         queryset = Device.objects
 
@@ -333,14 +334,20 @@ class DeviceListView(PermissionRequiredMixin, ListView):
             devicetype = DeviceType.objects.get(model=devicetype_filter)
             queryset = queryset.filter(type=devicetype.id)
 
+        if rack_filter:
+            rack = Rack.objects.get(name=rack_filter)
+            queryset = queryset.filter(rack=rack.id)
+
         return queryset.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['role_options'] = DeviceRole.objects.all()
         context['devicetype_options'] = DeviceType.objects.all()
+        context['rack_options'] = Rack.objects.all()
         context['selected_role'] = self.request.GET.get('role', '')
         context['selected_devicetype'] = self.request.GET.get('devicetype', '')
+        context['selected_rack'] = self.request.GET.get('rack', '')
         return context
 
 

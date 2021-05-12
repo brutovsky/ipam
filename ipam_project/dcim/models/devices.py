@@ -161,7 +161,8 @@ class Device(models.Model):
     mac_address = MACAddressField(
         null=True,
         blank=True,
-        verbose_name='MAC Address'
+        verbose_name='MAC Address',
+        unique=True
     )
 
     def __str__(self):

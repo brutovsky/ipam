@@ -2,6 +2,7 @@ from django.db import models
 from dcim.models.devices import Device
 from ipam.models.vlan import VLAN
 from ipam.choices import DeviceComponentStatusChoices
+from dcim.fields import MACAddressField
 
 
 __all__ = (
@@ -48,6 +49,11 @@ class Interface(models.Model):
         related_name='interfaces_tagged',
         blank=True,
         verbose_name='Tagged VLANs'
+    )
+    mac_address = MACAddressField(
+        null=True,
+        blank=True,
+        verbose_name='MAC Address'
     )
 
     def clean(self):

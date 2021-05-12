@@ -70,7 +70,7 @@ class RackRole(models.Model):
 class Rack(models.Model):
     name = models.CharField(
         max_length=100,
-        unique=True
+        unique=False
     )
     rack_group = models.ForeignKey(
         RackGroup,
@@ -101,8 +101,9 @@ class Rack(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f'{self.rack_group}:{self.name}'
 
     class Meta:
         ordering = ['name']
         app_label = 'dcim'
+        unique_together = [['name', 'rack_group']]

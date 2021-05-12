@@ -25,7 +25,7 @@ class Interface(models.Model):
     )
     name = models.CharField(
         max_length=100,
-        unique=True
+        unique=False
     )
     description = models.CharField(
         max_length=200,
@@ -64,7 +64,7 @@ class Interface(models.Model):
                 ip_addr.full_clean()
 
     def __str__(self):
-        return self.name
+        return f'{self.device}:{self.name}'
 
     class Meta:
         ordering = ['name']

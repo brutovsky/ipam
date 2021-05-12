@@ -1,7 +1,7 @@
 from django.db import models
 from dcim.models.devices import Device
 from ipam.models.vlan import VLAN
-from dcim.choices import DeviceComponentStatusChoices
+from ipam.choices import DeviceComponentStatusChoices
 
 
 __all__ = (

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.admin.models import LogEntry
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.urls import path, include
 from django.contrib.auth.models import User, Group
@@ -294,7 +295,7 @@ sidebar_navigation = {
     }
 }
 
-
+@login_required
 def home(request):
     logs = LogEntry.objects.order_by('-action_time')[:10]
 

@@ -2,14 +2,17 @@ from django.db import models
 
 from dcim.choices import *
 
+
 __all__ = (
     'Region',
     'Location',
 )
 
+
 #
 # Regions
 #
+
 
 class Region(models.Model):
     name = models.CharField(

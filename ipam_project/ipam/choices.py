@@ -39,3 +39,14 @@ class VLANStatusChoices(models.TextChoices):
 class ServiceProtocolChoices(models.TextChoices):
     PROTOCOL_TCP = 'tcp'
     PROTOCOL_UDP = 'udp'
+
+
+#
+# DeviceComponents
+#
+
+class DeviceComponentStatusChoices(models.TextChoices):
+    VIRTUAL = ' virtual'
+    ETHERNET = 'ethernet'
+    WIRELESS = 'wireless'
+    SERIAL = 'serial'

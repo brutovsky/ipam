@@ -89,7 +89,7 @@ class VLAN(models.Model):
     )
     name = models.CharField(
         max_length=100,
-        unique=True
+        unique=False
     )
     status = models.CharField(
         max_length=50,
@@ -117,8 +117,9 @@ class VLAN(models.Model):
                 ip_prefix.full_clean()
 
     def __str__(self):
-        return self.name
+        return f'{self.vlan_group}:{self.name}'
 
     class Meta:
         ordering = ['vid']
         app_label = 'ipam'
+        unique_together = [['name', 'vlan_group']]

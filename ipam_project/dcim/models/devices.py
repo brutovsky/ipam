@@ -1,5 +1,4 @@
 from django.db import models
-from dcim.fields import MACAddressField
 from ipam_project.widgets import ColorField
 from dcim.choices import DeviceStatusChoices
 from dcim.models.racks import Rack
@@ -157,11 +156,6 @@ class Device(models.Model):
         max_length=50,
         choices=DeviceStatusChoices.choices,
         default=DeviceStatusChoices.STATUS_ACTIVE
-    )
-    mac_address = MACAddressField(
-        null=True,
-        blank=True,
-        verbose_name='MAC Address'
     )
 
     def __str__(self):

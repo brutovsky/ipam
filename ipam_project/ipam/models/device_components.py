@@ -1,7 +1,8 @@
 from django.db import models
 from dcim.models.devices import Device
 from ipam.models.vlan import VLAN
-from dcim.choices import DeviceComponentStatusChoices
+from ipam.choices import DeviceComponentStatusChoices
+from dcim.fields import MACAddressField
 
 
 __all__ = (
@@ -24,7 +25,7 @@ class Interface(models.Model):
     )
     name = models.CharField(
         max_length=100,
-        unique=True
+        unique=False
     )
     description = models.CharField(
         max_length=200,
@@ -49,6 +50,12 @@ class Interface(models.Model):
         blank=True,
         verbose_name='Tagged VLANs'
     )
+    mac_address = MACAddressField(
+        null=True,
+        blank=True,
+        verbose_name='MAC Address',
+        unique=True
+    )
 
     def clean(self):
         super().clean()
@@ -58,7 +65,7 @@ class Interface(models.Model):
                 ip_addr.full_clean()
 
     def __str__(self):
-        return self.name
+        return f'{self.device}:{self.name}'
 
     class Meta:
         ordering = ['name']

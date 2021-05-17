@@ -31,15 +31,3 @@ class DeviceStatusChoices(models.TextChoices):
     STATUS_OFFLINE = 'offline'
     STATUS_ACTIVE = 'active'
 
-
-#
-# DeviceComponents
-#
-
-class DeviceComponentStatusChoices(models.TextChoices):
-    VIRTUAL = ' virtual'
-    ETHERNET = 'ethernet'
-    WIRELESS = 'wireless'
-    SERIAL = 'serial'
-
-

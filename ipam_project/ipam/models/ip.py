@@ -53,6 +53,11 @@ class IPPrefix(models.Model, AttributeGenerator):
         default=False,
         help_text='Other IP prefixes can be nested inside this prefix'
     )
+    is_pool = models.BooleanField(
+        verbose_name='Is a pool',
+        default=True,
+        help_text='All IP addresses within this prefix are considered usable'
+    )
     prefix_container = models.ForeignKey(
         to='self',
         on_delete=models.CASCADE,
@@ -88,11 +93,6 @@ class IPPrefix(models.Model, AttributeGenerator):
         blank=True,
         null=True,
         help_text='Functional role'
-    )
-    is_pool = models.BooleanField(
-        verbose_name='Is a pool',
-        default=True,
-        help_text='All IP addresses within this prefix are considered usable'
     )
     description = models.CharField(
         max_length=200,

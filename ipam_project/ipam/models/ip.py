@@ -123,10 +123,12 @@ class IPPrefix(models.Model, AttributeGenerator):
 
     def get_available_ips(self):
         """
-        Return all available IPs within this prefix as an IPSet.
+        Return all available IP addresses within this prefix as an IPSet.
         """
         prefix = IPSet(self.prefix)
 
+        # If the prefix is container and has children,
+        # count available children addresses
         if self.is_container and self.subnets:
             available_ips = IPSet([])
             for subnet in self.subnets.all():
@@ -136,22 +138,18 @@ class IPPrefix(models.Model, AttributeGenerator):
         prefix_ips = IPSet([ip.address.ip for ip in self.ip_addresses.all()])
         available_ips = prefix - prefix_ips
 
-        # IPv6, pool, or IPv4 /31 sets are fully usable
+        # If the prefix is IPv6 protocol, is a pool or has prefix length 31
+        # return all the addresses from the prefix
         if self.family == 6 or self.is_pool or self.prefix.prefixlen == 31:
             return available_ips
 
-        # For "normal" IPv4 prefixes, omit first and last addresses
+        # If the prefix is not pool, omit first and last addresses
         available_ips -= IPSet([
             netaddr.IPAddress(self.prefix.first),
             netaddr.IPAddress(self.prefix.last),
         ])
 
         return available_ips
-
-    # def get_ip_addresses_with_available(self):
-    #     all_addresses = IPSet([self.prefix])
-    #     ip_addresses = IPSet([ip.address.ip for ip in self.ip_addresses.all()])
-    #     all_addresses -
 
     def clean(self):
         super().clean()
@@ -283,7 +281,7 @@ class IPAddress(models.Model, AttributeGenerator):
     )
 
     def save(self, *args, **kwargs):
-        # dns-name to lower case
+        # dns_name to lower case
         if hasattr(self, 'dns_name') and self.dns_name:
             self.dns_name = self.dns_name.lower()
         super().save(*args, **kwargs)

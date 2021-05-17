@@ -3,7 +3,6 @@ from .models.locations import *
 from .models.racks import *
 from .models.devices import *
 
-# Register your models here.
 
 admin.site.register(Region)
 admin.site.register(Location)

@@ -20,8 +20,6 @@ class IPAddressFormField(forms.Field):
         if isinstance(value, IPAddress):
             return value
 
-        # netaddr is a bit too liberal with what it accepts as a valid IP address. For example, '1.2.3' will become
-        # IPAddress('1.2.0.3'). Here, we employ Django's built-in IPv4 and IPv6 address validators as a sanity check.
         try:
             validate_ipv4_address(value)
         except ValidationError:
@@ -50,7 +48,6 @@ class IPNetworkFormField(forms.Field):
         if isinstance(value, IPNetwork):
             return value
 
-        # Ensure that a subnet mask has been specified. This prevents IPs from defaulting to a /32 or /128.
         if len(value.split('/')) != 2:
             raise ValidationError('CIDR mask (e.g. /24) is required.')
 

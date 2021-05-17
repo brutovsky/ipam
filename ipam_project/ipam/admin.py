@@ -4,7 +4,6 @@ from .models.vlan import *
 from .models.services import *
 from .models.device_components import *
 
-# Register your models here.
 
 admin.site.register(IPRole)
 admin.site.register(IPAddress)
